@@ -30,7 +30,7 @@ class players extends football
 
 }
 $x = new players();
-$x::players();
+$x -> players();
 echo "<br>";
 
 // ->class_exists
