@@ -1,5 +1,3 @@
-?>
-
 <html>
 <head><title>Add</title>
 <style>

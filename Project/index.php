@@ -1,4 +1,5 @@
-<?php require_once('Model/Core/Adapter.php');  ?>
+<?php require_once('Model/Core/Adapter.php'); 
+			require_once('menu.php') ?>
 
 <?php 
 
@@ -13,17 +14,29 @@ class Ccc
 		$path = str_replace("_", "/", $className).'.php';
 		Ccc::loadFile($path);
 	}
+
+	public function getFront()
+	{
+		Ccc::loadClass('Controller_Core_Front');
+		if(!$this->front)
+		{
+			$front = new Controller_Core_Front();
+			$this->setFront($front);
+		}
+		return $this->front;
+	}
+
+	public function setFront($front)
+	{
+		$this->front = $front;
+		return $this;
+	}
+
 	public static function init()
 	{
-		$actionName = (isset($_GET['a'])) ? $_GET['a'] : 'error';
-		$actionName = $actionName.'Action';
-		$controllerName = (isset($_GET['c'])) ? ucfirst($_GET['c']) : 'Customer';
-		$controllerPath='Controller/'.$controllerName;
-		$controllerClassName = 'Controller_'.$controllerName;
-		Ccc::loadClass($controllerClassName);
-		$controller = new $controllerClassName();
-		$controller->$actionName();
-
+		Ccc::loadClass('Controller_Core_Front');
+		$front = new Controller_Core_Front();
+		$front->init();
 	}
 
 }
