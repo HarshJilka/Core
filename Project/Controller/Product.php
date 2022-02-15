@@ -1,11 +1,18 @@
 <?php
-
-class Controller_Product
+Ccc::loadClass('Controller_Core_Action');
+class Controller_Product extends Controller_Core_Action
 {
 
 	public function gridAction()
 	{
-		require_once('view/product/grid.php');
+		$adapter = new Model_Core_Adapter();
+		$products = $adapter->fetchAll("SELECT * FROM products");
+		// print_r($categories);
+		// exit();
+		$view = $this->getView();
+		$view->setTemplate('view/product/grid.php');
+		$view->addData('products',$products);	
+		$view->toHtml();
 	}
 
 	public function saveAction()
@@ -19,6 +26,7 @@ class Controller_Product
 				{
 					throw new Exception("Request Invelid.",1);
 				}
+				
 				$adapter = new Model_Core_Adapter();
 			    $name=$_POST['product']["name"];
 				$price=$_POST['product']["price"];
@@ -41,7 +49,7 @@ class Controller_Product
 			 {
 				
 				$id=$_POST["id"];
-			
+				
 				$result=$adapter->update("UPDATE `products` SET `name` = '$name', `price` = '$price', `quantity` = '$quantity', `pro_status` = '$status',`updated_date`='$date' WHERE `products`.`product_id` = $id");
 				if($result)
 				{
@@ -61,7 +69,14 @@ class Controller_Product
 
 	public function editAction()
 	{
-		require_once('view/product/edit.php');
+		$id=$_GET['id'];
+		$adapter =  new Model_Core_Adapter();
+		$products = $adapter->fetchRow("select * FROM `products` WHERE `products`.`product_id` = '$id'");
+
+		$view = $this->getView();
+		$view->setTemplate('view/product/edit.php');
+		$view->addData('products',$products);	
+		$view->toHtml();
 	}
 
 	public function addAction()

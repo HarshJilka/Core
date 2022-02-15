@@ -1,79 +1,58 @@
-<?php
+<?php 
 
-$load = new Model_Core_Adapter();
-$categories = $load->fetchAll("SELECT * FROM `category` ORDER BY `parent_id`");
-function path($categoryId,$array){
+$categories = $this->getData('categories');
+$Controller = new Controller_Category();
+$result = $Controller->pathAction();
 
-    $len = count($array);
-
-    for($i = 0;$i< $len;$i++)
-    {
-
-        if($categoryId == $array[$i]["id"]){
-            if($array[$i]["parent_id"] == null){
-                return $array[$i]["name"];
-            }
-            return path($array[$i]["parent_id"],$array)."=>".$array[$i]["name"];
-        }
-
-    }
-
-}
-?>
-
-<!DOCTYPE html>
+ ?>
 <html>
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Add Category</title>
-	<style>
-		body{
-			text-align: center;
-		}
-		table{
-			border: 10px solid black;
-			text-align: center;
-		}
-		th,td{
-			border: 2px solid skyblue;
-		}
-	</style>
+	<title>Category Add</title>
 
 </head>
 <body>
-	
-	<form action="index.php?c=category&a=save" method="POST" >
+<form action="index.php?c=category&a=save" method="POST">
+	<table border="1" width="100%" cellspacing="4">
+		 <tr>
+                <td width="10%">Subcategory</td>
+                <td>
+                    <select name="category[p_category_id]" id="parentId">
 
-	<table border="1px" align="center">
-		<tr>
-			<td>CategoryName : <input type="text" name="category[name]" id="name"></td>
-		</tr>
-		<br>
-	    <tr>
-			 <td>sub category
-                    <select name="category[parentId]" id="parentId">
-                        <option value=<?php echo null; ?>>Root Category</option>
-                    <?php foreach($categories as $category): ?>
-                        <option value="<?php echo $category['id']; ?>"><?php echo path($category['id'],$categories); ?></option>
+                    <option value=<?php echo null; ?>>Root Category</option>
+
+                    <?php 
+                     foreach($categories as $category): ?>
+                     <option value="<?php echo $category['category_id']?>"><?php echo $result[$category['category_id']];?></option>
                     <?php endforeach; ?>
+
                     </select>
                 </td>
+        </tr>
+		<tr>
+			<td colspan="2"><b>Category</b></td>
 		</tr>
 		<tr>
-			<td>Status:
-				<select name="category[pro_status]" id="status">
-                    <option value="1">active</option>
-                    <option value="2">inactive</option>
-                </select>
-            </td>
+			<td width="10%">Category Name</td>
+			<td><input type="text" name="category[name]"></td>
 		</tr>
 		<tr>
-				<td><input type="submit" name="submit" value="Add"></td>
+			<td width="10%">Status</td>
+			<td>
+				<select name="category[status]">
+					<option value="1">Active</option>
+					<option value="2">Inactive</option>
+				</select>
+			</td>
+		</tr>		
+		<tr>
+			<td width="10%">&nbsp;</td>
+			<td>
+				<input type="submit" name="submit" value="Save">
+				<button type="button"><a href="index.php?c=category&a=grid">Cancel</a></button>
+			</td>
 		</tr>
 		
-	</table>
-	</form>
-
+	</table>	
+</form>
 </body>
 </html>

@@ -1,12 +1,15 @@
 <?php 
-class Model_Core_Adapter{
+class Model_Core_Adapter
+{
     public $config = [
         'host'=>'localhost',
         'user'=>'root',
         'password'=>'',
         'dbname'=>'ecommerce'
     ];
+
     private $connect = NULL;
+
     public function connect()
     {
         $connect = mysqli_connect($this->config['host'],$this->config['user'],$this->config['password'],$this->config['dbname']);
@@ -16,15 +19,15 @@ class Model_Core_Adapter{
 
     public function setConnect($connect)
     {
+
         $this->connect = $connect;
-        return $this;
+        return $this;   
     }
 
     public function getConnect()     
-    {
+    {   
         return $this->connect;
     }
-
 
     public function setConfig($config)
     {
@@ -39,7 +42,8 @@ class Model_Core_Adapter{
 
     public function query($query)
     {
-        if(!$this->getConnect()){
+        if(!$this->getConnect())
+        {
             $this->connect();
         }
         $result = $this->getConnect()->query($query);
@@ -51,7 +55,8 @@ class Model_Core_Adapter{
     {
 
         $result = $this->query($query);
-        if($result){
+        if($result)
+        {
             return $this->getConnect()->insert_id;
         }
         return $result;
@@ -78,23 +83,56 @@ class Model_Core_Adapter{
     public function fetchRow($query)
     {
         $result = $this->query($query);
-        if($result->num_rows){
+
+        if($result->num_rows)
+        {
             return $result->fetch_assoc();
         }
         return false;
     }
 
-     public function fetchAll($query)
-    {
+     public function fetchAll($query, $mode=MYSQLI_ASSOC)
+    {    
         $result = $this->query($query);
-        if($result->num_rows){
-            return $result->fetch_all(MYSQLI_ASSOC);
+        if($result->num_rows)
+        {       
+            return $result->fetch_all($mode);
         }
         return false;
     }
 
+    public function fetchPair($query)
+    {
+        $result = $this->fetchAll($query,MYSQLI_NUM);
+
+        if(!$result)
+        {
+            return false;
+        }
+        $keys = array_column($result, '0');
+        $values = array_column($result, '1');
+        
+        if (!$values)  
+        {
+            $values = array_fill(0,count($keys),NULL);
+        }
+        $result = array_combine($keys, $values);
+        return $result;
+
+    }
+
+    public function fetchOne($query)
+    {
+        $result = $this->query($query);
+        if(!$result)
+        {   
+            return false;
+        }
+        return $result;
+    }
 
 }
-$adapter = new Model_Core_Adapter();
 
+$adapter = new Model_Core_Adapter();
+?>
 

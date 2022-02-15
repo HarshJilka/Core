@@ -1,76 +1,40 @@
-<?php 
+<?php
 
-
-$load = new Model_Core_Adapter();
-$categories = $load->fetchAll("SELECT * FROM `category`");
-
-function path($categoryId,$array)
-{
-
-    $len = count($array);
-
-    for($i = 0; $i< $len; $i++)
-    {
-        if($categoryId == $array[$i]["id"])
-        {
-            if($array[$i]["parent_id"] == null)
-            {
-                return $array[$i]["name"];
-            }
-            return path($array[$i]["parent_id"],$array)."=>".$array[$i]["name"];
-        }
-    }
-}
+$controller=new Controller_Category();
+$categories=$this->getData('categories');
 ?>
-
-<!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Category</title>
-	<style>
-		body,td{
-			text-align: center;
-		}
-		table{
-			border-color: skyblue;
-		}
-		#Added{
-			width: 250px;
-			border-width: 10px;
-			border-color: skyblue;
-			border-radius: 10px;
-		}
-	</style>
 </head>
 <body>
-	<button id="Added"><a href="index.php?c=category&a=add">ADD</a></button>
-	<table border="5px" width="100%">
+	<button name="Add"><a href="index.php?c=category&a=add"><h3>Add</h3></a></button>
+	<table border="1" width="100%" cellspacing="4">
 		<tr>
-			<th>Id</th>
-			<th>Name</th>
+			<th>Category Id</th>
+			<th>Category Name</th>
 			<th>Status</th>
-			<th>Created_date</th>
-			<th>Updated_date</th>
+			<th>Created Date</th>
+			<th>Updated Date</th>
 			<th>Edit</th>
 			<th>Delete</th>
 		</tr>
-		<?php if (!$categories): ?>
-    		  <tr><td colspan="8">No Record Found!</td></tr>
-    	<?php else: ?>
-    	 	  <?php foreach ($categories as $category) { ?>
-    	 	  <?php $result = ($category['status'] == 'active')? 'active':'inactive'; ?>
-	    <tr>
-			<td><?php echo $category['id'] ?></td>
-			<td><?php echo path($category['id'],$categories); ?></td>
-			<td><?php echo $result; ?></td>
-			<td><?php echo $category['created_date'] ?></td>
-			<td><?php echo $category['updated_date'] ?></td>
-			<td><a href = "index.php?c=category&a=edit&id=<?php echo $category['id']; ?>">Edit</a></td>
-			<td><a href = "index.php?c=category&a=delete&id=<?php echo $category['id']; ?>">delete</a></td>
-		</tr>
-	<?php } endif; ?>
+		<?php if(!$categories):  ?>
+			<tr><td colspan="7">No Record available.</td></tr>
+		<?php else:  ?>
+			<?php foreach ($categories as $category): ?>
+			<tr>
+				<td><?php echo $category['category_id'] ?></td>
+				<td><?php $result=$controller->pathAction(); echo $result[$category['category_id']];  ?></td>
+
+				<td><?php if($category['status']==1):echo "Active";else : echo "Inactive"; endif;?></td>
+				<td><?php echo $category['created_date'] ?></td>
+				<td><?php echo $category['updated_date'] ?></td>
+				<td><a href="index.php?c=category&a=edit&id=<?php echo $category['category_id'] ?>">Edit</a></td>
+				<td><a href="index.php?c=category&a=delete&id=<?php echo $category['category_id'] ?>">Delete</a></td>
+			</tr>
+			<?php endforeach;	?>
+		<?php endif;  ?>
+		
 	</table>
+	
 </body>
-</html>
