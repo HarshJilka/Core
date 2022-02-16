@@ -1,6 +1,6 @@
 <?php 
 
-$result = $this->getData('admin');
+$result = $this->getData('admins');
 ?>
 
 <!DOCTYPE html>

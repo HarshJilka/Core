@@ -44,7 +44,7 @@ $result=$adapter->pathAction();
                         </select> -->
                         <select name="category[p_category_id]" id="parentId">
                         	<option value="NULL">Root</option>
-                        	<?php 	
+                 	
                             <option value="<?php echo $row['category_id']; ?>"><?php echo $result[$id];?></option>
                         </select>
                     </td>

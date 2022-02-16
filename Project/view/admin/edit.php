@@ -1,7 +1,4 @@
-<?php
-
-$result = $this->getData('admin');
-?>
+<?php $result = $this->getData('admin'); ?>
 
 
 <html>
@@ -24,7 +21,9 @@ $result = $this->getData('admin');
 </head>
 <body>
 <form action="index.php?c=admin&a=save&id=<?php echo $result['adminId']; ?>" method="POST" >
+
 	<table>
+		  <input type="text" name="admin[adminId]" value=<?php echo $result['adminId']?> hidden>
 		<tr>
 			<td>First Name</td>
 			<td><input type="text" name="admin[firstName]" value=<?php echo $result['firstName']?>></td>

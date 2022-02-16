@@ -6,17 +6,21 @@
  ?>
 <?php $c = new Ccc();
 
-class Controller_Admin extends Controller_Core_Action
-{
+class Controller_Admin extends Controller_Core_Action{
+
+	
+
+
+
 	public function gridAction()
-	{	
-		$adapter = new Model_Core_Adapter();
-		$admins = $adapter->fetchAll("SELECT * FROM admin");
-		// print_r($categories);
-		// exit();
+	{
+		
+		$adminTable = new Model_Admin();
+		$admins=$adminTable->fetchAll();
+		
 		$view = $this->getView();
 		$view->setTemplate('view/admin/grid.php');
-		$view->addData('admins',$admins);	
+		$view->addData('admins',$admins);
 		$view->toHtml();
 	}
 
@@ -29,46 +33,55 @@ class Controller_Admin extends Controller_Core_Action
 
 	public function editAction()
 	{
-		$id=$_GET['id'];
-		$adapter=new Model_Core_Adapter();
-		$admin = $adapter->fetchRow("select * FROM `admin` WHERE `admin`.`adminId` = '$id'");
+		try
+		{
+			global $c;
+			$request=$c->getFront()->getRequest();
+			$id=$request->getRequest('id');
+
+			if(!$id)
+			{
+
+				throw new Exception("Invelid Request", 1);
+				
+			}
+			$adminTable = new Model_Admin();
+			$admin=$adminTable->fetchRow($id);
+
+		}
+		catch(Exception $e)
+		{
+			throw new Exception("Invelid Request", 1);
+		}
 		$view = $this->getView();
 		$view->setTemplate('view/admin/edit.php');
-		$view->addData('admin',$admin);	
+		$view->addData('admin',$admin);
 		$view->toHtml();
 	}
 
 	public function deleteAction()
 	{
+		
 		try
 		{
+			
+			
 			global $c;
-			$request = $c->getFront()->getRequest();
-
+			$request=$c->getFront()->getRequest();
 			if(!$request->getRequest('id'))
 			{
-				throw new Exception("Error Processing Request", 1);
+				throw new Exception("Invelid Request", 1);
+				
 			}
-			$adminId = $request->getRequest('id');
-
-			if(!(int)$adminId)
-			{
-				throw new Exception("Error Processing Request", 1);
-			}
-
-			$adapter =new Model_Core_Adapter();
-			$result=$adapter->delete("DELETE FROM `admin` WHERE `admin`.`adminId` = '$adminId'");
-
-			if(!$result)
-			{
-				throw new Exception("System Enable to Delete Record",1);
-			}
+			$id=$request->getRequest('id');
+			$adminTable = new Model_Admin();
+			$admin_id=$adminTable->delete($id);
 			$this->redirect('index.php?c=admin&a=grid');
 
 		}
-
 		catch(Exception $e)
 		{
+			echo "catch";
 			echo $e->getMessage();
 			exit();
 			$this->redirect('index.php?c=admin&a=grid');
@@ -85,7 +98,7 @@ class Controller_Admin extends Controller_Core_Action
 				throw new Exception("Request Invelid.",1);
 			}
 
-			$adapter=new Model_Core_Adapter();
+			$adapter=new Adapter();
 			$row=$post->getPost('admin');
 			//print_r($row);
 			$firstName=$row['firstName'];
@@ -96,30 +109,28 @@ class Controller_Admin extends Controller_Core_Action
 			$date=date('y-m-d h:m:s');
 			
 
-			if(array_key_exists('adminId',$row))
+			if(array_key_exists('admin_id',$row))
 			{
-				$adminId = $row['adminId'];
-				if(!(int)$row['adminId'])
+				$admin_id=$row['admin_id'];
+				if(!(int)$row['admin_id'])
 				{
-					throw new Exception("Invalid Request.",1);
+					throw new Exception("Invelid Request.",1);
 				}
-
-				//pending
-				
-				$data = ['firstName'=>$firstName,'lastName'=>$lastName,'email'=>$email,'password'=>$password,'status'=>$status,'updateDate'=>$date ];
-
+				$data = ['firstName'=>$firstName,'lastName'=>$lastName,'email'=>$email,'password'=>$password,'status'=>$status,'updated_date'=>$date ];
 				$adminTable = new Model_Admin();
-				$adminId = $adminTable->update($data,$adminId);
+				$admin_id=$adminTable->update($data,$admin_id);
 				
 			}
 			else
 			{
 				
-				$data = ['firstName'=>$firstName,'lastName'=>$lastName,'email'=>$email,'password'=>$password,'status'=>$status,'createdDate'=>$date];
-				$adminTable = new Model_Admin();
-				$adminId=$adminTable->insert($data);
+				$data = ['firstName'=>$firstName,'lastName'=>$lastName,'email'=>$email,'password'=>$password,'status'=>$status,'created_date'=>$date];
 
-				return $adminId;
+
+				$adminTable = new Model_Admin();
+				$admin_id=$adminTable->insert($data);
+
+				return $admin_id;
 			}
 		
 
@@ -128,7 +139,9 @@ class Controller_Admin extends Controller_Core_Action
 	{
 		try
 		{
+			
 			$this->saveadmin();
+
 			$this->redirect('index.php?c=admin&a=grid');
 		} 
 		

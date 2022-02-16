@@ -1,12 +1,10 @@
-<?php require_once('Model/Core/Adapter.php'); 
-			require_once('menu.php') ?>
-
+<?php require_once('Model/Core/Adapter.php');  ?>
+<?php require_once('menu.php'); ?>
 <?php 
 
 class Ccc
 {
 	public $front = null;
-
 	public static function loadFile($path)
 	{
 		require_once($path);
@@ -16,11 +14,9 @@ class Ccc
 		$path = str_replace("_", "/", $className).'.php';
 		Ccc::loadFile($path);
 	}
-
 	public function getFront()
 	{
 		Ccc::loadClass('Controller_Core_Front');
-
 		if(!$this->front)
 		{
 			$front = new Controller_Core_Front();
@@ -34,17 +30,16 @@ class Ccc
 		$this->front = $front;
 		return $this;
 	}
-
 	public static function init()
 	{
 		Ccc::loadClass('Controller_Core_Front');
 		$front = new Controller_Core_Front();
 		$front->init();
 	}
-
 }
-
-$c = new Ccc();
+$c= new Ccc();
+$adapter = new Adapter();
 Ccc::init();
+
 
 ?>
