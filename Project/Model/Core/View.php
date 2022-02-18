@@ -18,11 +18,10 @@ class Model_Core_View
 
 	public function toHtml()
 	{
-		$data = $this->data;
 		require($this->getTemplate());
 	}
 
-	public function getData($key = null)
+	public function getData($key = null) // get object properties
 	{
 		if(!$key) 
 		{
@@ -41,17 +40,17 @@ class Model_Core_View
 		return $this;
 	}
 
-	public function addData($key, $value)
+	public function addData($key, $value) // add info in data 
 	{
 		$this->data[$key] = $value;
-		return $this->data;
+		return $this;
 	}
 
 	public function removeData($key)
 	{
 		if (array_key_exists($key, $this->data)) 
 		{
-			unset($this->data[$key]);	
+			unset($this->data[$key]);	// value append
 		}
 		return $this;
 	}

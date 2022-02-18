@@ -1,54 +1,80 @@
-<?php Ccc::loadClass('Controller_Core_Action');
-		Ccc::loadClass('Model_Admin');
+<?php   Ccc::loadClass('Controller_Core_Action');
 		Ccc::loadClass('Model_Core_Request');
-
-
- ?>
-<?php $c = new Ccc();
 
 class Controller_Admin extends Controller_Core_Action
 {
 	public function gridAction()
 	{	
-		$adapter = new Model_Core_Adapter();
-		$admins = $adapter->fetchAll("SELECT * FROM admin");
-		// print_r($categories);
-		// exit();
+	    Ccc::getBlock('Admin_Grid')->toHtml();
+
+
+		/*$adminTable = Ccc::getModel('Admin');
+        $admins = $adminTable->fetchAll();
+		
 		$view = $this->getView();
 		$view->setTemplate('view/admin/grid.php');
 		$view->addData('admins',$admins);	
-		$view->toHtml();
+		$view->toHtml();*/
 	}
 
 	public function addAction()
 	{
-		$view = $this->getView();
+		Ccc::getBlock('Admin_Add')->toHtml();
+		/*$view = $this->getView();
 		$view->setTemplate('view/admin/add.php');
-		$view->toHtml();
+		$view->toHtml();*/
 	}
 
 	public function editAction()
 	{
-		$id=$_GET['id'];
-		$adapter=new Model_Core_Adapter();
-		$admin = $adapter->fetchRow("select * FROM `admin` WHERE `admin`.`adminId` = '$id'");
-		$view = $this->getView();
-		$view->setTemplate('view/admin/edit.php');
-		$view->addData('admin',$admin);	
-		$view->toHtml();
+	 	try
+	 	{	
+			
+			$adminId = (int) $this->getRequest()->getRequest('id');
+
+	        /*$request = $c->getFront()->getRequest();
+	        $adminId = $request->getRequest('id');*/
+
+	        if(!$adminId)
+			{
+				throw new Exception("Id is not valid.");
+			}
+
+	        if(!(int)$adminId)
+	        {
+	            throw new Exception("Invalid Request.", 1);
+	        }
+
+	        $adminModel = Ccc::getModel('Admin');
+	        $adminTable = new Model_Admin();
+	        $admin = $adminTable->fetchRow($adminId);
+
+	        Ccc::getBlock('Admin_Edit')->addData('admin',$admin)->toHtml();
+
+			/*$view = $this->getView();
+			$view->setTemplate('view/admin/edit.php');
+			$view->addData('admins',$admins);	
+			$view->toHtml();*/
+			}
+
+		catch(Exception $e)
+		{
+			echo $e->getMessage();
+			exit();
+		}
 	}
 
 	public function deleteAction()
 	{
 		try
 		{
-			global $c;
-			$request = $c->getFront()->getRequest();
+			$request = $this->getRequest();
 
 			if(!$request->getRequest('id'))
 			{
 				throw new Exception("Error Processing Request", 1);
 			}
+
 			$adminId = $request->getRequest('id');
 
 			if(!(int)$adminId)
@@ -56,100 +82,64 @@ class Controller_Admin extends Controller_Core_Action
 				throw new Exception("Error Processing Request", 1);
 			}
 
-			$adapter =new Model_Core_Adapter();
-			$result=$adapter->delete("DELETE FROM `admin` WHERE `admin`.`adminId` = '$adminId'");
-
-			if(!$result)
-			{
-				throw new Exception("System Enable to Delete Record",1);
-			}
-			$this->redirect('index.php?c=admin&a=grid');
-
+			$adminTable = Ccc::getModel('Admin');
+            $adminTable->delete($adminId);
+            $this->redirect('index.php?c=admin&a=grid');
 		}
 
 		catch(Exception $e)
 		{
 			echo $e->getMessage();
 			exit();
-			$this->redirect('index.php?c=admin&a=grid');
 		}
 	}
 
-	protected function saveadmin()
-	{		
-			//echo "<pre>";
-			global $c;
-			$post=$c->getFront()->getRequest();
-			if(!$post->getPost('admin'))
-			{
-				throw new Exception("Request Invelid.",1);
-			}
-
-			$adapter=new Model_Core_Adapter();
-			$row=$post->getPost('admin');
-			//print_r($row);
-			$firstName=$row['firstName'];
-			$lastName=$row['lastName'];
-			$email=$row['email'];
-			$password=$row['password'];
-			$status=$row['status'];
-			$date=date('y-m-d h:m:s');
-			
-
-			if(array_key_exists('adminId',$row))
-			{
-				$adminId = $row['adminId'];
-				if(!(int)$row['adminId'])
-				{
-					throw new Exception("Invalid Request.",1);
-				}
-
-				//pending
-				
-				$data = ['firstName'=>$firstName,'lastName'=>$lastName,'email'=>$email,'password'=>$password,'status'=>$status,'updateDate'=>$date ];
-
-				$adminTable = new Model_Admin();
-				$adminId = $adminTable->update($data,$adminId);
-				
-			}
-			else
-			{
-				
-				$data = ['firstName'=>$firstName,'lastName'=>$lastName,'email'=>$email,'password'=>$password,'status'=>$status,'createdDate'=>$date];
-				$adminTable = new Model_Admin();
-				$adminId=$adminTable->insert($data);
-
-				return $adminId;
-			}
-		
-
-	}
 	public function saveAction()
 	{
 		try
 		{
-			$this->saveadmin();
+			$request = $this->getRequest();
+
+			if(!$request->isPost())
+			{
+				throw new Exception("Request Invalid.",1);
+			}
+
+			$postData = $request->getPost('admin');
+
+			if(!$postData)
+            {
+                throw new Exception("Invalid data posted.", 1);
+        	}    
+          
+        	$adminTable = Ccc::getModel('Admin');
+			
+			if(array_key_exists('adminId',$postData))
+			{
+				$adminId = $postData['adminId'];
+
+				if(!(int)$postData)
+				{
+					throw new Exception("Invalid Request.",1);
+				}
+
+				$postData['updatedDate'] = date('y-m-d h:m:s');
+                $adminId = $adminTable->update($postData,$adminId);
+			}
+			
+			else
+			{
+				$postData['createdDate'] = date('y-m-d h:m:s');
+	            $adminInsertedId = $adminTable->insert($postData);
+			}
 			$this->redirect('index.php?c=admin&a=grid');
 		} 
 		
 		catch (Exception $e) 
 		{
-
 			$this->redirect('index.php?c=admin&a=grid');
 		}
 	}
-
-
-	public function errorAction()
-	{
-		echo "error";
-	}
-	public function redirect($url)
-	{
-		header("location:$url");
-		exit();
-	}
-
 
 }
 

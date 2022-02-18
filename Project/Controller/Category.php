@@ -8,14 +8,12 @@ class Controller_Category extends Controller_Core_Action{
 		//echo "111";
 		$adapter = new Model_Core_Adapter();
 		$categories = $adapter->fetchAll("SELECT * FROM category ORDER BY path ASC");
-		// print_r($categories);
-		// exit();
+		
 		$view = $this->getView();
 		$view->setTemplate('view/category/grid.php');
 		$view->addData('categories',$categories);	
 		$view->toHtml();
-	    //print_r($view);
-		//exit;
+	    
 	}
 
 	public function saveAction()
@@ -34,7 +32,7 @@ class Controller_Category extends Controller_Core_Action{
 			$date=date('y-m-d h:m:s');
 			$p_category_id=$_POST['category']['p_category_id'];
 
-			//print_r($row);
+			
 			
 			if(array_key_exists('category_id',$row))
 			{
@@ -80,13 +78,9 @@ class Controller_Category extends Controller_Core_Action{
 						throw new Exception("System unable to insert", 1);
 					}
 					$path = $adapter->fetchRow("SELECT * FROM `category` WHERE `category_id` = '$p_category_id' ");
-					//print_r($path);
-					//print_r($insert);
-					
+				
 
 					$parentPath = $path['path']."/".$insert;
-					//print_r($parentPath);
-					//exit();
 
 					$newPath = $adapter->update(" UPDATE `category` SET `path` = '$parentPath' WHERE `category_id` = '$insert' ");
 
@@ -160,6 +154,8 @@ class Controller_Category extends Controller_Core_Action{
 
 	 public function pathAction()
       {
+      	// echo "111";
+      	// die();
       	$adapter = new Model_Core_Adapter();
         $categoryName=$adapter->fetchPair("SELECT `category_id`,`name` FROM `category`");
         $categoryPath=$adapter->fetchPair("SELECT `category_id`,`path` FROM `category`");
@@ -186,7 +182,6 @@ class Controller_Category extends Controller_Core_Action{
              }
         return $categories;
         }
-
 }
 
 ?>

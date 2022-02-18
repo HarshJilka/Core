@@ -169,9 +169,7 @@ class Controller_Customer extends Controller_Core_Action
 		 catch (Exception $e) 
 		{
 			$this->redirect('index.php?c=customer&a=grid');
-		}
-
-		
+		}	
     }
 
 	public function editAction()
@@ -244,20 +242,7 @@ class Controller_Customer extends Controller_Core_Action
 		{
 			echo "catch";
 			$this->redirect('index.php?c=customer&a=grid');
-		}
-
-
-		
-		
-	}
-	public function redirect($url)
-	{
-		header("Location: $url");
-		exit();
-	}
-
-	public function errorAction()
-	{
+		}	
 		
 	}
 }

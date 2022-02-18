@@ -32,7 +32,7 @@ class Model_Core_Request
         return $_REQUEST[$key];
     }
 
-    public function ispost()
+    public function isPost()
     {
         if($_SERVER['REQUEST_METHOD'] == 'POST')
         {

@@ -14,8 +14,7 @@
 
  }
 form{
-	
-	margin-left:550px;
+	margin-left:600px;
 
 }
 

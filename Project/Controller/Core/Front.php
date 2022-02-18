@@ -1,7 +1,5 @@
 <?php
-    
-Ccc::loadClass('Model_Core_Request');
-
+Ccc::loadClass('Model_Core_Request');    
 class Controller_Core_Front
 {
         protected $request = null;
@@ -29,10 +27,8 @@ class Controller_Core_Front
             $actionName = $request->getActionName();
             $actionName = $actionName.'Action';
 
-
             $controllerName = $request->getControllerName();
             $controllerPath = 'Controller/'.$controllerName.'.php';
-
 
             $controllerClassName = 'Controller_'.$controllerName;
 

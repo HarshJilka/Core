@@ -1,4 +1,4 @@
-<?php $result = $this->getData('admin'); ?>
+<?php $result = $this->getAdmin(); ?>
 
 
 <html>
@@ -23,25 +23,25 @@
 <form action="index.php?c=admin&a=save&id=<?php echo $result['adminId']; ?>" method="POST" >
 
 	<table>
-		  <input type="text" name="admin[adminId]" value=<?php echo $result['adminId']?> hidden>
+		  <input type="text" name="admin[adminId]" value="<?php echo $result['adminId']?>" hidden>
 		<tr>
 			<td>First Name</td>
-			<td><input type="text" name="admin[firstName]" value=<?php echo $result['firstName']?>></td>
+			<td><input type="text" name="admin[firstName]" value="<?php echo $result['firstName']?>"></td>
 		</tr>
 		
 		<tr>
 			<td>Last Name</td>
-			<td><input type="text" name="admin[lastName]" value=<?php echo $result['lastName']?>></td>
+			<td><input type="text" name="admin[lastName]" value="<?php echo $result['lastName']?>"></td>
 		</tr>
 
 		<tr>
 			<td>Email</td>
-			<td><input type="text" name="admin[email]" value=<?php echo $result['email']?>></td>
+			<td><input type="text" name="admin[email]" value="<?php echo $result['email']?>"></td>
 		</tr>
 
 		<tr>
 			<td>Password</td>
-			<td><input type="Password" name="admin[password]" value=<?php echo $result['password']?>></td>
+			<td><input type="Password" name="admin[password]" value="<?php echo $result['password']?>"></td>
 		</tr>
 
 		<tr>

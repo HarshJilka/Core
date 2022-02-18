@@ -1,16 +1,25 @@
 <?php
 
-$result = $this->getData('products');
+$result = $this->getProduct();
 
 ?>
 
 
 <html>
-<head><title>Edit</title></head>
+<head><title>Edit</title>
+<style>
+	body{
+		text-align: center;
+
+	}
+	form{
+		border: 5px solid;
+	}
+</style></head>
 <body> 
 <form action="index.php?c=product&a=save&id=<?php echo $result['product_id'];  ?>" method="POST">
 
-	<input type="text" name="id" value="<?php echo $result['product_id']; ?>" hidden>
+	<input type="text" name="product[product_id]" value="<?php echo $result['product_id']; ?>" hidden>
 	<br>
 	Name:<input type='text' value="<?php echo $result['name']; ?>" name='product[name]' id='name'>
 	<br>

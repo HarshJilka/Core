@@ -1,6 +1,6 @@
 <?php
 
-$products = $this->getData('products');
+$products = $this->getProducts();
 ?>
 <html>
 <head>
@@ -9,28 +9,27 @@ $products = $this->getData('products');
 
 		body,td{
 			text-align: center;
-			
-			
+		
 		}
 		table{
 			border-width: 10px;
 			border-color: skyblue;
 			
 		}
-		#ADD{
-			width: 150px;
-			height: 100px;
+		#Add{
+			width: 250px;
 			border-width: 10px;
 			border-color: skyblue;
-			border-radius: 10px;
+			border-radius: 5px;
+			margin-bottom: 10px;
 		}
 
 	</style>
 </head>
 <body>
-	<button name="Add" id="Add"><a href="index.php?c=product&a=add"><h3>Add</h3></a></button>
+	<button name="Add" id="Add"><a href="index.php?c=product&a=add">Add</a></button>
 	<br>
-	<table border="1" width="100%">
+	<table border="5px" width="100%">
 
 		<tr>
 			<th>Product Id</th>

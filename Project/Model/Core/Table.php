@@ -1,30 +1,31 @@
-<?php require_once('Model/Core/Adapter.php'); 
+<?php 
 
 class Model_Core_Table
 {
-    protected $tableName = null; 
-    protected $primaryKey = null;
+    protected $tableName = null; //admin
+    protected $primaryKey = null; //adminId
     
-
     public function getTableName()
     {   
         return $this->tableName;
     }
+
     public function setTableName($tableName)
     {   
         $this->tableName = $tableName;
         return $this;
     }
+
     public function getPrimaryKey()
     {   
         return $this->primaryKey;
     }
+
     public function setPrimaryKey($primaryKey)
     {   
         $this->primaryKey = $primaryKey;
         return $this;
     }
-    
     
     public function insert(array $data=null)
     {
@@ -33,32 +34,87 @@ class Model_Core_Table
         $prep = array();
         foreach($data as $k => $v ) 
         {
-            $prep[''.$k] ="'".$v."'";
+            $prep[''.$k] ="'".$v."'"; //['harsh','jilka']
         }
 
-        $sth = ("INSERT INTO $this->tableName (" . implode(',',array_keys($data)) . 
-            ") VALUES ( ". implode(',', array_values($prep)) . ")");
-
-        try{
+        $insertQuery = ("INSERT INTO $this->tableName (" . implode(',',array_keys($data)) . 
+            ") VALUES ( ". implode(',', array_values($prep)) . ")"); // valuestring = 'harsh','jilka','48964988'
+        //firstname , lastname ,mobile
             
-            $insertId=$adapter->insert($sth);
-            print_r($insertId);
-            if(!$insertId)
-            {
-                throw new Exception("Error Processing Request", 1);
-                
-            }
-
-        }
-        catch(Exception $e)
+        $insertId=$adapter->insert($insertQuery);
+    
+        if(!$insertId)
         {
-            echo $e->getMessage();
+            throw new Exception("Error Processing Request", 1);       
         }
     }
 
+    public function update(array $data=null,$primaryKey=null)
+    {
+        global $adapter;
+        $f="";
+
+        foreach($data as $key => $value )
+        {
+            $prep[''.$key] ="'".$value."'";
+            $f.= $key."=".$prep[''.$key].","; //firstname = harsh , lasthname = jilka ,
+        }
+
+        $final=rtrim($f,',');//firstname = harsh , lasthname = jilka 
+        $updateQuery="UPDATE $this->tableName SET $final WHERE $this->tableName.$this->primaryKey = $primaryKey";
+
+
         
+        $update = $adapter->update($updateQuery);
+
+        if(!$update)
+        {
+            throw new Exception("Error Processing Request", 1);
+        }
+        
+    }
 
 
-   
+    public function delete($primaryKey = null,array $data = null)
+    {
+        $deleteQuery = "DELETE FROM $this->tableName WHERE $this->primaryKey=$primaryKey";
+        global $adapter;
+    
+  
+        $delete = $adapter->delete($deleteQuery);
 
+        if(!$delete)
+        {
+            throw new Exception("Error Processing Request", 1);
+        }
+    }
+
+
+    public function fetchAll()
+    {
+        $fetchQuery="SELECT * FROM $this->tableName";
+        global $adapter;
+
+        $fetchAll=$adapter->fetchAll($fetchQuery);
+        if(!$fetchAll)
+        {
+            throw new Exception("Error Processing Request", 1);
+        }
+        
+        return $fetchAll;
+    }
+
+    public function fetchRow($primaryKey=null)
+    {
+        $fetchQuery="SELECT * FROM $this->tableName WHERE $this->primaryKey=$primaryKey";
+        global $adapter;
+
+        $fetchRow=$adapter->fetchRow($fetchQuery);
+        if(!$fetchRow)
+        {
+            throw new Exception("Error Processing Request", 1);
+            
+        }
+        return $fetchRow;
+    }    
 }
