@@ -19,7 +19,7 @@
  </style>
 </head>
 <body>
-<form action="index.php?c=admin&a=save" method="POST">
+<form action="<?php echo $this->getUrl('admin','save') ?>" method="POST">
 	<table>
 		<tr>
 			<td>First Name</td>
@@ -53,7 +53,7 @@
 	    	<td></td>
 	    	<td>
 	    		<input type='submit' name='submit' id='submit' value='save'>
-	    		<button><a href = "index.php?c=admin&a=grid">Cancel</a></button>
+	    		<button><a href = "<?php echo $this->getUrl('admin','grid') ?>">Cancel</a></button>
 	    	</td>
 	    </tr>
 	

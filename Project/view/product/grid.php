@@ -27,7 +27,7 @@ $products = $this->getProducts();
 	</style>
 </head>
 <body>
-	<button name="Add" id="Add"><a href="index.php?c=product&a=add">Add</a></button>
+	<button name="Add" id="Add"><a href="<?php echo $this->getUrl('product','add') ?>">Add</a></button>
 	<br>
 	<table border="5px" width="100%">
 
@@ -55,8 +55,8 @@ $products = $this->getProducts();
 			<td><?php echo($product['pro_status']) ?></td>
 			<td><?php echo($product['created_date']) ?></td>
 			<td><?php echo($product['updated_date']) ?></td>
-			<td><a href="index.php?c=product&a=edit&id=<?php echo $product['product_id']?>">Edit</a></td>
-			<td><a href="index.php?c=product&a=delete&id=<?php echo $product['product_id']?>">Delete</a></td>
+			<td><a href="<?php echo $this->getUrl('product','edit',['id'=>$product['product_id']],true)  ?>">Edit</a></td>
+			<td><a href="<?php echo $this->getUrl('product','delete',['id'=>$product['product_id']],true)  ?>">Delete</a></td>
 		</tr>
 	<?php } endif; ?>
 	</table>

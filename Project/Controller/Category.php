@@ -66,10 +66,10 @@ class Controller_Category extends Controller_Core_Action{
                 {
                     $parentID = $postData['parentID'];
 
-                    $row = $adapter->fetchAssos("SELECT * FROM category WHERE categoryID='$parent'");
+                    $row = $adapter->fetchAssoc("SELECT * FROM category WHERE categoryID='$parent'");
                     $parentPath = $row['path'];
 
-                    $query = $adapter->fetchAssos("SELECT * FROM category where categoryID='$categoryID'");
+                    $query = $adapter->fetchAssoc("SELECT * FROM category where categoryID='$categoryID'");
                     $currentpath = $query['path'];
 
                     $possiblePath = $adapter->fetchAll("SELECT * from category where `path` LIKE '$currentpath%'");
@@ -164,7 +164,7 @@ class Controller_Category extends Controller_Core_Action{
             }
             $categoryModel = Ccc::getModel('Category');        
             $adapter = new Model_Core_Adapter();
-            $category = $adapter->fetchAssos("SELECT * FROM `category` WHERE `categoryID` = '$categoryID'");
+            $category = $adapter->fetchAssoc("SELECT * FROM `category` WHERE `categoryID` = '$categoryID'");
             $categories = $categoryModel->fetchAll("SELECT * FROM `category` WHERE `path` NOT LIKE '%$categoryID%' ORDER BY `path`");
             Ccc::getBlock('Category_Edit')->addData('category',$category)->addData('categories',$categories)->toHtml();
             

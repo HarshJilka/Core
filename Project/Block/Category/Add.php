@@ -13,7 +13,7 @@ class Block_Category_Add extends Block_Core_Template
     }
      public function pathAction()
     {
-        $adapter = new Adapter();
+        $adapter = new Model_Core_Adapter();
         $categoryName = $adapter->fetchPair('SELECT `categoryID`, `name` FROM `category`');
         $categoryPath = $adapter->fetchPair('SELECT `categoryID`, `path` FROM `category`');
         $categories=[];

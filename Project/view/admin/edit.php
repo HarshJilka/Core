@@ -20,7 +20,7 @@
  </style>
 </head>
 <body>
-<form action="index.php?c=admin&a=save&id=<?php echo $result['adminId']; ?>" method="POST" >
+<form action="<?php echo $this->getUrl('admin','save',['id' => $result['adminId']],true) ?>" method="POST" >
 
 	<table>
 		  <input type="text" name="admin[adminId]" value="<?php echo $result['adminId']?>" hidden>
@@ -66,7 +66,7 @@
 	    	<td></td>
 	    	<td>
 	    		<input type='submit' name='submit' id='submit' value='Update'>
-	    		<button><a href = "index.php?c=admin&a=grid">Cancel</a></button>
+	    		<button><a href = "<?php echo $this->getUrl('admin','grid') ?>">Cancel</a></button>
 	    	</td>
 
 	    </tr>

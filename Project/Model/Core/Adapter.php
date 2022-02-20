@@ -88,7 +88,7 @@ class Model_Core_Adapter
      public function fetchAll($query, $mode=MYSQLI_ASSOC)
     {    
         $result = $this->query($query);
-        return $result;
+
         if($result->num_rows)
         {       
             return $result->fetch_all($mode);
@@ -125,6 +125,12 @@ class Model_Core_Adapter
         }
         return $result;
     }
+
+    public function fetchAssoc($query)
+        {
+            $result = $this->query($query);
+            return $result->fetch_assoc();
+        }
 
 }
 

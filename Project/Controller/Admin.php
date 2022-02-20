@@ -3,26 +3,19 @@
 
 class Controller_Admin extends Controller_Core_Action
 {
+
 	public function gridAction()
 	{	
 	    Ccc::getBlock('Admin_Grid')->toHtml();
+	   
 
 
-		/*$adminTable = Ccc::getModel('Admin');
-        $admins = $adminTable->fetchAll();
-		
-		$view = $this->getView();
-		$view->setTemplate('view/admin/grid.php');
-		$view->addData('admins',$admins);	
-		$view->toHtml();*/
 	}
 
 	public function addAction()
 	{
 		Ccc::getBlock('Admin_Add')->toHtml();
-		/*$view = $this->getView();
-		$view->setTemplate('view/admin/add.php');
-		$view->toHtml();*/
+		
 	}
 
 	public function editAction()
@@ -31,9 +24,6 @@ class Controller_Admin extends Controller_Core_Action
 	 	{	
 			
 			$adminId = (int) $this->getRequest()->getRequest('id');
-
-	        /*$request = $c->getFront()->getRequest();
-	        $adminId = $request->getRequest('id');*/
 
 	        if(!$adminId)
 			{
@@ -47,20 +37,17 @@ class Controller_Admin extends Controller_Core_Action
 
 	        $adminModel = Ccc::getModel('Admin');
 	        $adminTable = new Model_Admin();
-	        $admin = $adminTable->fetchRow($adminId);
+	        $admin = $adminTable->fetchRow("SELECT * FROM admin where adminId = $adminId");
 
 	        Ccc::getBlock('Admin_Edit')->addData('admin',$admin)->toHtml();
-
-			/*$view = $this->getView();
-			$view->setTemplate('view/admin/edit.php');
-			$view->addData('admins',$admins);	
-			$view->toHtml();*/
+			
 			}
 
 		catch(Exception $e)
 		{
 			echo $e->getMessage();
 			exit();
+			$this->redirect($this->getView()->getUrl('admin','grid'));
 		}
 	}
 
@@ -84,13 +71,14 @@ class Controller_Admin extends Controller_Core_Action
 
 			$adminTable = Ccc::getModel('Admin');
             $adminTable->delete($adminId);
-            $this->redirect('index.php?c=admin&a=grid');
+            $this->redirect($this->getView()->getUrl('admin','grid'));
 		}
 
 		catch(Exception $e)
 		{
 			echo $e->getMessage();
 			exit();
+			 $this->redirect($this->getView()->getUrl('admin','grid'));
 		}
 	}
 
@@ -132,12 +120,12 @@ class Controller_Admin extends Controller_Core_Action
 				$postData['createdDate'] = date('y-m-d h:m:s');
 	            $adminInsertedId = $adminTable->insert($postData);
 			}
-			$this->redirect('index.php?c=admin&a=grid');
+			$this->redirect($this->getView()->getUrl('admin','grid'));
 		} 
 		
 		catch (Exception $e) 
 		{
-			$this->redirect('index.php?c=admin&a=grid');
+		  $this->redirect($this->getView()->getUrl('admin','grid'));
 		}
 	}
 
