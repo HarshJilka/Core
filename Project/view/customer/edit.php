@@ -26,6 +26,9 @@ form{
 
 	<table>
 		<tr><td colspan="2"><h1>Customer Information</h1></td></tr>
+
+		<input type="text" name="customer[customer_id]" value="<?php echo $customer['customer_id'] ?>" hidden>
+
 		<tr>
 			<td>First Name</td>
 			<td><input type="text" name="customer[firstName]" value="<?php echo $customer['firstName']?>"></td>
@@ -65,6 +68,9 @@ form{
 
 		<tr><td colspan="2"><h1>Address Information</h1></td></tr>
 		<br>
+
+		<input type="text" name="address[customer_id]" value="<?php echo $address['customer_id'] ?>" hidden>
+
 		<tr>
 			<td>Address</td>
 			<td><input type="text" name="address[address]" value="<?php echo $address['address'] ?>"></td>

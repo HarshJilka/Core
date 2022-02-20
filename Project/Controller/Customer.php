@@ -27,6 +27,9 @@ class Controller_Customer extends Controller_Core_Action
 			throw new Exception("Invalid data.", 1);	
 		}
 
+		/*print_r($postData);
+		exit();*/
+
 		if (array_key_exists('customer_id',$postData))
 		{
 			if(!(int)$postData['customer_id'])
@@ -36,7 +39,9 @@ class Controller_Customer extends Controller_Core_Action
 
 			$customer_id = $postData['customer_id'];
 			$postData['updatedDate']  = date('y-m-d h:m:s');
+		
 			$update = $customerModel->update($postData,$customer_id);
+			return $postData['customer_id'];
 		}
 		else
 		{
@@ -74,10 +79,7 @@ class Controller_Customer extends Controller_Core_Action
 
 		if (array_key_exists('customer_id',$postData))
 		{
-			if($customer_id)
-			{
-				throw new Exception("Invalid Request.", 1);
-			}
+
 			
 			$update = $addressModel->update($postData,$postData['customer_id']);
 
@@ -91,7 +93,6 @@ class Controller_Customer extends Controller_Core_Action
 		{
 
 			$postData['customer_id'] = $customer_id;
-
 
 			$insert = $addressModel->insert($postData);
 
@@ -132,12 +133,15 @@ class Controller_Customer extends Controller_Core_Action
 		$request = $this->getRequest();
 
 		$id = (int)$request->getRequest('id');
+
 		if(!$id)
 		{
 			throw new Exception("Invalid Request", 1);
 		}
 
 		$customer = $customerModel->fetchRow("SELECT * FROM customer WHERE customer_id = {$id}");
+		/*print_r($customer);
+		exit();*/
 		if(!$customer)
 		{
 			throw new Exception("Not Found", 1);

@@ -10,7 +10,7 @@
 </style>
 </head>
 <body>
-<form action="index.php?c=product&a=save" method="POST">
+<form action="<?php echo $this->getUrl('product','save') ?>" method="POST">
 	
 	<br>Name:<input type='text' name=product[name] id='name'><br>
 

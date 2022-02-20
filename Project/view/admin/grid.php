@@ -26,7 +26,7 @@ $result = $this->getAdmin();
 	</style>
 </head>
 <body>
-	<button id="Added"><a href="index.php?c=admin&a=add">ADD</a></button>
+	<button id="Added"><a href="<?php echo $this->getUrl('admin','add') ?>">ADD</a></button>
 	<table border="5px" width="100%">
 		<tr>
 			<th>Admin Id</th>
@@ -53,8 +53,8 @@ $result = $this->getAdmin();
 			<td><?php echo $result;?></td>
 			<td><?php echo $admin['createdDate']; ?></td>
 			<td><?php echo $admin['updatedDate']; ?></td>
-			<td><a href = "index.php?c=admin&a=edit&id=<?php echo $admin['adminId']; ?>">Edit</a></td>
-			<td><a href = "index.php?c=admin&a=delete&id=<?php echo $admin['adminId']; ?>">delete</a></td>
+			<td><a href = "<?php echo $this->getUrl('admin','edit',['id'=>$admin['adminId']],true)  ?>">Edit</a></td>
+			<td><a href = "<?php echo $this->getUrl('admin','delete',['id'=>$admin['adminId']],true)  ?>">delete</a></td>
 		</tr>
 	<?php } endif; ?>
 	</table>

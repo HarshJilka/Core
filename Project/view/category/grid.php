@@ -1,6 +1,5 @@
 <?php
     $categories = $this->getCategories();
-
     $result = $this->pathAction();
 ?>
 <!DOCTYPE html>

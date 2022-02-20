@@ -1,7 +1,8 @@
 <?php
 
 $result = $this->getProduct();
-
+/*print_r($result);
+exit();*/
 ?>
 
 
@@ -17,7 +18,7 @@ $result = $this->getProduct();
 	}
 </style></head>
 <body> 
-<form action="index.php?c=product&a=save&id=<?php echo $result['product_id'];  ?>" method="POST">
+<form action="<?php echo $this->getUrl('product','save',['id' => $result['product_id']],true) ?>" method="POST">
 
 	<input type="text" name="product[product_id]" value="<?php echo $result['product_id']; ?>" hidden>
 	<br>

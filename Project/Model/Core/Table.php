@@ -73,6 +73,8 @@ class Model_Core_Table
 
         $final=rtrim($f,',');//firstname = harsh , lasthname = jilka 
         $updateQuery="UPDATE $this->tableName SET $final WHERE $this->tableName.$this->primaryKey = $primaryKey";
+       /* print_r($updateQuery);
+        exit();*/
 
 
         
@@ -115,13 +117,12 @@ class Model_Core_Table
         return $fetchAll;
     }
 
-    public function fetchRow($primaryKey=null)
+    public function fetchRow($query)
     {
         $adapter = $this->getAdapter();
-        $fetchQuery="SELECT * FROM $this->tableName WHERE $this->primaryKey=$primaryKey";
-        global $adapter;
+        
 
-        $fetchRow=$adapter->fetchRow($fetchQuery);
+        $fetchRow=$adapter->fetchRow($query);
         if(!$fetchRow)
         {
             throw new Exception("Error Processing Request", 1);
@@ -130,3 +131,4 @@ class Model_Core_Table
         return $fetchRow;
     }    
 }
+
