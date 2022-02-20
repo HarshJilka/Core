@@ -1,6 +1,6 @@
 <?php 
 
-$result = $this->getData('admin');
+$result = $this->getAdmin();
 ?>
 
 <!DOCTYPE html>
@@ -20,7 +20,8 @@ $result = $this->getData('admin');
 			width: 250px;
 			border-width: 10px;
 			border-color: skyblue;
-			border-radius: 10px;
+			border-radius: 5px;
+			margin-bottom: 10px;
 		}
 	</style>
 </head>

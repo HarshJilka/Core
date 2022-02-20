@@ -5,7 +5,7 @@
 		text-align: center;
 	}
 	form{
-		border: 5px solid	;
+		border: 5px solid;
 	}
 </style>
 </head>

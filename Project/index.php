@@ -1,45 +1,63 @@
 <?php require_once('Model/Core/Adapter.php'); 
-			require_once('menu.php') ?>
+	  require_once('menu.php'); 
+	  $adapter = new Model_Core_Adapter(); ?>
 
 <?php 
 
 class Ccc
 {
-	public static function loadFile($path)
-	{
-		require_once($path);
-	}
-	public static function loadClass($className)
-	{
-		$path = str_replace("_", "/", $className).'.php';
-		Ccc::loadFile($path);
-	}
+	public static $front = null;
 
-	public function getFront()
-	{
-		Ccc::loadClass('Controller_Core_Front');
-		if(!$this->front)
-		{
-			$front = new Controller_Core_Front();
-			$this->setFront($front);
-		}
-		return $this->front;
-	}
+    public static function getFront()
+    {
+        if(!self::$front)
+        {
+            Ccc::loadClass('Controller_Core_Front');
+            $front = new Controller_Core_Front();
+            self::setFront($front);
+        }
+        return self::$front;
+    }
 
-	public function setFront($front)
-	{
-		$this->front = $front;
-		return $this;
-	}
+    public static function setFront($front)
+    {
+        self::$front = $front;
+    }
 
-	public static function init()
-	{
-		Ccc::loadClass('Controller_Core_Front');
-		$front = new Controller_Core_Front();
-		$front->init();
-	}
+    public static function loadFile($path)
+    {
+        require_once($path);
+    }
 
+    public static function loadClass($className)
+    {
+        $path = str_replace("_", "/", $className).'.php'; // Model_core_Admin => Model/core/Admin
+        Ccc::loadFile($path);
+    }
+
+
+    public static function getModel($className)
+    {
+        $className = 'Model_'.$className; 
+        self::loadClass($className);
+       // $model = new Model_Admin()
+        return new $className();//$model
+    }
+
+    public static function getBlock($className)
+    {
+        $className='Block_'.$className;
+        self::loadClass($className);
+        return new $className();
+    }   
+
+    public static function init()
+    {
+        /*$this->getFront()->init();*/
+        
+        self::getFront()->init();
+    }
 }
 Ccc::init();
 
-  ?>
+?>

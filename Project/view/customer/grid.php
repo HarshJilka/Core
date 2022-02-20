@@ -1,8 +1,7 @@
 <?php
 
-$result=$this->getData('customer');
-
-
+$customers = $this->getCustomers();
+$addresses = $this->getAddresses();
 
 ?>
 
@@ -23,10 +22,12 @@ $result=$this->getData('customer');
 			width: 250px;
 			border-width: 10px;
 			border-color: skyblue;
-			border-radius: 10px;
+			border-radius: 5px;
+			margin-bottom: 10px;
 		}
 	</style>
 </head>
+
 <body>
 	<button id="Added"><a href="index.php?c=customer&a=add">ADD</a></button>
 	<table border="5px" width="100%">
@@ -45,13 +46,13 @@ $result=$this->getData('customer');
 			<th>Country</th>
 			<th>Biiling Address</th>
 			<th>Shipping Address</th>
-
 			<th colspan="2">Action</th>
 		</tr>
-		<?php if (!$result): ?>
+
+		<?php if (!$customers): ?>
     		  <tr><td colspan="8">No Record Found!</td></tr>
     	<?php else: ?>
-    	 	  <?php foreach ($result as $customer) { ?>
+    	 	  <?php foreach ($customers as $customer) { ?>
     	 	  
     	 	<tr>
 			<td><?php echo $customer['customer_id']; ?></td>
@@ -60,20 +61,31 @@ $result=$this->getData('customer');
 			<td><?php echo $customer['email']; ?></td>
 			<td><?php echo $customer['mobile']; ?></td>
 			<td><?php if ($customer['status'] == 1)
-			 {
+			{
 				echo "active";
 			} 
 			else{
 				echo "inactive";
 			}?> </td>
 			
-			<td><?php echo $customer['addressId']; ?></td>
-			<td><?php echo $customer['address']; ?></td>
-			<td><?php echo $customer['postalCode']; ?></td>
-			<td><?php echo $customer['city']; ?></td>
-			<td><?php echo $customer['state']; ?></td>
-			<td><?php echo $customer['country']; ?></td>
-			<td><?php if ($customer['billingAddress'] == 1)
+			<?php foreach ($addresses as $address): ?>
+					<?php if($address['customer_id']==$customer['customer_id']):?>
+
+			<td><?php echo $address['addressId']; ?></td>
+			<td><?php echo $address['address']; ?></td>
+			<td><?php echo $address['postalCode']; ?></td>
+			<td><?php echo $address['city']; ?></td>
+			<td><?php echo $address['state']; ?></td>
+			<td><?php echo $address['country']; ?></td>
+			<td><?php if ($address['billingAddress'] == 1)
+			{
+				echo "yes";
+			} 
+			else{
+				echo "no";
+			}?> </td>
+
+			<td><?php if ($address['shippingAddress'] == 1)
 			 {
 				echo "yes";
 			} 
@@ -81,18 +93,12 @@ $result=$this->getData('customer');
 				echo "no";
 			}?> </td>
 
-			<td><?php if ($customer['shippingAddress'] == 1)
-			 {
-				echo "yes";
-			} 
-			else{
-				echo "no";
-			}?> </td>
+			<?php else: ?><!-- <td colspan="8"> </td> -->
+		<?php endif;  ?>
+	<?php endforeach; ?>
 
-
-
-			<td><a href = "index.php?c=customer&a=edit&id=<?php echo $customer['customer_id']; ?>">Edit</a></td>
-			<td><a href = "index.php?c=customer&a=delete&id=<?php echo $customer['customer_id']; ?>">delete</a></td>
+			<td><a href="<?php echo $this->getUrl('customer','edit',['id'=>$customer['customer_id']],true) ?>">Edit</a></td>
+				<td><a href="<?php echo $this->getUrl('customer','delete',['id'=>$customer['customer_id']],true) ?>">Delete</a></td>
 		</tr>
 	<?php } endif; ?>
 	</table>

@@ -1,55 +1,49 @@
 <!DOCTYPE html>
-    <html>
-        <head>
-            <meta name="viewport" content="width=device-width, initial-scale=1">
-            <style>
-                body {
-                    margin: 0;
-                }
+<html>
+<head>
+<style>
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
 
-                .topnav {
-                    display: table;
-                    text-align: center;
-                    width: 100%;
+li {
+  float: left;
+}
 
-                    overflow: hidden;
-                    background-color: lightskyblue;;
-                }
+li a {
+  display: block;
+  padding: 8px;
+  background-color: #blue;
+}
+ul{
+  background-color: skyblue;
+  margin-bottom: 10px;
+  margin: auto;
+  margin-bottom: 10px;
+  padding-left: 620px;
+}
+</style>
+</head>
+<body>
 
-                .topnav a {
-                    color: black;
-                    display: inline-block;
-                    float: none;
-                    font-size: 25px;
-                    padding: 10px 30px;
-                    text-decoration: none;
-                    font-weight: bold;
-                }
+<ul>
 
-                .topnav a:hover {
-                    background-color: #ddd;
-                    color: black;
-                }
+<li><a href="index.php?c=admin&a=grid">Admin</a></li>
+<li><a href="index.php?c=category&a=grid">Category</a></li>
+<li><a href="index.php?c=customer&a=grid">Customer</a></li>
+<li><a href="index.php?c=product&a=grid">Product</a></li>
+</ul>
 
-            </style>
-        </head>
-        <body>
-
-        <div class="topnav">
-            <?php
-
-            $fileList = glob('Controller/*.php');
-            foreach($fileList as $filename){
-                if(is_file($filename)){
-                    $file = explode("/", $filename);
-                    //print_r($file);
-                    $fileList = explode(".",$file[1]); ?>
-                    <a href="index.php?c=<?php echo strtolower($fileList[0]); ?>&a=grid"><?php echo $fileList[0]; ?></a>
-                    <?php
-                }   
-            }
-        ?>
-        </div>
-
-    </body>
+</body>
 </html>
+
+
+
+
+
+   
+
+    
