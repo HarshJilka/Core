@@ -21,14 +21,15 @@ form{
  </style>
 </head>
 <body>
-<form action="index.php?c=customer&a=save" method="POST">
+
+<form action="<?php echo $this->getUrl('customer','save',[],true) ?>" method="POST">
+
 	<table>
 		<tr><td colspan="2"><h1>Customer Information</h1></td></tr>
 		<tr>
 			<td>First Name</td>
 			<td><input type="text" name="customer[firstName]"></td>
 		</tr>
-		
 		<tr>
 			<td>Last Name</td>
 			<td><input type="text" name="customer[lastName]"></td>
@@ -80,6 +81,7 @@ form{
 			<td>country</td>
 			<td><input type="text" name="address[country]"></td>
 		</tr>
+
 		<tr>
 			<td>Adress Type</td>
 			<td><input type="checkbox" name="address[billingAddress]" value="1" checked>
@@ -91,18 +93,15 @@ form{
 		</td>
 		</tr>
 
-
 	    <tr>
 	    	<td></td>
 	    	<td>
 	    		<input type='submit' name='submit' id='submit' value='save'>
-	    		<button><a href = "index.php?c=customer&a=grid">Cancel</a></button>
+	    		<button><a href="<?php echo $this->getUrl('customer','grid') ?>">Cancel</a></button>
 	    	</td>
 	    </tr>
 	
 	</table>
-	
-	
 </form>
 </body>
 </html>

@@ -1,6 +1,6 @@
 <?php require_once('Model/Core/Adapter.php'); 
-		require_once('menu.php'); 
-			$adapter = new Model_Core_Adapter(); ?>
+	  require_once('menu.php'); 
+	  $adapter = new Model_Core_Adapter(); ?>
 
 <?php 
 
@@ -31,14 +31,14 @@ class Ccc
 
     public static function loadClass($className)
     {
-        $path = str_replace("_", "/", $className).'.php';
+        $path = str_replace("_", "/", $className).'.php'; // Model_core_Admin => Model/core/Admin
         Ccc::loadFile($path);
     }
 
 
     public static function getModel($className)
     {
-        $className = 'Model_'.$className;
+        $className = 'Model_'.$className; 
         self::loadClass($className);
        // $model = new Model_Admin()
         return new $className();//$model

@@ -1,9 +1,20 @@
 <?php 
-
+ Ccc::loadClass('Model_Core_Adapter');
 class Model_Core_Table
 {
+    protected $adapter = null;
     protected $tableName = null; //admin
     protected $primaryKey = null; //adminId
+
+    public function getAdapter()
+    {         
+        if($this->adapter)
+        {
+             return $this->adapter;
+        }
+        $this->adapter = new Model_Core_Adapter(); 
+        return $this->adapter;
+    }
     
     public function getTableName()
     {   
@@ -29,8 +40,7 @@ class Model_Core_Table
     
     public function insert(array $data=null)
     {
-        global $adapter;
-    
+        $adapter = $this->getAdapter();
         $prep = array();
         foreach($data as $k => $v ) 
         {
@@ -47,11 +57,12 @@ class Model_Core_Table
         {
             throw new Exception("Error Processing Request", 1);       
         }
+        return $insertId;
     }
 
     public function update(array $data=null,$primaryKey=null)
     {
-        global $adapter;
+        $adapter = $this->getAdapter();
         $f="";
 
         foreach($data as $key => $value )
@@ -77,9 +88,8 @@ class Model_Core_Table
 
     public function delete($primaryKey = null,array $data = null)
     {
+        $adapter = $this->getAdapter();
         $deleteQuery = "DELETE FROM $this->tableName WHERE $this->primaryKey=$primaryKey";
-        global $adapter;
-    
   
         $delete = $adapter->delete($deleteQuery);
 
@@ -92,8 +102,9 @@ class Model_Core_Table
 
     public function fetchAll()
     {
+        $adapter = $this->getAdapter();
         $fetchQuery="SELECT * FROM $this->tableName";
-        global $adapter;
+       
 
         $fetchAll=$adapter->fetchAll($fetchQuery);
         if(!$fetchAll)
@@ -106,6 +117,7 @@ class Model_Core_Table
 
     public function fetchRow($primaryKey=null)
     {
+        $adapter = $this->getAdapter();
         $fetchQuery="SELECT * FROM $this->tableName WHERE $this->primaryKey=$primaryKey";
         global $adapter;
 
