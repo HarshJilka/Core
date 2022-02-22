@@ -12,11 +12,11 @@ class Model_Core_Request
         {
             return $_POST;
         }
-        if(!array_key_exists($key, $_POST))
+        if(!array_key_exists($key, $_POST)) // return value
         {
             return $value;
         }
-        return $_POST[$key];
+        return $_POST[$key]; // _post
     }
     
     public function getRequest($key = null,$value = null)
