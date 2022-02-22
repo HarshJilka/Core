@@ -80,7 +80,7 @@ class Model_Core_Adapter
 
         if($result->num_rows)
         {
-            return $result->fetch_assoc();
+            return $result->fetch_assoc(); //table
         }
         return false;
     }

@@ -8,9 +8,19 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Category</title>
+    <style>
+        #addbtn{
+            margin-left: 50%;
+            margin-top: 50px;
+            text-align: center;
+            border:  2px solid black;
+            padding: 10px;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
-    <a href='<?php echo $this->getUrl('category','add',[],true) ?>'><input type="button" >Add Category</a>
+    <a id="addbtn" href='<?php echo $this->getUrl('category','add',[],true) ?>'>Add Category</a>
             <h2>All Records</h2>
             <table cellpadding="7px" width="100%" border="3">
                 <thead>

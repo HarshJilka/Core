@@ -1,10 +1,29 @@
 <?php 
- Ccc::loadClass('Model_Core_Adapter');
+ 
+Ccc::loadClass('Model_Core_Table_Row');
 class Model_Core_Table
 {
     protected $adapter = null;
     protected $tableName = null; //admin
     protected $primaryKey = null; //adminId
+
+    protected $rowClassName;
+
+    public function getRowClassName()
+    {
+        return $this->rowClassName;
+    }
+
+    public function setRowClassName($rowClassName)
+    {
+        $this->rowClassName = $rowClassName;
+        return $this;
+    }
+
+    public function getRow()
+    {
+        return Ccc::getModel($this->getRowClassName());
+    }
 
     public function getAdapter()
     {         
@@ -47,8 +66,9 @@ class Model_Core_Table
             $prep[''.$k] ="'".$v."'"; //['harsh','jilka']
         }
 
-        $insertQuery = ("INSERT INTO $this->tableName (" . implode(',',array_keys($data)) . 
-            ") VALUES ( ". implode(',', array_values($prep)) . ")"); // valuestring = 'harsh','jilka','48964988'
+        $insertQuery = "INSERT INTO {$this->getTableName()} (" . implode(',',array_keys($data)) . 
+            ") VALUES ( ". implode(',', array_values($prep)) . ")";
+             // valuestring = 'harsh','jilka','48964988'
         //firstname , lastname ,mobile
             
         $insertId=$adapter->insert($insertQuery);
@@ -60,7 +80,31 @@ class Model_Core_Table
         return $insertId;
     }
 
-    public function update(array $data=null,$primaryKey=null)
+
+    public function update(array $data,$primaryKey)
+    {
+        $adapter = $this->getAdapter();
+        $f="";
+        foreach($data as $key => $value ) 
+        {
+            $prep[''.$key] ="'".$value."'";
+            $f.= $key."=".$prep[''.$key].",";
+        }
+        $final=rtrim($f,',');
+        $updateQuery="UPDATE $this->tableName SET $final WHERE $this->tableName.$this->primaryKey = $primaryKey";
+
+        /*print_r($updateQuery);
+        exit();*/
+
+        $update=$adapter->update($updateQuery);
+        if(!$update)
+        {
+            throw new Exception("Error Processing Request", 1);
+            
+        }
+    }
+
+   /* public function update(array $data=null,$primaryKey)
     {
         $adapter = $this->getAdapter();
         $f="";
@@ -72,11 +116,11 @@ class Model_Core_Table
         }
 
         $final=rtrim($f,',');//firstname = harsh , lasthname = jilka 
-        $updateQuery="UPDATE $this->tableName SET $final WHERE $this->tableName.$this->primaryKey = $primaryKey";
-       /* print_r($updateQuery);
-        exit();*/
 
+        $updateQuery="UPDATE {$this->getTableName()} SET $final WHERE {$this->getTableName()}.{$this->getPrimaryKey()} = {$this->primaryKey}";
 
+        print_r($updateQuery);
+        exit();
         
         $update = $adapter->update($updateQuery);
 
@@ -85,7 +129,7 @@ class Model_Core_Table
             throw new Exception("Error Processing Request", 1);
         }
         
-    }
+    }*/
 
 
     public function delete($primaryKey = null,array $data = null)
@@ -119,16 +163,32 @@ class Model_Core_Table
 
     public function fetchRow($query)
     {
-        $adapter = $this->getAdapter();
+        $adapter = $this->getAdapter(); // getadapter->adapter
         
-
         $fetchRow=$adapter->fetchRow($query);
+       /* print_r($fetchRow);
+        exit();*/
         if(!$fetchRow)
         {
+            return null;       
             throw new Exception("Error Processing Request", 1);
-            
         }
-        return $fetchRow;
-    }    
+
+        return $fetchRow; 
+    }  
+
+    public function load($id)
+    {
+        $rowData = $this->fetchRow("SELECT * FROM {$this->getTableName()} WHERE {$this->getPrimaryKey()} = {$id}");
+        if(!$rowData)
+        {
+            return false;
+        }
+        $row = $this->getRow();
+        $row->setData($rowData);
+        return $row;
+    }  
+
+
 }
 
