@@ -49,6 +49,7 @@ class Controller_Customer extends Controller_Core_Action
 		$customer->firstName = $postData['firstName'];
 		$customer->lastName = $postData['lastName'];
 		$customer->email = $postData['email'];
+		$customer->status = $postData['status'];
 		$customer->mobile = $postData['mobile'];
 
 		if (array_key_exists('customer_id',$postData))
@@ -59,8 +60,10 @@ class Controller_Customer extends Controller_Core_Action
 			}
 
 			$customer->customer_id = $postData['customer_id'];
-			$customer->updateDate = date('y-m-d h:m:s');
+			$customer->updatedDate = date('y-m-d h:m:s');
 			$update = $customer->save($customer->customer_id,$customer);
+			return $postData['customer_id'];
+
 
 			/*$customer_id = $postData['customer_id'];
 			$postData['updatedDate']  = date('y-m-d h:m:s');
@@ -84,7 +87,7 @@ class Controller_Customer extends Controller_Core_Action
 
 	protected function saveAddress($customer_id)
 	{
-		/*echo "123";
+		/*echo $customer_id;
 		exit();*/
 		$addressModel = Ccc::getModel('Customer_Address');
 		$request = $this->getRequest();
@@ -96,6 +99,8 @@ class Controller_Customer extends Controller_Core_Action
 		}	
 
 		$postData = $request->getPost('address');
+		/*print_r($postData);
+		exit();*/
 
 		if(!$postData)
 		{
@@ -103,7 +108,7 @@ class Controller_Customer extends Controller_Core_Action
 		}
 
 		$address = $addressModel->getRow();
-		$address->customerId = $customerId;
+		$address->customer_id = $customer_id;
 		$address->address = $postData['address'];
 		$address->postalCode = $postData['postalCode'];
 		$address->city = $postData['city'];
@@ -117,7 +122,7 @@ class Controller_Customer extends Controller_Core_Action
 		}
 		else
 		{
-			$address->billingAddress = $postData['billing'];
+			$address->billingAddress = $postData['billingAddress'];
 		}
 
 		if(!array_key_exists('shippingAddress',$postData))
@@ -126,19 +131,19 @@ class Controller_Customer extends Controller_Core_Action
 		}
 		else
 		{
-			$address->shippingAddress = $postData['shiping'];
+			$address->shippingAddress = $postData['shippingAddress'];
 		}
 
-
-		if (array_key_exists('customer_id',$postData))
+		/*print_r($postData);
+		exit();
+*/
+		if ($postData['addressId'] != 0)
 		{
-			if ($customer_id)
-			{
-				throw new Exception("Error Processing Request", 1);	
-			}
-
-			/*$update = $addressModel->update($postData,$postData['customer_id']);*/
-
+			/*print_r('111');
+			exit();*/
+			$address->customer_id = $postData['customer_id'];
+			$address->addressId = $postData['addressId'];
+			$update = $address->save();
 			if(!$update)
 			{
 				throw new Exception("Unable to update record.", 1);
@@ -147,14 +152,18 @@ class Controller_Customer extends Controller_Core_Action
 
 		else
 		{
-			/*$postData['customer_id'] = $customer_id;*/
-
+			unset($address->addressId);
+			/*echo "<pre>";
+			print_r($address);
+			exit();*/
+			
 			$insert = $address->save();
 
 			if(!$insert)
 			{
 				throw new Exception("System is unable to Insert.", 1);
 			}
+			return $insert;
 		}
 	}
 	
@@ -163,6 +172,8 @@ class Controller_Customer extends Controller_Core_Action
 		try
 		{
 			$customer_id=$this->saveCustomer(); // 
+			/*print_r($customer_id);
+			exit();*/
 			$request = $this->getRequest(); //obj req
 
 			
@@ -210,7 +221,8 @@ class Controller_Customer extends Controller_Core_Action
 
 		if(!$address)
 		{
-			$address = ['address' => null,
+			
+			$address = ['address' => null,'addressId' => 0,
 						 'postalCode' => null,'city' => null, 'state' => null, 'country' => null, 'billingAddress' => 0, 'shippingAddress'=>0, 'customer_id' => $customer['customer_id']];
 
 			

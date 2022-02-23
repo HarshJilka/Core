@@ -91,10 +91,8 @@ class Model_Core_Table
             $f.= $key."=".$prep[''.$key].",";
         }
         $final=rtrim($f,',');
-        $updateQuery="UPDATE $this->tableName SET $final WHERE $this->tableName.$this->primaryKey = $primaryKey";
-
-        /*print_r($updateQuery);
-        exit();*/
+        $updateQuery="UPDATE {$this->getTableName()} SET $final WHERE {$this->getTableName()}.{$this->getPrimaryKey()} = $primaryKey";
+        
 
         $update=$adapter->update($updateQuery);
         if(!$update)

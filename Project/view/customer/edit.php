@@ -69,7 +69,9 @@ form{
 		<tr><td colspan="2"><h1>Address Information</h1></td></tr>
 		<br>
 
-		<input type="text" name="address[customer_id]" value="<?php echo $customer['customer_id'] ?>" hidden>
+		
+		<input type="text" name="address[customer_id]" value="<?php echo $address['customer_id'] ?>" hidden>
+		<input type="text" name="address[addressId]" value="<?php echo $address['addressId'] ?>" hidden>
 
 		<tr>
 			<td>Address</td>
