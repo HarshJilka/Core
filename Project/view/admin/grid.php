@@ -26,7 +26,7 @@ $result = $this->getAdmin();
 	</style>
 </head>
 <body>
-	<button id="Added"><a href="<?php echo $this->getUrl('admin','add') ?>">ADD</a></button>
+	<button id="Added"><a href="<?php echo $this->getUrl('add','admin') ?>">ADD</a></button>
 	<table border="5px" width="100%">
 		<tr>
 			<th>Admin Id</th>
@@ -43,18 +43,18 @@ $result = $this->getAdmin();
     		  <tr><td colspan="8">No Record Found!</td></tr>
     	<?php else: ?>
     	 	  <?php foreach ($result as $admin) { ?>
-    	 	  <?php $result = ($admin['status'] == 1)? 'active':'inactive'; ?>
+    	 	  <?php $result = ($admin->status == 1)? 'active':'inactive'; ?>
 	    <tr>
-			<td><?php echo $admin['adminId']; ?></td>
-			<td><?php echo $admin['firstName']; ?></td>
-			<td><?php echo $admin['lastName']; ?></td>
-			<td><?php echo $admin['email']; ?></td>
-			<td><?php echo $admin['password']; ?></td>
+			<td><?php echo $admin->adminId; ?></td>
+			<td><?php echo $admin->firstName; ?></td>
+			<td><?php echo $admin->lastName; ?></td>
+			<td><?php echo $admin->email; ?></td>
+			<td><?php echo $admin->password; ?></td>
 			<td><?php echo $result;?></td>
-			<td><?php echo $admin['createdDate']; ?></td>
-			<td><?php echo $admin['updatedDate']; ?></td>
-			<td><a href = "<?php echo $this->getUrl('admin','edit',['id'=>$admin['adminId']],true)  ?>">Edit</a></td>
-			<td><a href = "<?php echo $this->getUrl('admin','delete',['id'=>$admin['adminId']],true)  ?>">delete</a></td>
+			<td><?php echo $admin->createdDate; ?></td>
+			<td><?php echo $admin->updatedDate; ?></td>
+			<td><a href = "<?php echo $this->getUrl('edit','admin',['id'=>$admin->adminId],true)  ?>">Edit</a></td>
+			<td><a href = "<?php echo $this->getUrl('delete','admin',['id'=>$admin->adminId],true)  ?>">delete</a></td>
 		</tr>
 	<?php } endif; ?>
 	</table>
