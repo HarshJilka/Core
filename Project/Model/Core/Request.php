@@ -50,8 +50,14 @@ class Model_Core_Request
 
     public function getControllerName()
     {
-        $controllerName = (isset($_GET['c'])) ? ucfirst($_GET['c']) : 'Customer';
-        return $controllerName;
+        return $this->getRequest('c', 'index');
+        /*$controllerName = (isset($_GET['c'])) ? ucfirst($_GET['c']) : 'Customer';
+        return $controllerName;*/
+    }
+
+    public function getFile()
+    {
+        return $_FILES;
     }
 }
 

@@ -35,6 +35,7 @@ ul{
 <li><a href="index.php?c=category&a=grid">Category</a></li>
 <li><a href="index.php?c=customer&a=grid">Customer</a></li>
 <li><a href="index.php?c=product&a=grid">Product</a></li>
+<li><a href="index.php?c=config&a=grid">Config</a></li>
 </ul>
 
 </body>

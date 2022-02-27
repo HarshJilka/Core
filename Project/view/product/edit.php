@@ -1,35 +1,45 @@
-<?php
 
-$result = $this->getProduct();
-/*print_r($result);
-exit();*/
-?>
-
-
+<?php $product=$this->getProduct(); ?>
 <html>
-<head><title>Edit</title>
-<style>
-	body{
-		text-align: center;
+<head><title>Product Edit</title></head>
+<body>
 
-	}
-	form{
-		border: 5px solid;
-	}
-</style></head>
-<body> 
-<form action="<?php echo $this->getUrl('product','save',['id' => $result['product_id']],true) ?>" method="POST">
-
-	<input type="text" name="product[product_id]" value="<?php echo $result['product_id']; ?>" hidden>
-	<br>
-	Name:<input type='text' value="<?php echo $result['name']; ?>" name='product[name]' id='name'>
-	<br>
-	Prize:<input type='float' value="<?php echo $result['price']; ?>" name='product[price]' id='price'>
-	<br>
-	Quantity:<input type='number' value="<?php echo $result['quantity']; ?>" name='product[quantity]' id='quantity'>
-	<br>
-	Status:<input type='radio' value="active" name='product[pro_status]' <?php echo ($result['pro_status']=='active')?"checked":""?>>Active<input type='radio' name='product[pro_status]' value='inactive' <?php echo ($result['pro_status']=='inactive')?"checked":""?>>Inactive
-	<br><input type='submit' name='Update' id='submit' value='update'>
+<form action="<?php echo $this->getUrl('save','product',['id'=>$product->productId],true) ?>" method="POST">
+    <table border="1" width="100%" cellspacing="4">
+        <tr>
+            <td colspan="2"><b>Product Information</b><input type="text" name="product[productId]" value="<?php echo $product->productId ?>" hidden></td>
+        </tr>
+        <tr>
+            <td width="10%">Name</td>
+            <td><input type="text" name="product[name]" value="<?php echo $product->name ?>"></td>
+        </tr>
+        
+        <tr>
+            <td width="10%">Price</td>
+            <td><input type="text" name="product[price]" value="<?php echo $product->price ?>"></td>
+        </tr>
+        <tr>
+            <td width="10%">Quantity</td>
+            <td><input type="text" name="product[quantity]" value="<?php echo $product->quantity ?>"></td>
+        </tr>
+        <tr>
+            <td width="10%">Status</td>
+            <td>
+                <select name="product[status]">
+                    <option value="1" <?php echo ($product->getStatus($product->status)=='Active')?'selected':'' ?>>Active</option>
+                    <option value="2" <?php echo ($product->getStatus($product->status)=='Inactive')?'selected':'' ?>>Inactive</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td width="10%">&nbsp;</td>
+            <td>
+                <input type="submit" name="submit" value="update">
+                <button type="button"><a href="<?php echo $this->getUrl('grid') ?>">Cancel</a></button>
+            </td>
+        </tr>
+        
+    </table>    
 </form>
 </body>
 </html>
