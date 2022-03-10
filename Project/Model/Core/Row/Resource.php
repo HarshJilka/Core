@@ -7,12 +7,11 @@ class Model_Core_Row_Resource
 
 	public function __construct()
 	{
-		
 	}
 
 	public function getAdapter()
 	{
-		$adapter = new Model_Core_Adapter();
+		global $adapter;
 		return $adapter;
 	}
 
@@ -40,7 +39,6 @@ class Model_Core_Row_Resource
 
 	public function insert(array $insertArray)
 	{
-
 		$columnName = [];
 		$columnValue = [];
 		foreach ($insertArray as $columnKey => $value) 
@@ -57,17 +55,15 @@ class Model_Core_Row_Resource
 		$tableName = $this->getTableName();
 
 		$query = "INSERT INTO $tableName($columnNames) VALUES($columnValues)";
+		
 		$result = $this->getAdapter()->insert($query);
 
 		return $result;
 	}
 
-	public function update(array $updateArray, array $updateWhere,$tableName = null)
+	public function update(array $updateArray, array $updateWhere)
 	{
-		$date = date('Y-m-d H:i:s');
-		if(!$tableName){
-			$tableName = $this->getTableName();
-		}
+		$tableName = $this->getTableName();
 		$valueArray = [];
 		$nullValueArray = [];
 		$key = key($updateWhere);
@@ -112,10 +108,10 @@ class Model_Core_Row_Resource
 		$key = key($deleteArray);
 		$value = $deleteArray[$key];
 		$query = "DELETE FROM $tableName WHERE $key = $value";
-		
 		$result = $this->getAdapter()->delete($query);
 		return $result;
 	}
+
 }
 
 
