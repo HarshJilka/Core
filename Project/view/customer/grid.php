@@ -1,100 +1,62 @@
-<?php
-$customers = $this->getCustomer();
-$address = $this->getAddress();
-
-
+<?php 
+$customers = $this->getCustomers();
+$addresses = $this->getAddresses();
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customer</title>
-    <style>
-        body{
-            text-align : center;
-        }
-    </style>
-</head>
-<body>
-    <h1 id="post">customer Details</h1>
-    <div id="add"><a href="<?php echo $this->getUrl('add','customer'); ?>">Add Customer</a></div>
-    <div id="item">
-        <table border=1 width=100%>
-            <tr>
-                <th>customer Id</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Email</th>
-                <th>Mobile</th>
-                <th>Status</th>
-                <th>Created Date</th>
-                <th>Updated Date</th>
-                <th>Edit</th>
-                <th>Delete</th>
-            </tr>
-            <?php if(!$customers): ?>
-                <tr>
-                    <td colspan="10">No Recored Found</td>
-                </tr>
-            <?php else: ?>
-            <?php foreach ($customers as $customer): ?>
-            <tr>
-                <td><?php echo $customer->customer_id; ?></td>
-                <td><?php echo $customer->firstName; ?></td>
-                <td><?php echo $customer->lastName; ?></td>
-                <td><?php echo $customer->email; ?></td>
-                <td><?php echo $customer->mobile; ?></td>
-                <td><?php echo $customer->getStatus($customer->status); ?></td>
-                <td><?php echo $customer->createdDate; ?></td>
-                <td><?php echo $customer->updatedDate; ?></td>
-                <td><a href="<?php echo $this->getUrl('edit','customer',['id' => $customer->customer_id],true); ?>">Edit</a></td>
-                <td><a href="<?php echo $this->getUrl('delete','customer',['id' => $customer->customer_id],true); ?>">Delete</a></td>
-            </tr>
-        <?php endforeach; ?>
-        <?php endif; ?>
-        </table>
-        <br><br><br>
-        <h1 id="post">Address Details</h1>
-        <table border=1 width=100%>
-            <tr>
-                <th>Address Id</th>
-                <th>Customer Id</th>
-                <th>Address</th>
-                <th>City</th>
-                <th>State</th>
-                <th>Postal Code</th>
-                <th>Country</th>
-                <th>Biling</th>
-                <th>Shiping</th>
-                <th>Edit</th>
-                <th>Delete</th>
-            </tr>
-            <?php if(!$address): ?>
-                <tr>
-                    <td colspan="11">No Recored Found</td>
-                </tr>
-            <?php else: ?>
-            <?php foreach ($address as $address): ?>
-            <?php $billing = ($address->billingAddress == 1) ? 'Yes' : 'No'; ?>
-            <?php $shipping = ($address->shippingAddress == 1) ? 'Yes' : 'No'; ?>
-            <tr>
-                <td><?php echo $address->addressId; ?></td>
-                <td><?php echo $address->customer_id; ?></td>
-                <td><?php echo $address->address; ?></td>
-                <td><?php echo $address->postalCode; ?></td>
-                <td><?php echo $address->city; ?></td>
-                <td><?php echo $address->state; ?></td>
-                <td><?php echo $address->country; ?></td>
-                <td><?php echo $billing; ?></td>
-                <td><?php echo $shipping; ?></td>
-                <td><a href="<?php echo $this->getUrl('edit','customer',['id' => $customer->customer_id],true); ?>">Edit</a></td>
-                <td><a href="<?php echo $this->getUrl('delete','customer',['id' => $customer->customer_id],true); ?>">Delete</a></td>
-            </tr>
-        <?php endforeach; ?>
-        <?php endif; ?>
-        </table>
-    </div>
-</body>
-</html>
+
+	<button name="Add"><a href="<?php echo $this->getUrl('add') ?>"><h3>Add</h3></a></button>
+	<table border="1" width="100%" cellspacing="4">
+		<tr>
+			<th>customer Id</th>
+			<th>First Name</th>
+			<th>Last Name</th>
+			<th>Email</th>
+			<th>Mobile</th>
+			<th>Status</th>
+			<th>Created Date</th>
+			<th>Updated Date</th>
+			<th>Address</th>
+			<th>Price</th>
+			<th>Edit</th>
+			<th>Delete</th>
+		</tr>
+		<?php if(!$customers):  ?>
+			<tr><td colspan="11">No Record available.</td></tr>
+		<?php else:  ?>
+			<?php foreach ($customers as $customer): ?>
+				
+			<tr>
+				<td><?php echo $customer->customerId ?></td>
+				<td><?php echo $customer->firstName ?></td>
+				<td><?php echo $customer->lastName ?></td>
+				<td><?php echo $customer->email ?></td>
+				<td><?php echo $customer->mobile ?></td>
+				<td><?php echo $customer->getStatus($customer->status)?></td>
+				<td><?php echo $customer->createdAt ?></td>
+				<td><?php echo $customer->updatedAt ?></td>
+				<td><?php foreach ($addresses as $address): ?>
+					<?php if($address->customerId==$customer->customerId):
+							echo "Address : ".$address->address."<br>";
+							echo "Postal Code : ".$address->postalCode."<br>";
+							echo "Ciry : ".$address->city."<br>";
+							echo "State : ".$address->state."<br>";
+							echo "Country : ".$address->country."<br>";
+							echo "Address Type : ";
+							if($address->getStatus($address->billing)=='Active')
+								echo "Billing";
+							if($address->getStatus($address->shipping)=='Active')
+								echo ",Shipping";
+
+					endif; ?>
+					<?php endforeach;	?>
+				</td>
+				<td><a href="<?php echo $this->getUrl('grid','customer_price',['id' => $customer->customerId],true); ?>">Price</a></td>
+				<td><a href="<?php echo $this->getUrl('edit','customer',['id'=>$customer->customerId],true) ?>">Edit</a></td>
+				<td><a href="<?php echo $this->getUrl('delete','customer',['id'=>$customer->customerId],true) ?>">Delete</a></td>
+			
+			</tr>
+			
+		<?php endforeach;	?>
+		<?php endif;  ?>
+		
+	</table>
+	

@@ -1,90 +1,61 @@
 <?php 
 
 Ccc::loadClass('Model_Core_View');
-Ccc::loadClass('Model_Core_Request');
 
-class Controller_Core_Action
-{
-    protected $view = null;
+class Controller_Core_Action {
 
-    public function getAdapter()
+	protected $layout = null;
+	protected $view = null;
+	protected $message = null;
+	
+	public function redirect($a=null,$c=null,array $data = [],$reset = false)
     {
-        global $adapter;
-        return $adapter;
+        $url = Ccc::getModel('core_view')->getUrl($a,$c,$data,$reset);
+        header("location: $url");
     }
 
-    public function redirect($url)
-    {
-        header("Location: $url");
-        exit();
-    }
+	public function getLayout()
+	{
+		if(!$this->layout)
+		{
+			$this->setLayout(Ccc::getBlock('Core_Layout'));
+		}
+		return $this->layout;
+	}
 
-    public function getView() //return view object 
-    {
+	public function setLayout($layout)
+	{
+		$this->layout = $layout;
+		return $this;
+	}
 
-        if (!$this->view)
-        {
-            $this->setView(new Model_Core_View());
-        }
-        
-        return $this->view;
-    }
+	public function getMessage()
+	{
+		if(!$this->message)
+		{
+			$this->setMessage(Ccc::getModel('Admin_Message'));
+		}
+		return $this->message;
+	}
 
-    public function setView($view)
-    {
-        $this->view = $view;
-        return $this;
-    }
+	public function setMessage($message)
+	{
+		$this->message = $message;
+		return $this;
+	}
 
-    public function getRequest()
-    {
-        return Ccc::getFront()->getRequest();
-    }
-    
-    public function getUrl($c=null,$a=null,array $data = [],$reset = false)
-    {
-        $passData = []; // blankarray
-        if($c==null && $a==null && $data==null && $reset==false)
-        {
-            $passData = $this->getRequest()->getRequest();  //index.php->getfront()
-        }
-
-        if($c==null)
-        {
-            $passData['c']=$this->getRequest()->getRequest('c'); 
-        }
-        else
-        {
-            $passData['c']=$c;
-        }
-
-        if($a==null)
-        {
-            $passData['a']=$this->getRequest()->getRequest('a'); 
-        }
-        else
-        {
-            $passData['a']=$a;
-        }
-        
-
-        if($reset) // merge array  
-        {
-            if($data) // array if set
-            {
-                $passData = array_merge($passData,$data); 
-            }
-        }
-        else // new array 
-        {
-            $passData = array_merge($this->getRequest()->getRequest(),$passData);
-            if($data) // merge array
-            {
-                $passData = array_merge($passData,$data);
-            }   
-        }
-        $url = "index.php?".http_build_query($passData); // build url 
-        print($url);
-        exit();
-    }
+	public function renderLayout()
+	{
+		return $this->getLayout()->toHtml();
+	}
+	public function getAdapte()
+	{
+		global $adapter;
+		return $adapter;
+	}
+	public function getRequest()
+	{
+		return Ccc::getFront()->getRequest(); 
+	}
+		
 }
