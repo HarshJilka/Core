@@ -8,7 +8,7 @@ class Block_Config_Edit extends Block_Core_Template
 		$this->setTemplate('view/config/edit.php');
 	}
 	
-	public function getconfig()
+	public function getConfig()
    	{
    		return $this->getData('config');
    	}
