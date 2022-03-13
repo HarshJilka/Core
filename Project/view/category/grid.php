@@ -16,7 +16,6 @@
                 <th>Edit</th>
                 <th>Delete</th>
                 <th>Madia</th>
-                <th>Gallery</th>
             </tr>
             <?php if(!$categories): ?>
             <tr><td colspan="7">No Recored Receive</td></tr>
@@ -48,7 +47,6 @@
                 <td><a href='<?php echo $this->getUrl('edit','category',['id'=>$category->categoryId],true) ?>'>Edit</a></td>
                 <td><a href='<?php echo $this->getUrl('delete','category',['id'=>$category->categoryId],true) ?>'>Delete</a></td>
                 <td><a href="<?php echo $this->getUrl('grid','category_media',['id'=>$category->categoryId],true) ?>">Gallary</a></td>
-                <td><a href="<?php echo $this->getUrl('gallery','category_media',['id'=>$category->categoryId],true) ?>">Show Media</a></td>
             </tr>
             <?php endforeach; ?>
             <?php endif; ?>

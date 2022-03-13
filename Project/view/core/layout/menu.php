@@ -31,14 +31,14 @@ ul{
 
 <ul>
 
-<li><a href="index.php?c=page&a=grid">Page</a></li>
-<li><a href="index.php?c=admin&a=grid">Admin</a></li>
-<li><a href="index.php?c=category&a=grid">Category</a></li>
-<li><a href="index.php?c=customer&a=grid">Customer</a></li>
-<li><a href="index.php?c=product&a=grid">Product</a></li>
-<li><a href="index.php?c=config&a=grid">Config</a></li>
-<li><a href="index.php?c=salesman&a=grid">Salesman</a></li>
-<li><a href="index.php?c=vendor&a=grid">Vendor</a></li>
+<li><a href="index.php?c=page&a=grid">PAGE</a></li>
+<li><a href="index.php?c=admin&a=grid">ADMIN</a></li>
+<li><a href="index.php?c=category&a=grid">CATEGORY</a></li>
+<li><a href="index.php?c=customer&a=grid">CUSTOMER</a></li>
+<li><a href="index.php?c=product&a=grid">PRODUCT</a></li>
+<li><a href="index.php?c=config&a=grid">CONFIG</a></li>
+<li><a href="index.php?c=salesman&a=grid">SALESMAN</a></li>
+<li><a href="index.php?c=vendor&a=grid">VENDOR</a></li>
 <li><a class="logout" href="index.php?c=admin_login&a=logout">LOGOUT</a></li>
 
             

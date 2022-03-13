@@ -101,26 +101,37 @@ class Controller_Salesman extends Controller_Admin_Action
 			$customerPriceModel = Ccc::getModel('Customer_Price');
 			$customerModel = Ccc::getModel('Customer');
 			$id = $request->getRequest('id');
+
 			if(!(int)$id)
 			{
 				throw new Exception("Invalid Request.", 1);
 				
 			}
-			$customers = $customerModel->fetchAll("SELECT * FROM `customer` WHERE `salesmanId` = {$salesmanId}");
+			/*print_r($id);
+			exit();*/
+			/*print_r("SELECT * FROM `customer` WHERE `salesmanId` = {$id}");
+			exit();*/
+			$customers = $customerModel->fetchAll("SELECT * FROM `customer` WHERE `salesmanId` = {$id}");
+
 			foreach($customers as $customer)
 			{
 				$customerPrices = $customerPriceModel->fetchAll("SELECT `entityId` FROM `customer_price` WHERE `customerId` = {$customer->customerId}");
+				
 				foreach ($customerPrices as $customerPrice) 
 				{
 					$customerPriceModel->load($customerPrice->entityId)->delete();
 				}
 			}
+			
 			$delete = $salesmenModel->load($id)->delete();
+
+			
 			if(!$delete)
 			{
 				$this->getMessage()->addMessage('unable to delete.',3);
 				throw new Exception("unable to fatch Record.", 1);
 			}
+			
 			$this->getMessage()->addMessage('deleted succesfully.',1);
 			$this->redirect('grid','salesman',[],true);
 		}

@@ -1,7 +1,7 @@
 <?php 
 $customers = $this->getCustomers();
 ?>
-<h3>Avalilabel Customer</h3>
+<h2 align="center">Available Customers</h2>
 <form action="<?php echo $this->getUrl('save','Salesman_SalesmanCustomer',['id'=> $this->getSalesmanId()],true) ?>" method="post">
     <input type="submit" value="save">
     <button><a href="<?php echo $this->getUrl('grid','Salesman'); ?>">Cancel</a></button>

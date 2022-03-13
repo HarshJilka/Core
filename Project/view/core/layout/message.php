@@ -7,15 +7,15 @@ if($messages)
 	 {
 	 	if($type == "Success")
 	 	{
-	 		echo "<b style=color:green;>".$message."</b>";	
+	 		echo $message;	
 	 	}
 		if($type == "Warning")
 	 	{
-	 		echo "<b style=color:yellow;>".$message."</b>";	
+	 		echo $message;	
 	 	}
 		if($type == "Error")
 	 	{
-	 		echo "<b style=color:red;>".$message."</b>";	
+	 		echo $message;	
 	 	}
 		
 	}

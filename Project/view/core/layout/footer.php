@@ -1,4 +1,4 @@
-<h4>Footer</h4>
+<h3 align="center">Footer</h3>
 
 
 

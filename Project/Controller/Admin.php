@@ -54,7 +54,7 @@ class Controller_Admin extends Controller_Admin_Action
             if(!($admin->adminId))
             {
                 unset($admin->adminId);
-                $admin->createdDate = date('y-m-d h:m:s');
+                $admin->createdAt = date('y-m-d h:m:s');
                 $admin->password = md5($admin->password);
                 $result=$admin->save();
                 if(!$result)
@@ -71,7 +71,7 @@ class Controller_Admin extends Controller_Admin_Action
                     $this->getMessage()->addMessage('Invalid Request.',3);
                     throw new Exception("Invalid Request.", 1);
                 }
-                $admin->updatedDate = date('y-m-d h:m:s');
+                $admin->updatedAt = date('y-m-d h:m:s');
                 $admin->password = md5($admin->password);
                 $result=$admin->save();
                 if(!$result)
