@@ -1,107 +1,135 @@
-<?php Ccc::loadClass("Controller_Core_Action"); ?>
-<?php
+<?php Ccc::loadClass('Controller_Admin_Action');?>
+<?php 
 
-class Controller_Config extends Controller_Core_Action{
+class Controller_Config extends Controller_Admin_Action{
+
+
+	public function __construct()
+    {
+        if(!$this->authentication())
+        {
+            $this->redirect('login','admin_login');
+        }
+    }
 
 	public function gridAction()
 	{
-		Ccc::getBlock('Config_Grid')->toHtml();
+		$content = $this->getLayout()->getContent();
+		$configGrid = Ccc::getBlock('Config_Grid');
+		$content->addChild($configGrid,'grid');	
+		$this->renderLayout();
 	}
-
 	public function addAction()
 	{
 		$configModel = Ccc::getModel('config');
-		$config = $configModel;
-		Ccc::getBlock("Config_Edit")->addData('config',$config)->toHtml();
+		$content = $this->getLayout()->getContent();
+		$configAdd = Ccc::getBlock('Config_Edit')->setData(['config'=>$configModel]);
+		$content->addChild($configAdd,'add'); 
+		$this->renderLayout();
 	}
-
 	public function editAction()
 	{
-		$configModel = Ccc::getModel("config");
-		$request = $this->getRequest();
-		$configId = $request->getRequest('id');
-		if(!$configId){
-			throw new Exception("Id is not valid", 1);
-		}
-		if(!(int)$configId){
-			throw new Exception("Invalid request", 1);
-		}
-		$config = $configModel->load($configId);
-		if(!$config){
-			throw new Exception("System is unable to fine recored", 1);
-		}
-		Ccc::getBlock("Config_Edit")->addData('config',$config)->toHtml();
-	}
-
-	public function saveAction()
-	{
-		try{
-			$configModel = Ccc::getModel('Config');
+		try 
+   		{
+   			$configModel = Ccc::getModel('Config');
 			$request = $this->getRequest();
-			$configId = $request->getRequest('id');
-			if($request->isPost())
+			$id = (int)$request->getRequest('id');
+			if(!$id)
 			{
-				$postData = $request->getPost('config');
-				if(!$postData)
-				{
-					throw new Exception("Invalid data posted.", 1);	
-				}
-
-				$configData = $configModel->setData($postData);
-
-				if(!empty($configId))
-				{
-					$configData->configId = $configId;
-					$config = $configModel->save();
-					
-					if(!$config)
-					{
-						throw new Exception("System is unable to edit your data.", 1);	
-					}
-				}
-				else{
-					unset($configData->configId);
-					$configData->createdAt = date("Y-m-d h:i:s");
-					$configId = $configModel->save();
-					
-					if(!$configId)
-					{
-						throw new Exception("System is unable to insert your data.", 1);	
-					}
-					
-				}
+				throw new Exception("Invalid Request", 1);
 			}
-			$this->redirect($this->getView()->getUrl('grid','config',[],true));
-		}
-		catch(Exception $e){
-			echo $e->getMessage();			
-		}
+			$config = $configModel->load($id);
+			if(!$config)
+			{
+				throw new Exception("System is unable to find record.", 1);
+				
+			}
+			$content = $this->getLayout()->getContent();
+			$configEdit = Ccc::getBlock('Config_Edit')->setData(['config'=>$config]);
+			$content->addChild($configEdit,'edit'); 
+			$this->renderLayout();
+   		}	 
+   		catch (Exception $e) 
+   		{
+   			throw new Exception("Invalid Request.", 1);
+   		}
+   	}
 
-	}
 
 	public function deleteAction()
 	{
-		$configModel = Ccc::getModel('Config');
-		$request = $this->getRequest();
-		if(!$request->isPost()){
-			try {
-				if(!$request->getRequest('id')){
-					throw new Exception("System is unable to delete your data",1);
-				}
-				$configId = $request->getRequest('id');
-				$result = $configModel->load($configId)->delete();
-				if(!$result){
-					throw new Exception("System is unable to delete data.", 1);	
-				}
-				$this->redirect($this->getView()->getUrl('grid','config',[],true));
+		
+		try
+		{
+			$configModel = Ccc::getModel('Config');
+			$request=$this->getRequest();
+			if(!$request->getRequest('id'))
+			{
+				throw new Exception("Invelid Request", 1);
+				
+			}
+			$id=$request->getRequest('id');
+			$config_id=$configModel->load($id)->delete();
+			$this->getMessage()->addMessage('deleted succesfully.',1);
+			$this->redirect('grid','config',[],true);
 
-			} catch (Exception $e) {
-				echo $e->getMessage();
+		}
+		catch(Exception $e)
+		{
+			echo $e->getMessage();
+			$this->redirect('grid','config',[],true);
+		}
+	}
+	public function saveAction()
+	{
+		try
+		{
+			
+			$request=$this->getRequest();
+			$configModel= Ccc::getModel('Config');
+			if(!$request->isPost())
+			{
+				throw new Exception("Request Invalid.",1);
+			}
+			$postData=$request->getPost('config');
+			if(!$postData)
+			{
+				throw new Exception("Invalid data Posted.", 1);
+				
+			}
+			$config=$configModel;
+			$config->setData($postData);
+			if(!($config->configId))
+			{
+				unset($config->configId);
+				$config->createdAt = date('y-m-d h:m:s');
+			}
+			else
+			{
+
+				if(!(int)$config->configId)
+				{
+					throw new Exception("Invelid Request.",1);
+				}
+			}
+			$result=$config->save();
+			if(!$result)
+			{
+				$this->getMessage()->addMessage('unable to save.',3);
+				throw new Exception("unable to Save Record.", 1);
+				
 			}	
+			$this->getMessage()->addMessage('Data save succesfully',1);
+			$this->redirect('grid','config',[],true);
+		} 
+		catch (Exception $e) 
+		{
+
+			$this->redirect('grid','config',[],true);
 		}
 	}
 
-
 }
+
 
 ?>
