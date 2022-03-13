@@ -18,7 +18,7 @@
 			<th>Edit</th>
 			<th>Delete</th>
 			<th>Media</th>
-			<th>Gallery</th>
+		
 		</tr>
 		<?php if(!$products):  ?>
 			<tr><td colspan="12">No Record available.</td></tr>
@@ -52,7 +52,6 @@
 				<td><a href="<?php echo $this->getUrl('edit','product',['id'=>$product->productId],true) ?>">Edit</a></td>
 				<td><a href="<?php echo $this->getUrl('delete','product',['id'=>$product->productId],true) ?>">Delete</a></td>
 				<td><a href="<?php echo $this->getUrl('grid','product_media',['id'=>$product->productId],true) ?>">Edit Media</a></td>
-				<td><a href="<?php echo $this->getUrl('gallery','product_media',['id'=>$product->productId],true) ?>">Show Media</a></td>
 			</tr>
 			<?php endforeach;	?>
 		<?php endif;  ?>

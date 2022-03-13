@@ -41,12 +41,12 @@ class Controller_Admin_Login extends Controller_Admin_Action
             
             if(!$result)
             {
-                $this->getMessage()->addMessage("Login details incorrect.",3);
+                $this->getMessage()->addMessage("DETAILS ARE INCORRECT.",3);
                 throw new Exception("Invalid request.", 1);
             }
 
             $loginModel->login($result[0]->email);
-            $this->getMessage()->addMessage('You are logged in!');
+            $this->getMessage()->addMessage('LOGGED IN!');
             $this->redirect('grid','product',[],true);
         }
         catch (Exception $e)
@@ -62,7 +62,7 @@ class Controller_Admin_Login extends Controller_Admin_Action
         {
             $loginModel->logout();
         }
-        $this->getMessage()->addMessage('Logout succesfully!');
+        $this->getMessage()->addMessage('LOGOUT SUCCESSFULLY!!');
         $this->redirect('login','admin_login',[],true); 
     }
 }

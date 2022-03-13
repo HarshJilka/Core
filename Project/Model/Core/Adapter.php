@@ -41,7 +41,8 @@ class Adapter{
 
     public function query($query)
     {
-        if(!$this->getConnect()){
+        if(!$this->getConnect())
+        {
             $this->connect();
         }
         $result = $this->getConnect()->query($query);
