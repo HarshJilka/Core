@@ -2,16 +2,16 @@
 
 class Block_Category_Grid extends Block_Core_Template {
 
-    public function __construct()
-    {
-        $this->setTemplate('view/category/grid.php');
-    }
-    public function getCategories()
-    {
-        $categoryModel = Ccc::getModel('Category');
-        $categories = $categoryModel->fetchAll("SELECT * FROM `category` ORDER BY `path`");
-        return $categories;
-    }
+	public function __construct()
+	{
+		$this->setTemplate('view/category/grid.php');
+	}
+	public function getCategories()
+	{
+		$categoryModel = Ccc::getModel('Category');
+		$categories = $categoryModel->fetchAll("SELECT * FROM `category` ORDER BY `path`");
+		return $categories;
+	}
     public function getPath($categoryId,$path)
     {
         $finalPath = NULL;
@@ -37,7 +37,7 @@ class Block_Category_Grid extends Block_Core_Template {
         $media = $mediaModel->fetchAll("SELECT * FROM `category_media` WHERE `mediaId` = '$mediaId'");
         return $media[0]->getData();
     }
-    
+	
 }
 
 
