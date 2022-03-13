@@ -3,7 +3,7 @@
 <form action="<?php echo $this->getUrl('save','admin',['id'=>$admin->adminId],true) ?>" method="POST">
 	<table border="1" width="100%" cellspacing="4">
 		<tr>
-			<td colspan="2"><b>Admin Information</b></td>
+			<td colspan="2"><b>ADMIN INFO</b></td>
 		</tr>
 		<tr>
 			<td width="10%">First Name<input type="text" name="admin[adminId]" value="<?php echo $admin->adminId ?>" hidden></td>
@@ -18,10 +18,12 @@
 			<td width="10%">Email</td>
 			<td><input type="text" name="admin[email]" value="<?php echo $admin->email ?>"></td>
 		</tr>
+		<?php if(!$admin->adminId): ?>
 		<tr>
 			<td width="10%">Password</td>
-			<td><input type="text" name="admin[password]" value="<?php echo $admin->password ?>"></td>
+			<td><input type="password" name="admin[password]" value=""></td>
 		</tr>
+		<?php endif; ?>
 		<tr>
 			<td width="10%">Status</td>
 			<td>

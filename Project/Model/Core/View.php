@@ -17,18 +17,20 @@ class Model_Core_View {
 
 	public function toHtml()
 	{
-		$data = $this->data;
-		require($this->getTemplate());
+		ob_start();
+        require($this->getTemplate());
+        $html = ob_get_contents();
+        ob_end_flush();
 	}
 
 	public function getData($key = null)
 	{
-		//print_r($this->data);
-		//exit;
-		if(!$key) {
+		if(!$key) 
+		{
 			return $this->data;	
 		}
-		if(array_key_exists($key, $this->data)) {
+		if(array_key_exists($key, $this->data)) 
+		{
 			return $this->data[$key];	
 		}
 		return null;
@@ -48,7 +50,8 @@ class Model_Core_View {
 
 	public function removeData($key)
 	{
-		if (array_key_exists($key, $this->data)) {
+		if (array_key_exists($key, $this->data)) 
+		{
 			unset($this->data[$key]);	
 		}
 		return $this;
