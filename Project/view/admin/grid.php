@@ -7,7 +7,6 @@
 			<th>First Name</th>
 			<th>Last Name</th>
 			<th>Email</th>
-			<th>Password</th>
 			<th>Status</th>
 			<th>Created Date</th>
 			<th>Updated Date</th>
@@ -15,7 +14,7 @@
 			<th>Delete</th>
 		</tr>
 		<?php if(!$admins):  ?>
-			<tr><td colspan="10">No Record available.</td></tr>
+			<tr><td colspan="9">NO RECORDS!</td></tr>
 		<?php else:  ?>
 			<?php foreach ($admins as $admin): ?>
 			<tr>
@@ -23,7 +22,6 @@
 				<td><?php echo $admin->firstName ?></td>
 				<td><?php echo $admin->lastName ?></td>
 				<td><?php echo $admin->email ?></td>
-				<td><?php echo $admin->password ?></td>
 				<td><?php echo $admin->getStatus($admin->status)?></td>
 				<td><?php echo $admin->createdAt ?></td>
 				<td><?php echo $admin->updatedAt ?></td>
@@ -34,3 +32,43 @@
 		<?php endif;  ?>
 		
 	</table>
+		<table>
+		<tr>
+			<script type="text/javascript"> function ppr() {
+				const pprValue = document.getElementById('ppr').selectedOptions[0].value;
+				let language = window.location.href;
+				if(!language.includes('ppr'))
+				{
+				  	language+='&ppr=20';
+				}
+				const myArray = language.split("&");
+				for (i = 0; i < myArray.length; i++)
+				{
+					if(myArray[i].includes('p='))
+					{
+					  	myArray[i]='p=1';
+					}
+					if(myArray[i].includes('ppr='))
+					{
+					  	myArray[i]='ppr='+pprValue;
+					}
+				}
+ 				const str = myArray.join("&");	
+ 				location.replace(str);
+			}
+			</script>
+			<select onchange="ppr()" id="ppr">
+				<option selected>select</option>
+				<?php foreach($this->getPager()->getPerPageCountOption() as $perPageCount) :?>	
+				<option value="<?php echo $perPageCount ?>" ><?php echo $perPageCount ?></a></option>
+				<?php endforeach;?>
+			</select>
+		</tr>
+		<tr><button><a style="<?php echo ($this->getPager()->getStart()==NULL)? "pointer-events: none" : "" ?>" href="<?php echo $this->getUrl(null,null,['p' => $this->getPager()->getStart()]) ?>">Start</a></button></tr>
+            <tr><button><a style="<?php echo ($this->getPager()->getPrev()==NULL)? "pointer-events: none" : "" ?>" href="<?php echo $this->getUrl(null,null,['p' => $this->getPager()->getPrev()]) ?>">Prev</a></button>
+            &nbsp;&nbsp;&nbsp;&nbsp;<?php echo "<b>".$this->getPager()->getCurrent()."</b>"?>&nbsp;&nbsp;&nbsp;&nbsp;</tr>
+            <tr><button><a style="<?php echo ($this->getPager()->getNext()==NULL)? "pointer-events: none" : "" ?>" href="<?php echo $this->getUrl(null,null,['p' => $this->getPager()->getNext()]) ?>">Next</a></button></tr>
+            <tr><button><a style="<?php echo ($this->getPager()->getEnd()==NULL)? "pointer-events: none" : "" ?>" href="<?php echo $this->getUrl(null,null,['p' => $this->getPager()->getEnd()]) ?>">End</a></button></tr>
+
+	</table>
+	
