@@ -11,6 +11,7 @@ class Block_Core_Layout_Menu extends Block_Core_Template
 
 		$messageModel = Ccc::getModel('Admin_Message');
 		$messages = $messageModel->getSession()->getNamespace();
+
 		if($_SESSION[$messages])
 		{
 			$firstName = $this->getAdapter()->fetchOne("SELECT `firstName` FROM `admin` WHERE `email` = '{$email}'");
@@ -23,10 +24,10 @@ class Block_Core_Layout_Menu extends Block_Core_Template
 			return null;
 		}
 	}
-	function getAdapter()
+
+	/*public function getAdapter()
     {
         global $adapter;
         return $adapter;
-    }
-
+    }*/
 }

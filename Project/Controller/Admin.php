@@ -13,6 +13,7 @@ class Controller_Admin extends Controller_Admin_Action
     public function gridAction()
     {
         $content = $this->getLayout()->getContent();
+        $this->setTitle('admin');
         $adminGrid = Ccc::getBlock('Admin_Grid');
         $content->addChild($adminGrid,'Grid');
         $this->renderLayout();
@@ -22,6 +23,7 @@ class Controller_Admin extends Controller_Admin_Action
     {
         $adminModel = Ccc::getModel('Admin');
         $content = $this->getLayout()->getContent();
+        $this->setTitle('admin');
         $adminAdd = Ccc::getBlock('Admin_Edit')->setData(['admin'=>$adminModel]);
         $content->addChild($adminAdd,'Add');
         $this->renderLayout();
@@ -93,6 +95,7 @@ class Controller_Admin extends Controller_Admin_Action
     {
         try
         {
+            $this->setTitle('admin');
             $adminModel = Ccc::getModel('Admin');
             $request = $this->getRequest();
             $id = (int)$request->getRequest('id');

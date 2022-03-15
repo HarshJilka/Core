@@ -1,16 +1,23 @@
-<?php Ccc::loadClass('Controller_Core_Action') ?>
+<?php Ccc::loadClass('Controller_Admin_Action') ?>
 <?php
 
-class Controller_Customer_Price extends Controller_Core_Action{
+class Controller_Customer_Price extends Controller_Admin_Action
+{
+
+	public function __construct()
+	{
+		if(!$this->authentication()){
+			$this->redirect('login','admin_login');
+		}
+	}
+
 
 	public function gridAction()
 	{
-		
-
+		$this->setTitle('Customer-Price');
 		$content = $this->getLayout()->getContent();
 		$customerPriceGrid = Ccc::getBlock('Customer_Price_Grid');
 		$content->addChild($customerPriceGrid,'grid');
-
 		$this->renderLayout();
 	}
 

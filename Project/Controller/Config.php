@@ -11,26 +11,30 @@ class Controller_Config extends Controller_Admin_Action
         }
     }
 
-
 	public function gridAction()
 	{
 		$content = $this->getLayout()->getContent();
+		$this->setTitle('config');
 		$configGrid = Ccc::getBlock('Config_Grid');
 		$content->addChild($configGrid,'grid');	
 		$this->renderLayout();
 	}
+
 	public function addAction()
 	{
+		$this->setTitle('config');
 		$configModel = Ccc::getModel('config');
 		$content = $this->getLayout()->getContent();
 		$configAdd = Ccc::getBlock('Config_Edit')->setData(['config'=>$configModel]);
 		$content->addChild($configAdd,'add'); 
 		$this->renderLayout();
 	}
+	
 	public function editAction()
 	{
 		try 
    		{
+   			$this->setTitle('config');
    			$configModel = Ccc::getModel('Config');
 			$request = $this->getRequest();
 			$id = (int)$request->getRequest('id');
@@ -84,7 +88,6 @@ class Controller_Config extends Controller_Admin_Action
 	{
 		try
 		{
-			
 			$request=$this->getRequest();
 			$configModel= Ccc::getModel('Config');
 			if(!$request->isPost())

@@ -1,10 +1,7 @@
-<?php 
-$customers = $this->getCustomers();
-$addresses = $this->getAddresses();
-?>
+<?php $customers = $this->getCustomers(); ?>
 
-	<button name="Add"><a href="<?php echo $this->getUrl('add') ?>"><h3>Add</h3></a></button>
-	<table border="1" width="100%" cellspacing="4">
+	<button  name="Add"><a href="<?php echo $this->getUrl('add') ?>"><h4>ADD DETAILS</h4></a></button>
+	<table border="10" width="100%" cellspacing="1">
 		<tr>
 			<th>customer Id</th>
 			<th>First Name</th>
@@ -14,7 +11,8 @@ $addresses = $this->getAddresses();
 			<th>Status</th>
 			<th>Created Date</th>
 			<th>Updated Date</th>
-			<th>Address</th>
+			<th>BillingAddress</th>
+			<th>ShippingAddress</th>
 			<th>Price</th>
 			<th>Edit</th>
 			<th>Delete</th>
@@ -33,71 +31,101 @@ $addresses = $this->getAddresses();
 				<td><?php echo $customer->getStatus($customer->status)?></td>
 				<td><?php echo $customer->createdAt ?></td>
 				<td><?php echo $customer->updatedAt ?></td>
-				<td><?php foreach ($addresses as $address): ?>
-					<?php if($address->customerId==$customer->customerId):
-							echo "Address : ".$address->address."<br>";
-							echo "Postal Code : ".$address->postalCode."<br>";
-							echo "Ciry : ".$address->city."<br>";
-							echo "State : ".$address->state."<br>";
-							echo "Country : ".$address->country."<br>";
-							echo "Address Type : ";
-							if($address->getStatus($address->billing)=='Active')
-								echo "Billing";
-							if($address->getStatus($address->shipping)=='Active')
-								echo ",Shipping";
 
-					endif; ?>
-					<?php endforeach;	?>
+				<td><?php $billingAddress = $customer->getBillingAddress()  ?>
+					<?php echo "Address : ".$billingAddress->address."<br>"  ?>
+					<?php echo "Postal Code : ".$billingAddress->postalCode."<br>"  ?>
+					<?php echo "City : ".$billingAddress->city."<br>"  ?>
+					<?php echo "State : ".$billingAddress->state."<br>"  ?>
+					<?php echo "Country : ".$billingAddress->country."<br>" ?>
 				</td>
+				<td><?php $shippingAddress = $customer->getShippingAddress()  ?>
+					<?php echo "Address : ".$shippingAddress->address."<br>"  ?>
+					<?php echo "Postal Code : ".$shippingAddress->postalCode."<br>" ?>
+					<?php echo "City : ".$shippingAddress->city."<br>"  ?>
+					<?php echo "State : ".$shippingAddress->state."<br>"  ?>
+					<?php echo "Country : ".$shippingAddress->country."<br>" ?>
+				</td>
+				
 				<td><a href="<?php echo $this->getUrl('grid','customer_price',['id' => $customer->customerId],true); ?>">Price</a></td>
 				<td><a href="<?php echo $this->getUrl('edit','customer',['id'=>$customer->customerId],true) ?>">Edit</a></td>
 				<td><a href="<?php echo $this->getUrl('delete','customer',['id'=>$customer->customerId],true) ?>">Delete</a></td>
 			
 			</tr>
-			
 		<?php endforeach;	?>
 		<?php endif;  ?>
-		
 	</table>
-	<table>
-		<tr>
-			<script type="text/javascript"> function ppr() {
-				const pprValue = document.getElementById('ppr').selectedOptions[0].value;
-				let language = window.location.href;
-				if(!language.includes('ppr'))
-				{
-				  	language+='&ppr=20';
-				}
-				const myArray = language.split("&");
-				for (i = 0; i < myArray.length; i++)
-				{
-					if(myArray[i].includes('p='))
-					{
-					  	myArray[i]='p=1';
-					}
-					if(myArray[i].includes('ppr='))
-					{
-					  	myArray[i]='ppr='+pprValue;
-					}
-				}
- 				const str = myArray.join("&");	
- 				location.replace(str);
-			}
-			</script>
-			<select onchange="ppr()" id="ppr">
-				<option selected>select</option>
-				<?php foreach($this->getPager()->getPerPageCountOption() as $perPageCount) :?>	
-				<option value="<?php echo $perPageCount ?>" ><?php echo $perPageCount ?></a></option>
-				<?php endforeach;?>
-			</select>
-		</tr>
-		<tr><button><a style="<?php echo ($this->getPager()->getStart()==NULL)? "pointer-events: none" : "" ?>" href="<?php echo $this->getUrl(null,null,['p' => $this->getPager()->getStart()]) ?>">Start</a></button></tr>
-            <tr><button><a style="<?php echo ($this->getPager()->getPrev()==NULL)? "pointer-events: none" : "" ?>" href="<?php echo $this->getUrl(null,null,['p' => $this->getPager()->getPrev()]) ?>">Prev</a></button>
-            &nbsp;&nbsp;&nbsp;&nbsp;<?php echo "<b>".$this->getPager()->getCurrent()."</b>"?>&nbsp;&nbsp;&nbsp;&nbsp;</tr>
-            <tr><button><a style="<?php echo ($this->getPager()->getNext()==NULL)? "pointer-events: none" : "" ?>" href="<?php echo $this->getUrl(null,null,['p' => $this->getPager()->getNext()]) ?>">Next</a></button></tr>
-            <tr><button><a style="<?php echo ($this->getPager()->getEnd()==NULL)? "pointer-events: none" : "" ?>" href="<?php echo $this->getUrl(null,null,['p' => $this->getPager()->getEnd()]) ?>">End</a></button></tr>
 
-	</table>
+	 <table>
+        <tr>
+            <script type="text/javascript"> function ppr()
+            {
+                const pprValue = document.getElementById('ppr').selectedOptions[0].value;
+                let language = window.location.href;
+                if(!language.includes('ppr'))
+                {
+                    language+='&ppr=20';
+                }
+                const myArray = language.split("&");
+                for (i = 0; i < myArray.length; i++)
+                {
+                    if(myArray[i].includes('p='))
+                    {
+                        myArray[i]='p=1';
+                    }
+                    if(myArray[i].includes('ppr='))
+                    {
+                        myArray[i]='ppr='+pprValue;
+                    }
+                }
+                const str = myArray.join("&");  
+                location.replace(str);
+            }
+            </script>
+            
+            <select onchange="ppr()" id="ppr">
+                
+                <option selected>select</option>
+                <?php foreach($this->getPager()->getPerPageCountOption() as $perPageCount) :?>  
+                <option value="<?php echo $perPageCount ?>" ><?php echo $perPageCount ?></a></option>
+                <?php endforeach;?>
+
+            </select>
+        </tr>
+
+        
+            <tr align="center"> 
+                <button>
+                    <a style="<?php echo ($this->getPager()->getStart() == NULL) ? "pointer-events: none" : "" ?>" href="<?php echo $this->getUrl(null,null,['p' => $this->getPager()->getStart()]) ?>">Start
+                    </a>
+                </button>
+            </tr>
+
+            <tr>
+                <button>
+                    <a style="<?php echo ($this->getPager()->getPrev() == NULL) ? "pointer-events: none" : "" ?>" href="<?php echo $this->getUrl(null,null,['p' => $this->getPager()->getPrev()]) ?>">Prev
+                    </a>
+                </button>
+
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <?php echo "<b>".$this->getPager()->getCurrent()."</b>"?>&nbsp;&nbsp;&nbsp;&nbsp;
+            </tr>
+
+            <tr>
+                <button>
+                    <a style="<?php echo ($this->getPager()->getNext() == NULL) ? "pointer-events: none" : "" ?>" href="<?php echo $this->getUrl(null,null,['p' => $this->getPager()->getNext()]) ?>">Next
+                    </a>
+                </button>
+            </tr>
+
+            <tr>
+                <button>
+                    <a style="<?php echo ($this->getPager()->getEnd() == NULL) ? "pointer-events: none" : "" ?>" href="<?php echo $this->getUrl(null,null,['p' => $this->getPager()->getEnd()]) ?>">End
+                    </a>
+                </button>
+            </tr>
+    </table>
+
 	
 
 	

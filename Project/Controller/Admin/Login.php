@@ -4,9 +4,10 @@ class Controller_Admin_Login extends Controller_Admin_Action
 {
     public function loginAction()
     {   
+        $this->setTitle('Admin Login');
         $content = $this->getLayout()->getContent();
         $loginGrid = Ccc::getBlock('Admin_Login_Grid');
-        $content->addChild($loginGrid);
+        $content->addChild($loginGrid,'grid');
         $this->renderLayout();
     }
 
@@ -16,9 +17,7 @@ class Controller_Admin_Login extends Controller_Admin_Action
         {
             $adminModel = Ccc::getModel("Admin");
             $loginModel = Ccc::getModel("Admin_Login");
-
             $request = $this->getRequest();
-
 
             if(!$request->isPost())
             {
@@ -34,9 +33,7 @@ class Controller_Admin_Login extends Controller_Admin_Action
 
 
             $loginData = $request->getPost('admin');
-            
             $password = $loginData['password'];
-            
             $result = $adminModel->fetchAll("SELECT * FROM `admin` WHERE `email` = '{$loginData['email']}' AND `password` = '{$password}'");
             
             if(!$result)

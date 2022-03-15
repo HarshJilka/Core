@@ -28,11 +28,12 @@
 			</tr>
 			<?php endforeach;	?>
 		<?php endif;  ?>
-		
 	</table>
+	
 	<table>
 		<tr>
-			<script type="text/javascript"> function ppr() {
+			<script type="text/javascript"> function ppr()
+			{
 				const pprValue = document.getElementById('ppr').selectedOptions[0].value;
 				let language = window.location.href;
 				if(!language.includes('ppr'))
@@ -55,17 +56,46 @@
  				location.replace(str);
 			}
 			</script>
+			
 			<select onchange="ppr()" id="ppr">
+				
 				<option selected>select</option>
 				<?php foreach($this->getPager()->getPerPageCountOption() as $perPageCount) :?>	
 				<option value="<?php echo $perPageCount ?>" ><?php echo $perPageCount ?></a></option>
 				<?php endforeach;?>
+
 			</select>
 		</tr>
-		<tr><button><a style="<?php echo ($this->getPager()->getStart()==NULL)? "pointer-events: none" : "" ?>" href="<?php echo $this->getUrl(null,null,['p' => $this->getPager()->getStart()]) ?>">Start</a></button></tr>
-            <tr><button><a style="<?php echo ($this->getPager()->getPrev()==NULL)? "pointer-events: none" : "" ?>" href="<?php echo $this->getUrl(null,null,['p' => $this->getPager()->getPrev()]) ?>">Prev</a></button>
-            &nbsp;&nbsp;&nbsp;&nbsp;<?php echo "<b>".$this->getPager()->getCurrent()."</b>"?>&nbsp;&nbsp;&nbsp;&nbsp;</tr>
-            <tr><button><a style="<?php echo ($this->getPager()->getNext()==NULL)? "pointer-events: none" : "" ?>" href="<?php echo $this->getUrl(null,null,['p' => $this->getPager()->getNext()]) ?>">Next</a></button></tr>
-            <tr><button><a style="<?php echo ($this->getPager()->getEnd()==NULL)? "pointer-events: none" : "" ?>" href="<?php echo $this->getUrl(null,null,['p' => $this->getPager()->getEnd()]) ?>">End</a></button></tr>
 
+		
+			<tr align="center">	
+				<button>
+					<a style="<?php echo ($this->getPager()->getStart() == NULL) ? "pointer-events: none" : "" ?>" href="<?php echo $this->getUrl(null,null,['p' => $this->getPager()->getStart()]) ?>">Start
+					</a>
+				</button>
+			</tr>
+
+            <tr>
+            	<button>
+            		<a style="<?php echo ($this->getPager()->getPrev() == NULL) ? "pointer-events: none" : "" ?>" href="<?php echo $this->getUrl(null,null,['p' => $this->getPager()->getPrev()]) ?>">Prev
+            		</a>
+            	</button>
+
+	            &nbsp;&nbsp;&nbsp;&nbsp;
+	            <?php echo "<b>".$this->getPager()->getCurrent()."</b>"?>&nbsp;&nbsp;&nbsp;&nbsp;
+        	</tr>
+
+            <tr>
+            	<button>
+            		<a style="<?php echo ($this->getPager()->getNext() == NULL) ? "pointer-events: none" : "" ?>" href="<?php echo $this->getUrl(null,null,['p' => $this->getPager()->getNext()]) ?>">Next
+            		</a>
+            	</button>
+            </tr>
+
+            <tr>
+            	<button>
+            		<a style="<?php echo ($this->getPager()->getEnd() == NULL) ? "pointer-events: none" : "" ?>" href="<?php echo $this->getUrl(null,null,['p' => $this->getPager()->getEnd()]) ?>">End
+            		</a>
+            	</button>
+        	</tr>
 	</table>

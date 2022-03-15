@@ -118,7 +118,7 @@ class Model_Core_Row
 		return (new $this())->setData($result);
 	}
 
-	// new fetchall method
+
 	public function fetchAll($query)
 	{
 		$results = $this->getResource()->fetchAll($query);

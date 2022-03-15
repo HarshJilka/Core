@@ -13,15 +13,18 @@ class Controller_Page extends Controller_Admin_Action
 
 	public function gridAction()
 	{
+
 		$content = $this->getLayout()->getContent();
 		$pageGrid = Ccc::getBlock('Page_Grid');
 		$content->addChild($pageGrid,'grid');	
+		$this->setTitle('page');
 		$this->renderLayout();
 	}
 	public function addAction()
 	{
 		$pageModel = Ccc::getModel('page');
 		$content = $this->getLayout()->getContent();
+		$this->setTitle('page');
 		$pageAdd = Ccc::getBlock('Page_Edit')->setData(['page'=>$pageModel]);
 		$content->addChild($pageAdd,'add'); 
 		$this->renderLayout();
@@ -30,7 +33,7 @@ class Controller_Page extends Controller_Admin_Action
 	{
 		try
 		{
-
+			$this->setTitle('page');
 			$request = $this->getRequest();
 			$id = $request->getRequest('id');
 			if(!(int)$id)

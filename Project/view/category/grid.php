@@ -24,23 +24,30 @@
             <tr>
                 <td><?php  echo $category->categoryId; ?></td>
                 <td><?php echo $this->getPath($category->categoryId,$category->path); ?></td>
+
                 <?php if($category->base ): ?>
                 <td><img src="<?php echo 'Media/Category/'.$this->getMedia($category->base)['name']; ?>" alt="No Image found" width=50 height=50></td>
+               
                 <?php else: ?>
                 <td>No base image</td>
                 <?php endif; ?>
 
+
                 <?php if($category->thumb ): ?>
                 <td><img src="<?php echo 'Media/Category/'.$this->getMedia($category->thumb)['name']; ?>" alt="No Image found" width=50 height=50></td>
+               
                 <?php else: ?>
                 <td>No thumb image</td>
                 <?php endif; ?>
 
+
                 <?php if($category->small ): ?>
                 <td><img src="<?php echo 'Media/Category/'.$this->getMedia($category->small)['name']; ?>" alt="No Image found" width=50 height=50></td>
+                
                 <?php else: ?>
                 <td>No small image</td>
                 <?php endif; ?>
+                
                 <td><?php echo $category->getStatus($category->status); ?></td>
                 <td><?php echo $category->createdAt; ?></td>
                 <td><?php echo $category->updatedAt; ?></td>
@@ -52,9 +59,11 @@
             <?php endif; ?>
         </table>
     </div>
+
     <table>
         <tr>
-            <script type="text/javascript"> function ppr() {
+            <script type="text/javascript"> function ppr()
+            {
                 const pprValue = document.getElementById('ppr').selectedOptions[0].value;
                 let language = window.location.href;
                 if(!language.includes('ppr'))
@@ -77,17 +86,46 @@
                 location.replace(str);
             }
             </script>
+            
             <select onchange="ppr()" id="ppr">
+                
                 <option selected>select</option>
                 <?php foreach($this->getPager()->getPerPageCountOption() as $perPageCount) :?>  
                 <option value="<?php echo $perPageCount ?>" ><?php echo $perPageCount ?></a></option>
                 <?php endforeach;?>
+
             </select>
         </tr>
-        <tr><button><a style="<?php echo ($this->getPager()->getStart()==NULL)? "pointer-events: none" : "" ?>" href="<?php echo $this->getUrl(null,null,['p' => $this->getPager()->getStart()]) ?>">Start</a></button></tr>
-            <tr><button><a style="<?php echo ($this->getPager()->getPrev()==NULL)? "pointer-events: none" : "" ?>" href="<?php echo $this->getUrl(null,null,['p' => $this->getPager()->getPrev()]) ?>">Prev</a></button>
-            &nbsp;&nbsp;&nbsp;&nbsp;<?php echo "<b>".$this->getPager()->getCurrent()."</b>"?>&nbsp;&nbsp;&nbsp;&nbsp;</tr>
-            <tr><button><a style="<?php echo ($this->getPager()->getNext()==NULL)? "pointer-events: none" : "" ?>" href="<?php echo $this->getUrl(null,null,['p' => $this->getPager()->getNext()]) ?>">Next</a></button></tr>
-            <tr><button><a style="<?php echo ($this->getPager()->getEnd()==NULL)? "pointer-events: none" : "" ?>" href="<?php echo $this->getUrl(null,null,['p' => $this->getPager()->getEnd()]) ?>">End</a></button></tr>
 
+        
+            <tr align="center"> 
+                <button>
+                    <a style="<?php echo ($this->getPager()->getStart() == NULL) ? "pointer-events: none" : "" ?>" href="<?php echo $this->getUrl(null,null,['p' => $this->getPager()->getStart()]) ?>">Start
+                    </a>
+                </button>
+            </tr>
+
+            <tr>
+                <button>
+                    <a style="<?php echo ($this->getPager()->getPrev() == NULL) ? "pointer-events: none" : "" ?>" href="<?php echo $this->getUrl(null,null,['p' => $this->getPager()->getPrev()]) ?>">Prev
+                    </a>
+                </button>
+
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <?php echo "<b>".$this->getPager()->getCurrent()."</b>"?>&nbsp;&nbsp;&nbsp;&nbsp;
+            </tr>
+
+            <tr>
+                <button>
+                    <a style="<?php echo ($this->getPager()->getNext() == NULL) ? "pointer-events: none" : "" ?>" href="<?php echo $this->getUrl(null,null,['p' => $this->getPager()->getNext()]) ?>">Next
+                    </a>
+                </button>
+            </tr>
+
+            <tr>
+                <button>
+                    <a style="<?php echo ($this->getPager()->getEnd() == NULL) ? "pointer-events: none" : "" ?>" href="<?php echo $this->getUrl(null,null,['p' => $this->getPager()->getEnd()]) ?>">End
+                    </a>
+                </button>
+            </tr>
     </table>

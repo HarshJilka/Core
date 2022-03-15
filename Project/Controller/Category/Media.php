@@ -1,10 +1,18 @@
-<?php Ccc::loadClass('Controller_Core_Action') ?>
+<?php Ccc::loadClass('Controller_Admin_Action') ?>
 <?php
 
-class Controller_Category_Media extends Controller_Core_Action{
+class Controller_Category_Media extends Controller_Admin_Action
+{
+	public function __construct()
+	{
+		if(!$this->authentication()){
+			$this->redirect('login','admin_login');
+		}
+	}
 
 	public function gridAction()
 	{
+		$this->setTitle('Category Media');
 		$content = $this->getLayout()->getContent();
 		$mediaGrid = Ccc::getBlock('Category_Media_Grid');;
 		$content->addChild($mediaGrid,'grid');	
@@ -13,6 +21,7 @@ class Controller_Category_Media extends Controller_Core_Action{
 
 	public function galleryAction()
 	{
+		$this->setTitle('Category Media');
 		$content = $this->getLayout()->getContent();
 		$mediaGallery = Ccc::getBlock('Category_Media_Gallery');;
 		$content->addChild($mediaGallery,'gallery');	
@@ -24,7 +33,7 @@ class Controller_Category_Media extends Controller_Core_Action{
 	{
 		try 
 		{
-
+			
 			$mediaModel = Ccc::getModel('Category_Media');
 			$request = $this->getRequest();
 			$id =(int) $request->getRequest('id');

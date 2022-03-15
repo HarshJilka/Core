@@ -16,6 +16,7 @@ class Controller_Product extends Controller_Admin_Action
 		$content = $this->getLayout()->getContent();
 		$productGrid = Ccc::getBlock('Product_Grid');
 		$content->addChild($productGrid,'grid');	
+		$this->setTitle('product');
 		$this->renderLayout();
 	}
 
@@ -24,7 +25,8 @@ class Controller_Product extends Controller_Admin_Action
 		$productModel = Ccc::getModel('product');
 		$content = $this->getLayout()->getContent();
 		$productAdd = Ccc::getBlock('Product_Edit')->setData(['product'=>$productModel]);
-		$content->addChild($productAdd,'add'); 
+		$content->addChild($productAdd,'add');
+		$this->setTitle('product'); 
 		$this->renderLayout();
 	}
 
@@ -32,6 +34,7 @@ class Controller_Product extends Controller_Admin_Action
 	{
 		try 
 		{
+			$this->setTitle('product');
 			$productModel = Ccc::getModel('Product');
 			$request = $this->getRequest();
 			$id = (int)$request->getRequest('id');

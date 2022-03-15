@@ -15,7 +15,8 @@ class Controller_Vendor extends Controller_Admin_Action
 		
 		$content = $this->getLayout()->getContent();
 		$vendorGrid = Ccc::getBlock('Vendor_Grid');
-		$content->addChild($vendorGrid,'grid');	
+		$content->addChild($vendorGrid,'grid');
+		$this->setTitle('Salesman');	
 		$this->renderLayout();
 	}
 
@@ -26,12 +27,14 @@ class Controller_Vendor extends Controller_Admin_Action
 		$content = $this->getLayout()->getContent();
 		$vendorAdd = Ccc::getBlock('Vendor_Edit')->setData(['vendor'=>$vendorModel,'address'=>$addressModel]);
 		$content->addChild($vendorAdd,'add'); 
+		$this->setTitle('Salesman');
 		$this->renderLayout();
 	}
 	public function editAction()
 	{
 		try
 		{
+			$this->setTitle('Salesman');
 			$request = $this->getRequest();
 			$id = $request->getRequest('id');
 			if(!(int)$id)
