@@ -6,9 +6,9 @@ class Block_Core_Layout_Menu extends Block_Core_Template
 	{
 		$this->setTemplate('view/core/layout/menu.php');
 	}
+
 	public function getLoginName()
 	{
-
 		$messageModel = Ccc::getModel('Admin_Message');
 		$messages = $messageModel->getSession()->getNamespace();
 
@@ -24,10 +24,4 @@ class Block_Core_Layout_Menu extends Block_Core_Template
 			return null;
 		}
 	}
-
-	/*public function getAdapter()
-    {
-        global $adapter;
-        return $adapter;
-    }*/
 }

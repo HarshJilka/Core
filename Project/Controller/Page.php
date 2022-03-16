@@ -20,6 +20,7 @@ class Controller_Page extends Controller_Admin_Action
 		$this->setTitle('page');
 		$this->renderLayout();
 	}
+	
 	public function addAction()
 	{
 		$pageModel = Ccc::getModel('page');
@@ -29,6 +30,7 @@ class Controller_Page extends Controller_Admin_Action
 		$content->addChild($pageAdd,'add'); 
 		$this->renderLayout();
 	}
+
 	public function editAction()
 	{
 		try

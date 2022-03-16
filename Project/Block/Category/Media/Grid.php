@@ -1,6 +1,6 @@
 <?php Ccc::loadClass("Block_Core_Template"); ?>
-<?php
 
+<?php
 class Block_Category_Media_Grid extends Block_Core_Template
 {
     public function __construct()

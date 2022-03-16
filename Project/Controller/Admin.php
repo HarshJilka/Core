@@ -29,6 +29,43 @@ class Controller_Admin extends Controller_Admin_Action
         $this->renderLayout();
     }
 
+    public function editAction()
+    {
+        try
+        {
+            $this->setTitle('admin');
+            $adminModel = Ccc::getModel('Admin');
+            $request = $this->getRequest();
+            $id = (int)$request->getRequest('id');
+
+            if(!$id)
+            {
+                $this->getMessage()->addMessage('Request Invalid.',3);
+                throw new Exception("Request Invalid.", 1);
+            }
+            
+            $admin = $adminModel->load($id);
+            
+            if(!$admin)
+            {   
+                $this->getMessage()->addMessage('System is unable to find record.',3);
+                throw new Exception("System is unable to find record.", 1);
+            }
+
+            $content = $this->getLayout()->getContent();
+            $adminEdit = Ccc::getBlock('Admin_Edit')->setData(['admin'=>$admin]);
+            $content->addChild($adminEdit,'Edit');
+            $this->renderLayout();
+        }
+        catch (Exception $e)
+        {
+            $this->redirect('grid','admin',[],true);
+        }
+    }
+
+
+
+
     public function saveAction()
     {
         try
@@ -90,41 +127,6 @@ class Controller_Admin extends Controller_Admin_Action
             $this->redirect('grid','admin',[],true);
         }
     }
-
-    public function editAction()
-    {
-        try
-        {
-            $this->setTitle('admin');
-            $adminModel = Ccc::getModel('Admin');
-            $request = $this->getRequest();
-            $id = (int)$request->getRequest('id');
-
-            if(!$id)
-            {
-                $this->getMessage()->addMessage('Request Invalid.',3);
-                throw new Exception("Request Invalid.", 1);
-            }
-            
-            $admin = $adminModel->load($id);
-            
-            if(!$admin)
-            {   
-                $this->getMessage()->addMessage('System is unable to find record.',3);
-                throw new Exception("System is unable to find record.", 1);
-            }
-
-            $content = $this->getLayout()->getContent();
-            $adminEdit = Ccc::getBlock('Admin_Edit')->setData(['admin'=>$admin]);
-            $content->addChild($adminEdit,'Edit');
-            $this->renderLayout();
-        }
-        catch (Exception $e)
-        {
-            $this->redirect('grid','admin',[],true);
-        }
-    }
-
 
     public function deleteAction()
     {

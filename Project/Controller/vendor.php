@@ -30,6 +30,7 @@ class Controller_Vendor extends Controller_Admin_Action
 		$this->setTitle('Vendor');
 		$this->renderLayout();
 	}
+
 	public function editAction()
 	{
 		try
@@ -37,29 +38,34 @@ class Controller_Vendor extends Controller_Admin_Action
 			$this->setTitle('Vendor');
 			$request = $this->getRequest();
 			$id = $request->getRequest('id');
+
 			if(!(int)$id)
 			{
 				throw new Exception("Invalid Request.", 1);
 				
 			}
+
 			$vendorModel = Ccc::getModel('vendor');
 			$addressModel = Ccc::getModel('vendor_address');
 			$vendor = $vendorModel->load($id);
+			
 			if(!$vendor)
 			{
 				throw new Exception("Unable to fetch Record.", 1);
 				
 			}
+
 			$address = $addressModel->load($id,'vendorId');
+			
 			if(!$address)
 			{
 				$address = Ccc::getModel('vendor_address');
 			}
+
 			$content = $this->getLayout()->getContent();
 			$vendorEdit = Ccc::getBlock('Vendor_Edit')->setData(['vendor'=>$vendor,'address'=>$address]);
 			$content->addChild($vendorEdit,'edit'); 
 			$this->renderLayout();
-
 		}
 		catch(Exception $e)
 		{
@@ -81,12 +87,14 @@ class Controller_Vendor extends Controller_Admin_Action
 
 			$vendorModel = Ccc::getModel('vendor');
 			$vendor = $vendorModel->load($id)->delete();
+
 			if(!$vendor)
 			{
 				$this->getMessage()->addMessage('unable to delete.',3);
 				throw new Exception("Unable to delete Record.", 1);
 				
 			}
+			
 			$this->getMessage()->addMessage('deleted succesfully.',1);
 			$this->redirect('grid','vendor',[],true);
 		}

@@ -59,31 +59,6 @@ class Controller_Config extends Controller_Admin_Action
    		}
    	}
 
-
-	public function deleteAction()
-	{
-		
-		try
-		{
-			$configModel = Ccc::getModel('Config');
-			$request=$this->getRequest();
-			if(!$request->getRequest('id'))
-			{
-				throw new Exception("Invelid Request", 1);
-				
-			}
-			$id=$request->getRequest('id');
-			$config_id=$configModel->load($id)->delete();
-			$this->getMessage()->addMessage('deleted succesfully.',1);
-			$this->redirect('grid','config',[],true);
-
-		}
-		catch(Exception $e)
-		{
-			echo $e->getMessage();
-			$this->redirect('grid','config',[],true);
-		}
-	}
 	public function saveAction()
 	{
 		try
@@ -128,6 +103,31 @@ class Controller_Config extends Controller_Admin_Action
 		catch (Exception $e) 
 		{
 
+			$this->redirect('grid','config',[],true);
+		}
+	}
+
+	public function deleteAction()
+	{
+		
+		try
+		{
+			$configModel = Ccc::getModel('Config');
+			$request=$this->getRequest();
+			if(!$request->getRequest('id'))
+			{
+				throw new Exception("Invelid Request", 1);
+				
+			}
+			$id=$request->getRequest('id');
+			$config_id=$configModel->load($id)->delete();
+			$this->getMessage()->addMessage('deleted succesfully.',1);
+			$this->redirect('grid','config',[],true);
+
+		}
+		catch(Exception $e)
+		{
+			echo $e->getMessage();
 			$this->redirect('grid','config',[],true);
 		}
 	}

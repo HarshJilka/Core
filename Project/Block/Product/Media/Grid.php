@@ -13,7 +13,6 @@ class Block_Product_Media_Grid extends Block_Core_Template
         $request = Ccc::getModel('Core_Request');
         $page = (int)$request->getRequest('p', 1);
         $ppr = (int)$request->getRequest('ppr',20);
-
         $pagerModel = Ccc::getModel('Core_Pager');
         
         $productId = $request->getRequest('id');

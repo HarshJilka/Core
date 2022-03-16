@@ -26,8 +26,6 @@ class Controller_Customer extends Controller_Admin_Action
 		$customerModel = Ccc::getModel('customer');
 		$billingAddress = $customerModel->getBillingAddress();
 		$shippingAddress = $customerModel->getShippingAddress();
-
-		// $addressModel = Ccc::getModel('customer_address');
 		$content = $this->getLayout()->getContent();
 		$customerAdd = Ccc::getBlock('Customer_Edit')->setData(['customer'=>$customerModel,'billingAddress'=>$billingAddress, 'shippingAddress' => $shippingAddress]);
 		$content->addChild($customerAdd,'add'); 
@@ -52,14 +50,6 @@ class Controller_Customer extends Controller_Admin_Action
 		{	
 			throw new Exception("System is unable to find record.", 1);	
 		}
-
-		/*$addressModel = Ccc::getModel('Customer_Address');
-		$address = $addressModel->load($id,'customerId');
-		
-		if(!$address)
-		{
-			$address = Ccc::getModel('Customer_Address');	
-		}*/
 
 		$this->setTitle('Edit');
 		$content = $this->getLayout()->getContent();
@@ -183,15 +173,6 @@ class Controller_Customer extends Controller_Admin_Action
 			$customerId=$this->saveCustomer();
 			$this->saveAddress($customerId,'billingAddress');
 			$this->saveAddress($customerId,'shippingAddress');
-
-			/*$request = $this->getRequest();
-			$postData = $request->getPost('address');		
-			if(!$postData['postalCode'])
-			{
-				$this->redirect('grid','customer',[],true);
-			}
-			$this->saveAddress($customerId);*/
-
 			$this->redirect('grid','customer',[],true);
 		}
 		catch (Exception $e) 

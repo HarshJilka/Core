@@ -60,6 +60,4 @@ class Model_Vendor extends Model_Core_Row
 		$this->address = $address;
 		return $this;
 	}
-
-
 }

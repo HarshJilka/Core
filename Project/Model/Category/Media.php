@@ -40,4 +40,3 @@ class Model_Category_Media extends Model_Core_Row
 
 }
 
-?>

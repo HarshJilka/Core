@@ -6,6 +6,7 @@ class Block_Vendor_Grid extends Block_Core_Template
 	{
 		$this->setTemplate('view/vendor/grid.php');
 	}
+	
 	public function getVendors()
 	{
 		$request = Ccc::getModel('Core_Request');
@@ -22,6 +23,7 @@ class Block_Vendor_Grid extends Block_Core_Template
         $vendors = $vendorModel->fetchAll("SELECT * FROM `vendor` LIMIT {$pagerModel->getStartLimit()} , {$pagerModel->getEndLimit()}");
 		return $vendors;
 	}
+
 	public function getAddresses()
 	{
 		$addressModel = Ccc::getModel('vendor_address');

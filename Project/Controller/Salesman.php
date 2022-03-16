@@ -18,6 +18,7 @@ class Controller_Salesman extends Controller_Admin_Action
 		$this->setTitle('Salesman');
 		$this->renderLayout();
 	}
+
 	public function addAction()
 	{
 		$salesmanModel = Ccc::getModel('salesman');
@@ -27,6 +28,7 @@ class Controller_Salesman extends Controller_Admin_Action
 		$content->addChild($salesmanAdd,'add'); 
 		$this->renderLayout();
 	}
+
 	public function editAction()
 	{
 		try
@@ -54,6 +56,7 @@ class Controller_Salesman extends Controller_Admin_Action
 			$this->redirect('grid','salesman',[],true);
 		}
 	}
+	
 	public function saveAction()
 	{
 		try

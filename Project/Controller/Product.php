@@ -61,44 +61,6 @@ class Controller_Product extends Controller_Admin_Action
 		
 	}
 
-	public function deleteAction()
-	{
-		
-		try 
-		{
-			$productModel = Ccc::getModel('Product');
-			$request = $this->getRequest();
-			if(!$request->getRequest('id'))
-			{
-				throw new Exception("Invalid Request.", 1);
-			}
-
-			$productId = $request->getRequest('id');
-			if(!$productId)
-			{
-				throw new Exception("Unable to fetch ID.", 1);
-				
-			}
-			$medias = $productModel->fetchAll("SELECT name FROM product_media WHERE  productId='$productId'");
-			foreach ($medias as $media)
-			{
-				unlink(Ccc::getModel('Core_View')->getBaseUrl("Media/Product/"). $media->name);
-			}
-			$result = $productModel->load($productId)->delete();
-			if(!$result)
-			{
-				$this->getMessage()->addMessage('unable to delete.',3);
-				throw new Exception("Unable to Delet Record.", 1);
-				
-			}
-			$this->getMessage()->addMessage('data deleted succesfully.',1);
-		    $this->redirect('grid','product',[],true);
-		} 
-		catch (Exception $e) 
-		{
-			$this->redirect('grid','product',[],true);
-		}		
-	}
 	public function saveAction()
 	{
 		try
@@ -155,6 +117,45 @@ class Controller_Product extends Controller_Admin_Action
 
 			$this->redirect('grid','product',[],true);
 		}
+	}
+
+	public function deleteAction()
+	{
+		
+		try 
+		{
+			$productModel = Ccc::getModel('Product');
+			$request = $this->getRequest();
+			if(!$request->getRequest('id'))
+			{
+				throw new Exception("Invalid Request.", 1);
+			}
+
+			$productId = $request->getRequest('id');
+			if(!$productId)
+			{
+				throw new Exception("Unable to fetch ID.", 1);
+				
+			}
+			$medias = $productModel->fetchAll("SELECT name FROM product_media WHERE  productId='$productId'");
+			foreach ($medias as $media)
+			{
+				unlink(Ccc::getModel('Core_View')->getBaseUrl("Media/Product/"). $media->name);
+			}
+			$result = $productModel->load($productId)->delete();
+			if(!$result)
+			{
+				$this->getMessage()->addMessage('unable to delete.',3);
+				throw new Exception("Unable to Delet Record.", 1);
+				
+			}
+			$this->getMessage()->addMessage('data deleted succesfully.',1);
+		    $this->redirect('grid','product',[],true);
+		} 
+		catch (Exception $e) 
+		{
+			$this->redirect('grid','product',[],true);
+		}		
 	}
 
 }

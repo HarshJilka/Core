@@ -1,6 +1,5 @@
-<?php 
-$customers = $this->getCustomers();
-?>
+<?php  $customers = $this->getCustomers(); ?>
+
 <h2 align="center">Available Customers</h2>
 <form action="<?php echo $this->getUrl('save','Salesman_SalesmanCustomer',['id'=> $this->getSalesmanId()],true) ?>" method="post">
     <input type="submit" value="save">
