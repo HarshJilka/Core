@@ -15,26 +15,30 @@ class Controller_Salesman extends Controller_Admin_Action
 		$content = $this->getLayout()->getContent();
 		$salesmanGrid = Ccc::getBlock('Salesman_Grid');
 		$content->addChild($salesmanGrid,'grid');	
+		$this->setTitle('Salesman');
 		$this->renderLayout();
 	}
+
 	public function addAction()
 	{
 		$salesmanModel = Ccc::getModel('salesman');
 		$content = $this->getLayout()->getContent();
+		$this->setTitle('Salesman');
 		$salesmanAdd = Ccc::getBlock('Salesman_Edit')->setData(['salesman'=>$salesmanModel]);
 		$content->addChild($salesmanAdd,'add'); 
 		$this->renderLayout();
 	}
+
 	public function editAction()
 	{
 		try
 		{
+			$this->setTitle('Salesman');
 			$request = $this->getRequest();
 			$id = $request->getRequest('id');
 			if(!(int)$id)
 			{
-				throw new Exception("Invalid Request.", 1);
-				
+				throw new Exception("Invalid Request.", 1);	
 			}
 			$salesmenModel = Ccc::getModel('salesman');
 			$salesmen = $salesmenModel->load($id);
@@ -52,6 +56,7 @@ class Controller_Salesman extends Controller_Admin_Action
 			$this->redirect('grid','salesman',[],true);
 		}
 	}
+	
 	public function saveAction()
 	{
 		try

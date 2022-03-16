@@ -1,5 +1,5 @@
-<?php Ccc::loadClass("Controller_Admin_Action"); ?>
-<?php
+<?php Ccc::loadClass("Controller_Admin_Action"); 
+
 class Controller_Category extends Controller_Admin_Action
 {
 
@@ -14,6 +14,7 @@ class Controller_Category extends Controller_Admin_Action
     public function gridAction()
     {
         $content = $this->getLayout()->getContent();
+        $this->setTitle('category');
         $categoryGrid = Ccc::getBlock('Category_Grid');
         $content->addChild($categoryGrid,'grid');    
         $this->renderLayout();
@@ -21,8 +22,9 @@ class Controller_Category extends Controller_Admin_Action
 
     public function addAction()
     {
-       $categoryModel = Ccc::getModel('category');
+        $categoryModel = Ccc::getModel('category');
         $content = $this->getLayout()->getContent();
+        $this->setTitle('category');
         $categoryAdd = Ccc::getBlock('Category_Edit')->setData(['category'=>$categoryModel]);
         $content->addChild($categoryAdd,'add'); 
         $this->renderLayout();
@@ -30,6 +32,7 @@ class Controller_Category extends Controller_Admin_Action
 
     public function editAction()
     {
+        $this->setTitle('category');
         $categoryModel = Ccc::getModel('Category');
         $request = $this->getRequest();
         $id = $request->getRequest('id');
@@ -47,6 +50,43 @@ class Controller_Category extends Controller_Admin_Action
         $content->addChild($categoryEdit,'add'); 
         $this->renderLayout();
     }
+
+    public function deleteAction()
+    {
+        try 
+        {
+            $categoryModel = Ccc::getModel('Category');
+            $request = $this->getRequest();
+            
+            if(!$request->getRequest('id'))
+            {
+                throw new Exception("Invalid Request", 1);
+            }
+            
+            $id = $request->getRequest('id');
+            $medias = $categoryModel->fetchAll("SELECT name FROM category_media WHERE  categoryId='$id'");
+            
+            foreach ($medias as $media)
+            {
+                unlink(Ccc::getModel('Core_View')->getBaseUrl("Media/Category/"). $media->name);
+            }
+            
+            $result = $categoryModel->load($id)->delete();
+            if(!$result)
+            {
+                $this->getMessage()->addMessage('unable to deleted.',3);
+                throw new Exception("System is unable to delete data.", 1);
+            }
+            
+            $this->getMessage()->addMessage('deleted succesully.',1);
+            $this->redirect('grid','category',[],true);
+        } 
+        catch (Exception $e) 
+        {
+            echo $e->getMessage();
+        }
+    }
+
 
     public function saveAction()
     {
@@ -121,16 +161,18 @@ class Controller_Category extends Controller_Admin_Action
                         $result = $categoryModel->save();
                         $this->getMessage()->addMessage('data inserted successfully',1);
                     }
-                    else{
+                    else
+                    {
                         $insert = $categoryModel->save();
                         if(!$insert->categoryId){
                             throw new Exception("system is unabel to insert your data", 1);
-                        }
+                    }
                         $categoryData->categoryId = $insert->categoryId;
                         $parentPath = $categoryModel->load($categoryData->parentId);
                         $categoryData->path = $parentPath->path."/". $insert->categoryId;
                         $result = $categoryData->save();
                     }
+
                     if(!$result)
                     {
                         $this->getMessage()->addMessage('unable to insert data.',3);
@@ -147,35 +189,4 @@ class Controller_Category extends Controller_Admin_Action
         }
     }
 
-    public function deleteAction()
-    {
-        try {
-            $categoryModel = Ccc::getModel('Category');
-            $request = $this->getRequest();
-            if(!$request->getRequest('id')){
-                throw new Exception("Invalid Request", 1);
-            }
-            $id = $request->getRequest('id');
-            $medias = $categoryModel->fetchAll("SELECT name FROM category_media WHERE  categoryId='$id'");
-            foreach ($medias as $media)
-            {
-                unlink(Ccc::getModel('Core_View')->getBaseUrl("Media/Category/"). $media->name);
-            }
-            $result = $categoryModel->load($id)->delete();
-            if(!$result)
-            {
-                $this->getMessage()->addMessage('unable to deleted.',3);
-                throw new Exception("System is unable to delete data.", 1);
-            }
-            $this->getMessage()->addMessage('deleted succesully.',1);
-            $this->redirect('grid','category',[],true);
-        } 
-        catch (Exception $e) 
-        {
-            echo $e->getMessage();
-        }
-    }
-
 }
-
-?>

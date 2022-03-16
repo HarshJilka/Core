@@ -20,12 +20,6 @@ class Model_Core_Row
 		return $this;
 	}
 
-	public function __set($name, $value)
-	{
-		$this->data[$name] = $value;
-		return $this;
-	}
-
 	public function __get($name)
 	{
 		if (!array_key_exists($name, $this->data)) 
@@ -33,6 +27,12 @@ class Model_Core_Row
 			return null;
 		}
 		return $this->data[$name];	
+	}
+
+	public function __set($name, $value)
+	{
+		$this->data[$name] = $value;
+		return $this;
 	}
 
 	public function __unset($key)
@@ -66,6 +66,19 @@ class Model_Core_Row
 		return Ccc::getModel($this->getResourceClassName());
 	}
 
+	public function delete()
+	{
+		if(!array_key_exists($this->getResource()->getPrimaryKey(), $this->data))
+		{
+			return false;
+		}
+		$key = $this->getResource()->getPrimaryKey();
+		$value = $this->data[$this->getResource()->getPrimaryKey()];
+		$result = $this->getResource()->delete([$key=>$value]);
+		return $result;
+	}
+
+
 	public function save($column = null)
 	{
 		if(!$column){
@@ -84,41 +97,18 @@ class Model_Core_Row
 		return $this;
 	}
 
-	public function delete()
-	{
-		if(!array_key_exists($this->getResource()->getPrimaryKey(), $this->data))
-		{
-			return false;
-		}
-		$key = $this->getResource()->getPrimaryKey();
-		$value = $this->data[$this->getResource()->getPrimaryKey()];
-		$result = $this->getResource()->delete([$key=>$value]);
-		return $result;
-	}
-
 	public function load($id, $column = null)
 	{
 		
-		if($column == null){
+		if($column == null)
+		{
 			$column = $this->getResource()->getPrimaryKey();
 		}
 		$tableName = $this->getResource()->getTableName();
 		$query = "SELECT * FROM $tableName WHERE $column = $id";
-		
-		
 		return $this->fetchRow($query);
 	}
 
-	public function fetchRow($query)
-	{
-		$result = $this->getResource()->fetchRow($query);
-		if(!$result){
-			return $result;
-		}	
-		return (new $this())->setData($result);
-	}
-
-	// new fetchall method
 	public function fetchAll($query)
 	{
 		$results = $this->getResource()->fetchAll($query);
@@ -131,6 +121,15 @@ class Model_Core_Row
 			$result = (new $this())->setData($result);
 		}
 		return $results;
+	}
+
+	public function fetchRow($query)
+	{
+		$result = $this->getResource()->fetchRow($query);
+		if(!$result){
+			return $result;
+		}	
+		return (new $this())->setData($result);
 	}
 
 	

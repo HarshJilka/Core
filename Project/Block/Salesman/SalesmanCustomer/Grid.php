@@ -1,11 +1,16 @@
 <?php Ccc::loadClass('Block_Core_Template'); ?>
-<?php
 
+<?php
 class Block_Salesman_SalesmanCustomer_Grid extends Block_Core_Template
 {
     public function __construct()
     {
         $this->setTemplate("view/salesman/salesmancustomer/grid.php");
+    }
+
+    public function getSalesmanId()
+    {
+        return Ccc::getFront()->getRequest()->getRequest('id');
     }
 
     public function getCustomers()
@@ -23,11 +28,6 @@ class Block_Salesman_SalesmanCustomer_Grid extends Block_Core_Template
         $this->setPager($pagerModel);
         $customers = $customerModel->fetchAll("SELECT * FROM `customer` WHERE (`salesmanId` is null OR `salesmanId` = '$salesmanId') AND `status` = '1' LIMIT {$pagerModel->getStartLimit()} , {$pagerModel->getEndLimit()}");
         return $customers;
-    }
-
-    public function getSalesmanId()
-    {
-        return Ccc::getFront()->getRequest()->getRequest('id');
     }
 
     public function selected($customerId)

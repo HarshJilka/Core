@@ -55,7 +55,7 @@ class Controller_Core_Action {
             ->setHeader('Content-type', 'text/html')
             ->render($this->getLayout()->toHtml());
     }
-	public function getAdapte()
+	public function getAdapter()
 	{
 		global $adapter;
 		return $adapter;

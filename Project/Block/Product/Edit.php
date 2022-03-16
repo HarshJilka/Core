@@ -14,6 +14,7 @@ class Block_Product_Edit extends Block_Core_Template
   
    		return $this->getData('product');
    	}
+    
    	public function getCategories()
     {
         $category = Ccc::getModel('Category');
@@ -28,12 +29,18 @@ class Block_Product_Edit extends Block_Core_Template
     {
         $finalPath = NULL;
         $path = explode("/",$path);
-        foreach ($path as $path1) {
+        
+        foreach ($path as $path1) 
+        {
             $categoryModel = Ccc::getModel('Category');
             $category = $categoryModel->fetchRow("SELECT * FROM `category` WHERE `categoryId` = '$path1' ");
-            if($path1 != $categoryId){
+            
+            if($path1 != $categoryId)
+            {
                 $finalPath .= $category->name ."=>";
-            }else{
+            }
+            else
+            {
                 $finalPath .= $category->name;
             }
         }

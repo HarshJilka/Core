@@ -1,7 +1,8 @@
 <?php 
-	$vendor = $this->getVendor();
-	$address = $this->getAddress();
+	 $vendor = $this->getVendor();
+	 $address = $vendor->getAddress();
 ?>
+
 
 
 <form action="<?php echo $this->getUrl('save','vendor',['id'=>$vendor->vendorId],true) ?>" method="POST">

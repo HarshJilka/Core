@@ -14,7 +14,6 @@ class Model_Admin extends Model_Core_Row
 		parent::__construct();
 	}
 
-
 	public function getStatus($key = null)
 	{
 		$statuses = [
@@ -34,5 +33,3 @@ class Model_Admin extends Model_Core_Row
 
 }
 
-
-	?>

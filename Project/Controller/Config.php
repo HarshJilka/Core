@@ -11,26 +11,30 @@ class Controller_Config extends Controller_Admin_Action
         }
     }
 
-
 	public function gridAction()
 	{
 		$content = $this->getLayout()->getContent();
+		$this->setTitle('config');
 		$configGrid = Ccc::getBlock('Config_Grid');
 		$content->addChild($configGrid,'grid');	
 		$this->renderLayout();
 	}
+
 	public function addAction()
 	{
+		$this->setTitle('config');
 		$configModel = Ccc::getModel('config');
 		$content = $this->getLayout()->getContent();
 		$configAdd = Ccc::getBlock('Config_Edit')->setData(['config'=>$configModel]);
 		$content->addChild($configAdd,'add'); 
 		$this->renderLayout();
 	}
+	
 	public function editAction()
 	{
 		try 
    		{
+   			$this->setTitle('config');
    			$configModel = Ccc::getModel('Config');
 			$request = $this->getRequest();
 			$id = (int)$request->getRequest('id');
@@ -55,36 +59,10 @@ class Controller_Config extends Controller_Admin_Action
    		}
    	}
 
-
-	public function deleteAction()
-	{
-		
-		try
-		{
-			$configModel = Ccc::getModel('Config');
-			$request=$this->getRequest();
-			if(!$request->getRequest('id'))
-			{
-				throw new Exception("Invelid Request", 1);
-				
-			}
-			$id=$request->getRequest('id');
-			$config_id=$configModel->load($id)->delete();
-			$this->getMessage()->addMessage('deleted succesfully.',1);
-			$this->redirect('grid','config',[],true);
-
-		}
-		catch(Exception $e)
-		{
-			echo $e->getMessage();
-			$this->redirect('grid','config',[],true);
-		}
-	}
 	public function saveAction()
 	{
 		try
 		{
-			
 			$request=$this->getRequest();
 			$configModel= Ccc::getModel('Config');
 			if(!$request->isPost())
@@ -125,6 +103,31 @@ class Controller_Config extends Controller_Admin_Action
 		catch (Exception $e) 
 		{
 
+			$this->redirect('grid','config',[],true);
+		}
+	}
+
+	public function deleteAction()
+	{
+		
+		try
+		{
+			$configModel = Ccc::getModel('Config');
+			$request=$this->getRequest();
+			if(!$request->getRequest('id'))
+			{
+				throw new Exception("Invelid Request", 1);
+				
+			}
+			$id=$request->getRequest('id');
+			$config_id=$configModel->load($id)->delete();
+			$this->getMessage()->addMessage('deleted succesfully.',1);
+			$this->redirect('grid','config',[],true);
+
+		}
+		catch(Exception $e)
+		{
+			echo $e->getMessage();
 			$this->redirect('grid','config',[],true);
 		}
 	}
