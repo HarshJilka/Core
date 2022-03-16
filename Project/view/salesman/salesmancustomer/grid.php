@@ -29,9 +29,7 @@ $customers = $this->getCustomers();
     </table>
 </form>
 
- <table>
-        <tr>
-            <script type="text/javascript"> function ppr()
+        <script type="text/javascript"> function ppr()
             {
                 const pprValue = document.getElementById('ppr').selectedOptions[0].value;
                 let language = window.location.href;
@@ -54,8 +52,10 @@ $customers = $this->getCustomers();
                 const str = myArray.join("&");  
                 location.replace(str);
             }
-            </script>
-            
+        </script>
+    
+    <table>
+        <tr>
             <select onchange="ppr()" id="ppr">
                 
                 <option selected>select</option>
@@ -66,35 +66,35 @@ $customers = $this->getCustomers();
             </select>
         </tr>
 
-        
-            <tr align="center"> 
-                <button>
-                    <a style="<?php echo ($this->getPager()->getStart() == NULL) ? "pointer-events: none" : "" ?>" href="<?php echo $this->getUrl(null,null,['p' => $this->getPager()->getStart()]) ?>">Start
-                    </a>
-                </button>
-            </tr>
+    
+        <tr align="center"> 
+            <button>
+                <a style="<?php echo ($this->getPager()->getStart() == NULL) ? "pointer-events: none" : "" ?>" href="<?php echo $this->getUrl(null,null,['p' => $this->getPager()->getStart()]) ?>">Start
+                </a>
+            </button>
+        </tr>
 
-            <tr>
-                <button>
-                    <a style="<?php echo ($this->getPager()->getPrev() == NULL) ? "pointer-events: none" : "" ?>" href="<?php echo $this->getUrl(null,null,['p' => $this->getPager()->getPrev()]) ?>">Prev
-                    </a>
-                </button>
+        <tr>
+            <button>
+                <a style="<?php echo ($this->getPager()->getPrev() == NULL) ? "pointer-events: none" : "" ?>" href="<?php echo $this->getUrl(null,null,['p' => $this->getPager()->getPrev()]) ?>">Prev
+                </a>
+            </button>
 
-                &nbsp;&nbsp;&nbsp;&nbsp;
-                <?php echo "<b>".$this->getPager()->getCurrent()."</b>"?>&nbsp;&nbsp;&nbsp;&nbsp;
-            </tr>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <?php echo "<b>".$this->getPager()->getCurrent()."</b>"?>&nbsp;&nbsp;&nbsp;&nbsp;
+        </tr>
 
-            <tr>
-                <button>
-                    <a style="<?php echo ($this->getPager()->getNext() == NULL) ? "pointer-events: none" : "" ?>" href="<?php echo $this->getUrl(null,null,['p' => $this->getPager()->getNext()]) ?>">Next
-                    </a>
-                </button>
-            </tr>
+        <tr>
+            <button>
+                <a style="<?php echo ($this->getPager()->getNext() == NULL) ? "pointer-events: none" : "" ?>" href="<?php echo $this->getUrl(null,null,['p' => $this->getPager()->getNext()]) ?>">Next
+                </a>
+            </button>
+        </tr>
 
-            <tr>
-                <button>
-                    <a style="<?php echo ($this->getPager()->getEnd() == NULL) ? "pointer-events: none" : "" ?>" href="<?php echo $this->getUrl(null,null,['p' => $this->getPager()->getEnd()]) ?>">End
-                    </a>
-                </button>
-            </tr>
+        <tr>
+            <button>
+                <a style="<?php echo ($this->getPager()->getEnd() == NULL) ? "pointer-events: none" : "" ?>" href="<?php echo $this->getUrl(null,null,['p' => $this->getPager()->getEnd()]) ?>">End
+                </a>
+            </button>
+        </tr>
     </table>

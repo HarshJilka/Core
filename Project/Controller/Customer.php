@@ -168,12 +168,6 @@ class Controller_Customer extends Controller_Admin_Action
 		{	
 			unset($address->addressId);
 		}
-		/*else
-		{
-			$address->billing = (!array_key_exists('billing',$postData))?2:1;
-			$address->shipping = (!array_key_exists('shipping',$postData))?2:1;
-		
-		}*/
 		$save = $address->save();
 		if(!$save)
 		{

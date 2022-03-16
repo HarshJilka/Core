@@ -114,7 +114,7 @@
 			<td><input type="text" name="shippingAddress[country]" value="<?php echo $shippingAddress->country ?>"></td>
 		</tr>
 		
-		<input type="hidden" name="shippingAddress[shipping]" value="2">
+		<input type="hidden" name="shippingAddress[billing]" value="2">
 		<input type="hidden" name="shippingAddress[shipping]" value="1">
 
 

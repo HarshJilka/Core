@@ -16,7 +16,7 @@ class Controller_Vendor extends Controller_Admin_Action
 		$content = $this->getLayout()->getContent();
 		$vendorGrid = Ccc::getBlock('Vendor_Grid');
 		$content->addChild($vendorGrid,'grid');
-		$this->setTitle('Salesman');	
+		$this->setTitle('Vendor');	
 		$this->renderLayout();
 	}
 
@@ -27,14 +27,14 @@ class Controller_Vendor extends Controller_Admin_Action
 		$content = $this->getLayout()->getContent();
 		$vendorAdd = Ccc::getBlock('Vendor_Edit')->setData(['vendor'=>$vendorModel,'address'=>$addressModel]);
 		$content->addChild($vendorAdd,'add'); 
-		$this->setTitle('Salesman');
+		$this->setTitle('Vendor');
 		$this->renderLayout();
 	}
 	public function editAction()
 	{
 		try
 		{
-			$this->setTitle('Salesman');
+			$this->setTitle('Vendor');
 			$request = $this->getRequest();
 			$id = $request->getRequest('id');
 			if(!(int)$id)
@@ -100,14 +100,17 @@ class Controller_Vendor extends Controller_Admin_Action
 	{
 		$request = $this->getRequest();
 		$postData = $request->getPost('vendor');
+
 		if(!$postData)
 		{
 			throw new Exception("Invalid Request.", 1);
 			
 		}
+
 		$vendorModel = Ccc::getModel('vendor');
 		$vendor = $vendorModel;
 		$vendor->setData($postData);
+		
 		if(!$vendor->vendorId)
 		{
 			unset($vendor->vendorId);
@@ -118,7 +121,9 @@ class Controller_Vendor extends Controller_Admin_Action
 			$vendor->updatedAt = date('y-m-d h:i:s');
 			$update = $vendor->save();
 		}
+		
 		$save = $vendor->save();
+		
 		if(!$save)
 		{
 			$this->getMessage()->addMessage('unable to save Vendor.',3);
@@ -132,23 +137,27 @@ class Controller_Vendor extends Controller_Admin_Action
 	public function saveAddress($vendorId)
 	{
 		$request = $this->getRequest();
-
 		$postData = $request->getPost('address');
+		
 		if(!$postData)
 		{
 			throw new Exception("Invalid Request.", 1);
 			
 		}
-		$addressModel = Ccc::getModel('vendor_address');
+	
+		$addressModel = Ccc::getModel('Vendor_Address');
 		$address = $addressModel;
 		$address->setData($postData);
 		$address->vendorId=$vendorId;
+
 		if(!$address->addressId)
 		{
 			unset($address->addressId);
 
 		}
+		
 		$save = $address->save();
+		
 		if(!$save->addressId)
 		{
 			$this->getMessage()->addMessage('Address Inserted succesfully.',1);

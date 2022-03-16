@@ -5,7 +5,8 @@ class Controller_Category_Media extends Controller_Admin_Action
 {
 	public function __construct()
 	{
-		if(!$this->authentication()){
+		if(!$this->authentication())
+		{
 			$this->redirect('login','admin_login');
 		}
 	}
@@ -50,6 +51,7 @@ class Controller_Category_Media extends Controller_Admin_Action
 					$fileName = str_replace(" ","_",$fileName);
 					$mediaData->name = $fileName;
 					$extension = array('jpg','jpeg','png','Jpg','Jpeg','Png','JPEG','JPG','PNG');
+
 					if(in_array($fileExt, $extension))
 					{
 						$result = $mediaModel->save();
@@ -57,7 +59,8 @@ class Controller_Category_Media extends Controller_Admin_Action
 						{
 							$this->getMessage()->addMessage('unable to upload.',3);
 							throw new Exception("System is unable to save your data.", 1);
-						}	
+						}
+
 					move_uploaded_file($file['name']['tmp_name'],Ccc::getBlock('Category_Grid')->getBaseUrl("Media/category/").$fileName);
 					$this->getMessage()->addMessage('Media uploaded Successfully.',1);
 					}
@@ -70,6 +73,7 @@ class Controller_Category_Media extends Controller_Admin_Action
 					$categoryData->categoryId = $id;
 					$mediaData->categoryId = $id;
 					$postData = $request->getPost();
+
 					if(array_key_exists('remove',$postData['media']))
 					{
 						foreach($postData['media']['remove'] as $remove)

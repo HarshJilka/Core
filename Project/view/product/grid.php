@@ -1,6 +1,7 @@
 <?php $products=$this->getProducts();	 ?>
 
 	<button name="Add"><a href="<?php echo $this->getUrl('add') ?>"><h3>Add</h3></a></button>
+
 	<table border="1" width="100%" cellspacing="4">
 		<tr>
 			<th>product Id</th>
@@ -18,8 +19,8 @@
 			<th>Edit</th>
 			<th>Delete</th>
 			<th>Media</th>
-		
 		</tr>
+
 		<?php if(!$products):  ?>
 			<tr><td colspan="12">No Record available.</td></tr>
 		<?php else:  ?>
@@ -27,21 +28,32 @@
 			<tr>
 				<td><?php echo $product->productId ?></td>
 				<td><?php echo $product->name ?></td>
+
 				<?php if($product->base): ?>
 				<td><img src="<?php echo "Media/Product/".$this->getMedia($product->base)['name']  ?>" alt="No Image Found" width="50" height="50"></td>
+				
 				<?php else: ?>
 				<td>No Base Image</td>
+				
 				<?php endif; ?>	
 				<?php if($product->thumb): ?>
 				<td><img src="<?php echo "Media/Product/".$this->getMedia($product->thumb)['name']  ?>" alt="No Image Found" width="50" height="50"></td>
+				
 				<?php else: ?>
 				<td>No Thumb Image</td>
+				
+				
 				<?php endif; ?>	
+				
 				<?php if($product->small): ?>
 				<td><img src="<?php echo "Media/Product/".$this->getMedia($product->small)['name']  ?>" alt="No Image Found" width="50" height="50"></td>
+				
 				<?php else: ?>
 				<td>No Small Image</td>
+				
 				<?php endif; ?>	
+				
+
 				<td><?php echo $product->price ?></td>
 				<td><?php echo $product->costPrice ?></td>
 				<td><?php echo $product->msp ?></td>
@@ -54,12 +66,10 @@
 				<td><a href="<?php echo $this->getUrl('grid','product_media',['id'=>$product->productId],true) ?>">Edit Media</a></td>
 			</tr>
 			<?php endforeach;	?>
-		<?php endif;  ?>
-		
+		<?php endif;  ?>	
 	</table>
 	
-	 <table>
-        <tr>
+	
             <script type="text/javascript"> function ppr()
             {
                 const pprValue = document.getElementById('ppr').selectedOptions[0].value;
@@ -84,7 +94,9 @@
                 location.replace(str);
             }
             </script>
-            
+
+    <table>
+        <tr>
             <select onchange="ppr()" id="ppr">
                 
                 <option selected>select</option>

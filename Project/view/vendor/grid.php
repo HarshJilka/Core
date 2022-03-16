@@ -1,7 +1,4 @@
-<?php 
-$vendors = $this->getVendors();
-$addresses = $this->getAddresses();
-?>
+<?php $vendors = $this->getVendors();?>
 
 	<button name="Add"><a href="<?php echo $this->getUrl('add') ?>"><h3>Add</h3></a></button>
 	<table border="1" width="100%" cellspacing="4">
@@ -32,28 +29,22 @@ $addresses = $this->getAddresses();
 				<td><?php echo $vendor->getStatus($vendor->status);?></td>
 				<td><?php echo $vendor->createdAt ?></td>
 				<td><?php echo $vendor->updatedAt ?></td>
-				<?php if(!$addresses) :?>
-					<td>NO ADDRESSES </td>
-				<?php else : ?>
-				<td><?php foreach ($addresses as $address): ?>
-					<?php if($address->vendorId==$vendor->vendorId):
-							echo "Address : ".$address->address."<br>";
-							echo "Postal Code : ".$address->postalCode."<br>";
-							echo "Ciry : ".$address->city."<br>";
-							echo "State : ".$address->state."<br>";
-							echo "Country : ".$address->country."<br>";
-					endif; ?>
-					<?php endforeach;	?>
-				<?php endif; ?>
-				</td>
+				<td><?php $address = $vendor->getAddress(); ?>
+				
+				<?php
+					  echo "Address : " .$address->address. "<br>"; 
+				 	  echo "Postal Code :" .$address->postalCode. "<br>";
+				 	  echo "City :" .$address->city."<br>";
+				 	  echo "State :" .$address->state. "<br>";
+				 	  echo "Country :" .$address->country. "<br>"; ?>
+				 </td>
+
 				<td><a href="<?php echo $this->getUrl('edit','vendor',['id'=>$vendor->vendorId],true) ?>">Edit</a></td>
 				<td><a href="<?php echo $this->getUrl('delete','vendor',['id'=>$vendor->vendorId],true) ?>">Delete</a></td>
-			
 			</tr>
-			
+
 		<?php endforeach;	?>
 		<?php endif;  ?>
-		
 	</table>
 	
 	 <table>
