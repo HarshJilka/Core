@@ -60,7 +60,7 @@ class Model_Product extends Model_Core_Row
 
 		if(!$this->base)
 		{
-			return null;
+			return $mediaModel;
 		}
 		$base = $mediaModel->fetchRow("SELECT * FROM `product_media` WHERE `mediaId` = {$this->base}");
 
@@ -77,10 +77,10 @@ class Model_Product extends Model_Core_Row
 
 		if(!$this->small)
 		{
-			return null;
+			return $mediaModel;
 		}
 
-		$small = $productModel->fetchRow("SELECT * FROM `product_media` WHERE `mediaId` = {$this->small}");
+		$small = $mediaModel->fetchRow("SELECT * FROM `product_media` WHERE `mediaId` = {$this->small}");
 
 		if(!$this->small)
 		{
@@ -95,7 +95,7 @@ class Model_Product extends Model_Core_Row
 
 		if(!$this->thumb)
 		{
-			return null;
+			return $mediaModel;
 		}
 
 		$thumb = $mediaModel->fetchRow("SELECT * FROM `product_media` WHERE `mediaId` = {$this->thumb}");

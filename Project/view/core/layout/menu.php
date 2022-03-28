@@ -39,6 +39,7 @@ ul{
 <li><a href="index.php?c=config&a=grid">CONFIG</a></li>
 <li><a href="index.php?c=salesman&a=grid">SALESMAN</a></li>
 <li><a href="index.php?c=vendor&a=grid">VENDOR</a></li>
+<li><a href="index.php?c=cart&a=grid">CART</a></li>
 <li><a class="logout" href="index.php?c=admin_login&a=logout">LOGOUT</a></li>
 
             
