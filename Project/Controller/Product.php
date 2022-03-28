@@ -1,32 +1,31 @@
 <?php Ccc::loadClass('Controller_Admin_Action');
 
 
-class Controller_Product extends Controller_Admin_Action
-{
-	public function __construct()
-    {
-        if(!$this->authentication())
-        {
-            $this->redirect('login','admin_login');
-        }
-    }
+class Controller_Product extends Controller_Admin_Action{
 
+	public function __construct()
+	{
+		if(!$this->authentication()){
+			$this->redirect('login','admin_login');
+		}
+	}
+	
 	public function gridAction()
 	{
+		$this->setTitle('Product Grid');
 		$content = $this->getLayout()->getContent();
 		$productGrid = Ccc::getBlock('Product_Grid');
 		$content->addChild($productGrid,'grid');	
-		$this->setTitle('product');
 		$this->renderLayout();
 	}
 
 	public function addAction()
 	{
+		$this->setTitle('Product Add');
 		$productModel = Ccc::getModel('product');
 		$content = $this->getLayout()->getContent();
 		$productAdd = Ccc::getBlock('Product_Edit')->setData(['product'=>$productModel]);
-		$content->addChild($productAdd,'add');
-		$this->setTitle('product'); 
+		$content->addChild($productAdd,'add'); 
 		$this->renderLayout();
 	}
 
@@ -34,7 +33,6 @@ class Controller_Product extends Controller_Admin_Action
 	{
 		try 
 		{
-			$this->setTitle('product');
 			$productModel = Ccc::getModel('Product');
 			$request = $this->getRequest();
 			$id = (int)$request->getRequest('id');
@@ -48,7 +46,7 @@ class Controller_Product extends Controller_Admin_Action
 				throw new Exception("System is unable to find record.", 1);
 				
 			}
-			
+			$this->setTitle('Product Edit');
 			$content = $this->getLayout()->getContent();
 			$productEdit = Ccc::getBlock('Product_Edit')->setData(['product'=>$product]);
 			$content->addChild($productEdit,'edit'); 
@@ -61,6 +59,44 @@ class Controller_Product extends Controller_Admin_Action
 		
 	}
 
+	public function deleteAction()
+	{
+		
+		try 
+		{
+			$productModel = Ccc::getModel('Product');
+			$request = $this->getRequest();
+			if(!$request->getRequest('id'))
+			{
+				throw new Exception("Invalid Request.", 1);
+			}
+
+			$productId = $request->getRequest('id');
+			if(!$productId)
+			{
+				throw new Exception("Unable to fetch ID.", 1);
+				
+			}
+			$medias = $productModel->fetchAll("SELECT name FROM product_media WHERE  productId='$productId'");
+			foreach ($medias as $media)
+			{
+				unlink($this->getView()->getBaseUrl("Media/Product/"). $media->name);
+			}
+			$result = $productModel->load($productId)->delete();
+			if(!$result)
+			{
+				$this->getMessage()->addMessage('unable to delete.',3);
+				throw new Exception("Unable to Delet Record.", 1);
+				
+			}
+			$this->getMessage()->addMessage('data deleted succesfully.',1);
+		    $this->redirect('grid','product',[],true);
+		} 
+		catch (Exception $e) 
+		{
+			$this->redirect('grid','product',[],true);
+		}		
+	}
 	public function saveAction()
 	{
 		try
@@ -69,6 +105,8 @@ class Controller_Product extends Controller_Admin_Action
 			$request=$this->getRequest();
 			$productModel= Ccc::getModel('Product');
 			$categoryIds = $request->getPost('category');
+			$type = $request->getPost('discountMethod');
+
 			if(!$request->isPost())
 			{
 				throw new Exception("Request Invalid.",1);
@@ -81,17 +119,25 @@ class Controller_Product extends Controller_Admin_Action
 			}
 			$product=$productModel;
 			$product->setData($postData);
+			/*echo "<pre>";
+			print_r($postData);
+			exit();*/
+			if($type == 1)
+			{
+				$product->discount = $product->price * $product->discount / 100 ;
+			}
+			if(!($product->costPrice <= ($product->price-$product->discount) && $product->price-$product->discount <= $product->price) || $product->discount<0)
+			{
+				$this->getMessage()->addMessage('Not Valid',3);
+				throw new Exception("Discount not valid.", 1);
+			}
 			if(!($product->productId))
 			{
 				unset($product->productId);
-
-				$product->createdAt = date('y-m-d h:m:s');
-				
+				$product->createdAt = date('y-m-d h:m:s');	
 			}
 			else
 			{
-
-
 				if(!(int)$product->productId)
 				{
 					throw new Exception("Invelid Request.",1);
@@ -117,45 +163,6 @@ class Controller_Product extends Controller_Admin_Action
 
 			$this->redirect('grid','product',[],true);
 		}
-	}
-
-	public function deleteAction()
-	{
-		
-		try 
-		{
-			$productModel = Ccc::getModel('Product');
-			$request = $this->getRequest();
-			if(!$request->getRequest('id'))
-			{
-				throw new Exception("Invalid Request.", 1);
-			}
-
-			$productId = $request->getRequest('id');
-			if(!$productId)
-			{
-				throw new Exception("Unable to fetch ID.", 1);
-				
-			}
-			$medias = $productModel->fetchAll("SELECT name FROM product_media WHERE  productId='$productId'");
-			foreach ($medias as $media)
-			{
-				unlink(Ccc::getModel('Core_View')->getBaseUrl("Media/Product/"). $media->name);
-			}
-			$result = $productModel->load($productId)->delete();
-			if(!$result)
-			{
-				$this->getMessage()->addMessage('unable to delete.',3);
-				throw new Exception("Unable to Delet Record.", 1);
-				
-			}
-			$this->getMessage()->addMessage('data deleted succesfully.',1);
-		    $this->redirect('grid','product',[],true);
-		} 
-		catch (Exception $e) 
-		{
-			$this->redirect('grid','product',[],true);
-		}		
 	}
 
 }

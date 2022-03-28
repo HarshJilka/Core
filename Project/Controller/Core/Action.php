@@ -6,6 +6,7 @@ class Controller_Core_Action {
 
 	protected $layout = null;
 	protected $view = null;
+	protected $cart = null;
 	protected $message = null;
 	
 	protected function setTitle($title)
@@ -55,18 +56,36 @@ class Controller_Core_Action {
             ->setHeader('Content-type', 'text/html')
             ->render($this->getLayout()->toHtml());
     }
+
 	public function getAdapter()
 	{
 		global $adapter;
 		return $adapter;
 	}
+
 	public function getRequest()
 	{
 		return Ccc::getFront()->getRequest(); 
 	}
-	 public function getResponse()
+
+	public function getResponse()
     {
         return Ccc::getFront()->getResponse();
+    }
+
+    public function getCart()
+    {
+    	if(!$this->cart)
+    	{
+    		$this->cart = Ccc::getModel('Admin_Cart');
+    	}
+    	return $this->cart;
+    }
+
+    public function setCart($cart)
+    {
+    	$this->cart = $cart;
+    	return $this;
     }
 		
 }

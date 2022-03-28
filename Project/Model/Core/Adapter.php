@@ -1,7 +1,9 @@
     
 <?php 
 date_default_timezone_set('Asia/Kolkata');
-class Adapter{
+
+class Model_Core_Adapter
+{
     private $config = null;
     private $connect = NULL;
     public function __construct()
@@ -128,5 +130,5 @@ class Adapter{
     
    
 }
-$adapter=new Adapter();
+$adapter=new Model_Core_Adapter();
 ?>

@@ -4,7 +4,24 @@ class Block_Core_Template extends Model_Core_View
 {
 
     protected $children = [];
+    protected $layout = null;
     protected $pager = null;
+
+    public function __construct()
+    {
+        
+    }
+
+    public function getLayout()
+    {
+        return $this->layout;
+    }
+
+    public function setLayout($layout)
+    {
+        $this->layout = $layout;
+        return $this;
+    }
 
     public function getPager()
     {
@@ -36,6 +53,7 @@ class Block_Core_Template extends Model_Core_View
         }
 
         $this->children[$key] = $object;
+        $this->setLayout($this->getLayout());
         return $this;
     }
     

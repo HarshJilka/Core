@@ -2,13 +2,6 @@
 
 class Controller_Admin extends Controller_Admin_Action
 {
-    public function __construct()
-    {
-        if(!$this->authentication())
-        {
-            $this->redirect('login','admin_login');
-        }
-    }
 
     public function gridAction()
     {
@@ -21,10 +14,12 @@ class Controller_Admin extends Controller_Admin_Action
 
     public function addAction()
     {
+        $this->setTitle('admin');
         $adminModel = Ccc::getModel('Admin');
         $content = $this->getLayout()->getContent();
-        $this->setTitle('admin');
-        $adminAdd = Ccc::getBlock('Admin_Edit')->setData(['admin'=>$adminModel]);
+        $adminAdd = Ccc::getBlock('Admin_Edit');
+        /*->setData(['admin'=>$adminModel]);*/
+        Ccc::register('admin',$adminModel);
         $content->addChild($adminAdd,'Add');
         $this->renderLayout();
     }
@@ -53,7 +48,9 @@ class Controller_Admin extends Controller_Admin_Action
             }
 
             $content = $this->getLayout()->getContent();
-            $adminEdit = Ccc::getBlock('Admin_Edit')->setData(['admin'=>$admin]);
+            $adminEdit = Ccc::getBlock('Admin_Edit');
+            /*->setData(['admin'=>$admin])*/
+            Ccc::register('admin',$admin);
             $content->addChild($adminEdit,'Edit');
             $this->renderLayout();
         }
@@ -64,14 +61,12 @@ class Controller_Admin extends Controller_Admin_Action
     }
 
 
-
-
     public function saveAction()
     {
         try
         {
             $request = $this->getRequest();
-            $adminModel= Ccc::getModel('Admin');
+            $adminModel = Ccc::getModel('Admin');
 
             if(!$request->isPost())
             {
@@ -95,7 +90,7 @@ class Controller_Admin extends Controller_Admin_Action
                 unset($admin->adminId);
                 $admin->createdAt = date('y-m-d h:m:s');
                 $admin->password = md5($admin->password);
-                $result=$admin->save();
+                $result = $admin->save();
                 if(!$result)
                 {
                     $this->getMessage()->addMessage('Unable to Save Record.',3);
@@ -112,7 +107,8 @@ class Controller_Admin extends Controller_Admin_Action
                 }
                 $admin->updatedAt = date('y-m-d h:m:s');
                 $admin->password = md5($admin->password);
-                $result=$admin->save();
+                $result = $admin->save();
+
                 if(!$result)
                 {
                     $this->getMessage()->addMessage('Unable to Update Record.',3);
@@ -141,24 +137,15 @@ class Controller_Admin extends Controller_Admin_Action
                 throw new Exception("Request Invalid.", 1);
             }
 
-            $adminId = $request->getRequest('id');
-
-            if(!$adminId)
-            {
-                $this->getMessage()->addMessage('Unable to fetch ID.',3);
-                throw new Exception("Unable to fetch ID.", 1);
-            }
-            $result = $adminModel->load($adminId)->delete();
-            if(!$result)
-            {
-                $this->getMessage()->addMessage('Unable to Delete Record.',3);
-                throw new Exception("Unable to Delete Record.", 1);
-            }
-            $this->getMessage()->addMessage('Data Deleted.');
+            $id=$request->getRequest('id');
+            $admin_id=$adminModel->load($id)->delete();
+            $this->getMessage()->addMessage('data deleted succesfully.',1);
             $this->redirect('grid','admin',[],true);
+           
         } 
         catch (Exception $e)
         {
+            echo $e->getMessage();
             $this->redirect('grid','admin',[],true);
         }
     }
