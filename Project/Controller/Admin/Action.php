@@ -2,6 +2,15 @@
 
 class Controller_Admin_Action extends Controller_Core_Action
 {
+
+    public function __construct()
+    {
+        if(!$this->authentication())
+        {
+            /*$this->redirect('login','admin_login');*/
+        }
+    }
+    
     public function authentication()
     {
         $loginModel = Ccc::getModel("Admin_Login");

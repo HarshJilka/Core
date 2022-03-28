@@ -1,9 +1,8 @@
 <?php $admin=$this->getAdmin();  ?>
 
-<form action="<?php echo $this->getUrl('save','admin',['id'=>$admin->adminId],true) ?>" method="POST">
 	<table border="1" width="100%" cellspacing="4">
 		<tr>
-			<td colspan="2"><b>ADMIN INFO</b></td>
+			<td colspan="2"><b>Admin Information</b></td>
 		</tr>
 		<tr>
 			<td width="10%">First Name<input type="text" name="admin[adminId]" value="<?php echo $admin->adminId ?>" hidden></td>

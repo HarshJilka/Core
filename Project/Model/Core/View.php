@@ -14,17 +14,18 @@ class Model_Core_View {
 		
 		$this->template = $template;
 	}
-
+	
 	public function toHtml()
-	{
-		ob_start();
+    {
+        ob_start();
         require($this->getTemplate());
         $html = ob_get_contents();
         ob_end_flush();
-	}
+    }
 
 	public function getData($key = null)
 	{
+
 		if(!$key) 
 		{
 			return $this->data;	
@@ -48,6 +49,30 @@ class Model_Core_View {
 		return $this;
 	}
 
+	public function __set($key, $value)
+    {
+        $this->data[$key] = $value;
+        return $this;
+    }
+
+    public function __get($key = null)
+    {
+        if(array_key_exists($key,$this->data))
+        {
+            return $this->data[$key];
+        }
+        return null;
+    }
+
+    public function __unset($key)
+    {
+        if(array_key_exists($key,$this->data))
+        {
+            unset($this->data[$key]);
+        }
+        return $this;
+    }
+
 	public function removeData($key)
 	{
 		if (array_key_exists($key, $this->data)) 
@@ -60,19 +85,24 @@ class Model_Core_View {
 	{
 
 		$info = [];
-		if($c==null && $a==null && $data==null && $reset==false){
+		if($c==null && $a==null && $data==null && $reset==false)
+		{
 			$info = Ccc::getFront()->getRequest()->getRequest();
 		}
 		$info['c']= $c==null ?Ccc::getFront()->getRequest()->getRequest('c') : $info['c']=$c ; 
 		$info['a']= $a==null ?Ccc::getFront()->getRequest()->getRequest('a') : $info['a']=$a ; 
-		if($reset){
-			if($data) {
+		if($reset)
+		{
+			if($data)
+			{
 				$info = array_merge($info,$data);
 			}
 		}
-		else{
+		else
+		{
 			$info = array_merge(Ccc::getFront()->getRequest()->getRequest(),$info);
-			if($data) {
+			if($data) 
+			{
 				$info = array_merge($info,$data);
 			}	
 		}
@@ -81,8 +111,9 @@ class Model_Core_View {
 	}
 	public function getBaseUrl($subUrl = null)
     {
-        $url = "C:/xampp/htdocs/PHP/core-session-message/Core/Project";
-        if($subUrl){
+        $url = getcwd();
+        if($subUrl)
+        {
             $url = $url."/".$subUrl;
         }
         return $url;

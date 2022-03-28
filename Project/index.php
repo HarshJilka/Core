@@ -1,13 +1,13 @@
 <?php require_once('Model/Core/Adapter.php'); 
-		$adapter = new Adapter();
- ?>
+	  $adapter = new Model_Core_Adapter(); ?>
 
 <?php 
 
 class Ccc
 {
 	public static $front = null;
-	 public static function register($key, $value)
+
+	public static function register($key, $value)
     {
         $GLOBALS[$key] = $value;
     }
@@ -42,16 +42,19 @@ class Ccc
         }
         return null;
     }
+
 	public static function loadFile($path)
 	{
 
 		return require_once($path);
 	}
+	
 	public static function loadClass($className)
 	{
 		$path = str_replace("_", "/", $className).'.php'; 
 		Ccc::loadFile($path);
 	}
+	
 	public static function getFront()
 	{
 		if(!self::$front)
@@ -67,22 +70,47 @@ class Ccc
 	{
 		self::$front = $front;
 	}
+	
 	public static function getModel($className)
 	{
 		$className = 'Model_'.$className;
 		self::loadClass($className);
 		return new $className();
 	}
+	
 	public static function getBlock($className)
 	{
 		$className = 'Block_'.$className; 
 		self::loadClass($className);
 		return new $className();
 	}
+	
 	public static function init()
 	{
 		self::getFront()->init();
 	}
+
+	public static function getPath($subPath = null)
+    {
+        if($subPath)
+        {
+            if(!defined('DS'))
+            {
+                define('DS', DIRECTORY_SEPARATOR);
+            }
+            return getcwd().DS.$subPath;
+        }
+        return getcwd();
+    }
+
+	public static function getBaseUrl($subUrl = null)
+    {
+        if($subUrl)
+        {
+            return self::getConfig('baseUrl').$subUrl;
+        }
+        return self::getConfig('baseUrl');
+    }
 }
 
 Ccc::init();
