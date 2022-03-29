@@ -1,19 +1,17 @@
 <?php Ccc::loadClass('Controller_Admin_Action'); ?>
 <?php
 
-class Controller_Customer extends Controller_Admin_Action
-{
+class Controller_Customer extends Controller_Admin_Action{
 	public function __construct()
-    {
-        if(!$this->authentication())
-        {
-            $this->redirect('login','admin_login');
-        }
-    }
-
+	{
+		if(!$this->authentication()){
+			$this->redirect('login','admin_login');
+		}
+	}
+	
 	public function gridAction()
 	{
-		$this->setTitle('customer');
+		$this->setTitle('Customer Grid');
 		$content = $this->getLayout()->getContent();
 		$customerGrid = Ccc::getBlock('Customer_Grid');
 		$content->addChild($customerGrid,'grid');	
@@ -22,13 +20,12 @@ class Controller_Customer extends Controller_Admin_Action
 
 	public function addAction()
 	{
-		$this->setTitle('customer');
+		$this->setTitle('Customer Add');
 		$customerModel = Ccc::getModel('customer');
 		$billingAddress = $customerModel->getBillingAddress();
 		$shippingAddress = $customerModel->getShippingAddress();
 		$content = $this->getLayout()->getContent();
-		$customerAdd = Ccc::getBlock('Customer_Edit');/*->setData(['customer'=>$customerModel,'billingAddress'=>$billingAddress, 'shippingAddress' => $shippingAddress]);*/
-
+		$customerAdd = Ccc::getBlock('Customer_Edit');
 		Ccc::register('customer',$customerModel);
 		Ccc::register('billingAddress',$billingAddress);
 		Ccc::register('shippingAddress',$shippingAddress);
@@ -38,11 +35,10 @@ class Controller_Customer extends Controller_Admin_Action
 
 	public function editAction()
 	{
-		$this->setTitle('customer');
 		$customerModel = Ccc::getModel('Customer');
 		$request = $this->getRequest();
 		$id = (int)$request->getRequest('id');
-
+		
 		if(!$id)
 		{
 			throw new Exception("Invalid Request", 1);
@@ -55,11 +51,9 @@ class Controller_Customer extends Controller_Admin_Action
 			throw new Exception("System is unable to find record.", 1);	
 		}
 
-		$this->setTitle('Edit');
+		$this->setTitle('Customer Edit');
 		$content = $this->getLayout()->getContent();
 		$customerEdit = Ccc::getBlock('Customer_Edit');
-		/*->setData(['customer'=>$customer]);*/
-
 		Ccc::register('customer',$customer);
 		Ccc::register('billingAddress',$customer->getBillingAddress());
 		Ccc::register('shippingAddress',$customer->getShippingAddress());
@@ -85,7 +79,6 @@ class Controller_Customer extends Controller_Admin_Action
 				throw new Exception("Unable to fetch ID.", 1);
 				
 			}
-
 			$result = $customerModel->load($customerId)->delete();
 			if(!$result)
 			{
@@ -104,23 +97,20 @@ class Controller_Customer extends Controller_Admin_Action
 
 	protected function saveCustomer()
 	{
+		
 		$customerModel = Ccc::getModel('Customer');
 		$request = $this->getRequest();
-
 		if(!$request->getPost('customer'))
 		{
 			throw new Exception("Invalid Request", 1);
-		}
-
+		}	
 		$postData = $request->getPost('customer');
 		if(!$postData)
 		{
 			throw new Exception("Invalid data posted.", 1);	
 		}
-
 		$customer = $customerModel;
 		$customer->setData($postData);
-		
 		if(!$customer->customerId)
 		{
 			unset($customer->customerId);
@@ -130,18 +120,16 @@ class Controller_Customer extends Controller_Admin_Action
 		{
 			$customer->updatedAt = date('y-m-d h:i:s');
 		}
-
 		$save = $customer->save();
 		if(!$save->customerId)
 		{
 			$this->getMessage()->addMessage('unable to insert Customer.',3);
 			throw new Exception("System is unable to Insert.", 1);
 		}
-		$this->getMessage()->addMessage('Customer updated succesfully.',1);
+		$this->getMessage()->addMessage('Customer Inserted succesfully.',1);
 		return $save;
 		 
 	}
-	
 	protected function saveAddress($customer = null)
 	{
 		if(!$customer)
@@ -149,7 +137,7 @@ class Controller_Customer extends Controller_Admin_Action
 			$customerId = $this->getRequest()->getRequest('id');
 			if(!$customerId)
 			{
-				$this->getMessage()->addMessage('not valid',3);
+				$this->getMessage()->addMessage('Not valid',3);
 				throw new Exception("System is unable to Save Address without Customer.", 1);
 			}
 			$customer = Ccc::getModel('customer')->load($customerId);
@@ -161,8 +149,7 @@ class Controller_Customer extends Controller_Admin_Action
 		}	
 		$postBilling = $request->getPost('billingAddress');
 		$postShipping = $request->getPost('shippingAddress');
-		/*print_r($customer);
-		exit();*/
+		
 		$billing = $customer->getBillingAddress();
 		$shipping = $customer->getShippingAddress();
 		if(!$billing->addressId)
