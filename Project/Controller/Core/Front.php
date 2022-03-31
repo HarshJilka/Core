@@ -1,7 +1,6 @@
 <?php 
 Ccc::loadClass('Model_Core_Response');
 Ccc::loadClass('Model_Core_Request');
-
 class Controller_Core_Front
 {
 	protected $request = null;

@@ -69,9 +69,9 @@ class Block_Core_Grid_Collection extends Block_Core_Template
     public function addCollection($collection,$key)
     {
         $this->collections[$key] = $collection;
-       
         return $this;
     }
+
     public function setCollection($collection,$key)
     {
         $this->collections[$this->currentCollection][$key] = $collection;
@@ -85,8 +85,8 @@ class Block_Core_Grid_Collection extends Block_Core_Template
             return $this->collections[$key];
         }
         return null;
-
     }
+    
     public function removeCollection($collection)
     {
         if(array_key_exists($key,$this->collections))

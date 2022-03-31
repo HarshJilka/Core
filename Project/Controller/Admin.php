@@ -1,152 +1,146 @@
-<?php Ccc::loadClass('Controller_Admin_Action');
+<?php Ccc::loadClass('Controller_Admin_Action');?>
+<?php 
 
-class Controller_Admin extends Controller_Admin_Action
-{
+class Controller_Admin extends Controller_Admin_Action{
 
+    public function __construct()
+    {
+        if(!$this->authentication()){
+            $this->redirect('login','admin_login');
+        }
+    }
     public function gridAction()
     {
+        $this->setTitle('Admin Grid');  
         $content = $this->getLayout()->getContent();
-        $this->setTitle('admin');
         $adminGrid = Ccc::getBlock('Admin_Grid');
-        $content->addChild($adminGrid,'Grid');
+        $content->addChild($adminGrid,'grid');  
         $this->renderLayout();
+    
     }
-
+    public function gridContentAction()
+    {
+        $this->setTitle('Admin Grid');  
+        $content = $this->getLayout()->getContent();
+        $adminGrid = Ccc::getBlock('Admin_Grid');
+        $content->addChild($adminGrid,'grid');  
+        $this->renderContent();
+    
+    }
     public function addAction()
     {
-        $this->setTitle('admin');
-        $adminModel = Ccc::getModel('Admin');
+        $this->setTitle('Admin Add');
+        $adminModel = Ccc::getModel('admin');
         $content = $this->getLayout()->getContent();
         $adminAdd = Ccc::getBlock('Admin_Edit');
-        /*->setData(['admin'=>$adminModel]);*/
         Ccc::register('admin',$adminModel);
-        $content->addChild($adminAdd,'Add');
-        $this->renderLayout();
+        $content->addChild($adminAdd,'add');
+        $this->renderContent();
     }
-
     public function editAction()
-    {
-        try
-        {
-            $this->setTitle('admin');
-            $adminModel = Ccc::getModel('Admin');
-            $request = $this->getRequest();
-            $id = (int)$request->getRequest('id');
-
-            if(!$id)
-            {
-                $this->getMessage()->addMessage('Request Invalid.',3);
-                throw new Exception("Request Invalid.", 1);
-            }
-            
-            $admin = $adminModel->load($id);
-            
-            if(!$admin)
-            {   
-                $this->getMessage()->addMessage('System is unable to find record.',3);
-                throw new Exception("System is unable to find record.", 1);
-            }
-
-            $content = $this->getLayout()->getContent();
-            $adminEdit = Ccc::getBlock('Admin_Edit');
-            /*->setData(['admin'=>$admin])*/
-            Ccc::register('admin',$admin);
-            $content->addChild($adminEdit,'Edit');
-            $this->renderLayout();
-        }
-        catch (Exception $e)
-        {
-            $this->redirect('grid','admin',[],true);
-        }
-    }
-
-
-    public function saveAction()
-    {
-        try
-        {
-            $request = $this->getRequest();
-            $adminModel = Ccc::getModel('Admin');
-
-            if(!$request->isPost())
-            {
-                $this->getMessage()->addMessage('Request Invalid.',3);
-                throw new Exception("Request Invalid.", 1);
-            }
-
-            $postData = $request->getPost('admin');
-
-            if(!$postData)
-            {
-                $this->getMessage()->addMessage('Invalid data Posted.',3);
-                throw new Exception("Invalid data Posted.", 1);
-            }
-
-            $admin = $adminModel;
-            $admin->setData($postData);
-
-            if(!($admin->adminId))
-            {
-                unset($admin->adminId);
-                $admin->createdAt = date('y-m-d h:m:s');
-                $admin->password = md5($admin->password);
-                $result = $admin->save();
-                if(!$result)
-                {
-                    $this->getMessage()->addMessage('Unable to Save Record.',3);
-                    throw new Exception("Unable to Save Record.", 1);
-                }
-                $this->getMessage()->addMessage('Your Data save Successfully');
-            }
-            else
-            {
-                if(!(int)$admin->adminId)
-                {
-                    $this->getMessage()->addMessage('Invalid Request.',3);
-                    throw new Exception("Invalid Request.", 1);
-                }
-                $admin->updatedAt = date('y-m-d h:m:s');
-                $admin->password = md5($admin->password);
-                $result = $admin->save();
-
-                if(!$result)
-                {
-                    $this->getMessage()->addMessage('Unable to Update Record.',3);
-                    throw new Exception("Unable to update Record.", 1);
-                }
-                $this->getMessage()->addMessage('Your Data Update Successfully');
-            }
-            $this->redirect('grid','admin',[],true);
-        }
-        catch (Exception $e)
-        {
-            $this->redirect('grid','admin',[],true);
-        }
-    }
-
-    public function deleteAction()
     {
         try 
         {
             $adminModel = Ccc::getModel('Admin');
             $request = $this->getRequest();
+            $id = (int)$request->getRequest('id');
+            if(!$id)
+            {
+                throw new Exception("Invalid Request", 1);
+            }
+            $admin = $adminModel->load($id);
+            if(!$admin)
+            {
+                throw new Exception("System is unable to find record.", 1);
+                
+            }
+            $this->setTitle('Admin Edit');
+            $content = $this->getLayout()->getContent();
+            $adminEdit = Ccc::getBlock('Admin_Edit');
+            Ccc::register('admin',$admin);
+            $content->addChild($adminEdit,'edit'); 
+            $this->renderContent();
+        }    
+        catch (Exception $e) 
+        {
+            throw new Exception("Invalid Request.", 1);
+        }
+    }
 
+
+    public function deleteAction()
+    {
+        
+        try
+        {
+            $adminModel = Ccc::getModel('Admin');
+            $request=$this->getRequest();
             if(!$request->getRequest('id'))
             {
-                $this->getMessage()->addMessage('Request Invalid.',3);
-                throw new Exception("Request Invalid.", 1);
+                $this->getMessage()->addMessage('unable to delete.',3);
+                throw new Exception("Invelid Request", 1);
+                
             }
-
             $id=$request->getRequest('id');
             $admin_id=$adminModel->load($id)->delete();
             $this->getMessage()->addMessage('data deleted succesfully.',1);
-            $this->redirect('grid','admin',[],true);
-           
-        } 
-        catch (Exception $e)
+
+        }
+        catch(Exception $e)
         {
             echo $e->getMessage();
-            $this->redirect('grid','admin',[],true);
         }
     }
+    public function saveAction()
+    {
+        try
+        {
+            
+            $request=$this->getRequest();
+            $adminModel= Ccc::getModel('Admin');
+            if(!$request->isPost())
+            {
+                throw new Exception("Request Invalid.",1);
+            }
+            $postData=$request->getPost('admin');
+            if(!$postData)
+            {
+                throw new Exception("Invalid data Posted.", 1);
+                
+            }
+            $admin=$adminModel;
+            $admin->setData($postData);
+            if(!($admin->adminId))
+            {
+                unset($admin->adminId);
+                $admin->createdAt = date('y-m-d h:m:s');
+            }
+            else
+            {
+
+                unset($admin->password);
+                if(!(int)$admin->adminId)
+                {
+                    throw new Exception("Invelid Request.",1);
+                }
+                $admin->updatedAt = date('y-m-d h:m:s');
+            }
+            $result=$admin->save();
+            if(!$result)
+            {
+                $this->getMessage()->addMessage('unable to inserted.',3);
+                throw new Exception("unable to save Record.", 1);
+                
+            }   
+            $this->getMessage()->addMessage('Data save succesfully',1);
+        } 
+        catch (Exception $e) 
+        {
+
+        }
+    }
+
 }
+
+
+?>

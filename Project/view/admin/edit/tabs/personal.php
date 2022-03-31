@@ -35,9 +35,24 @@
 		<tr>
 			<td width="10%">&nbsp;</td>
 			<td>
-				<input type="submit" name="submit" value="Save">
-				<button type="button"><a href="<?php echo $this->getUrl('grid','admin',[],true) ?>">Cancel</a></button>
+				<input type="button" name="submit" id="submit" value="Save">
+				<button type="button" id="cancel">Cancel</button>
 			</td>
 		</tr>
 		
 	</table>	
+
+<script type="text/javascript">
+	$(document).on('click','#cancel',function () {
+	  event.preventDefault();
+	  $.ajax({
+	        type: 'GET',
+	        url: jQuery(this).attr('href'),
+	        success: function(data) {
+	          $('#content').html(data);
+	      },
+	      dataType : 'html'
+	      });
+
+});
+</script>

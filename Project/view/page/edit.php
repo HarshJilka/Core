@@ -1,4 +1,57 @@
 <?php $page = $this->getPage() ?>
+	<script>
+		<script type="text/javascript" src="skin/Admin/js/jQuery_3-6-0.js" ></script>
+		<script type="text/javascript">
+		page = {
+					form : null,
+					setForm : function(form){
+						this.form = jQuery("#"+form);
+						return this;
+					},
+					getForm : function(){
+						return this.form;
+					},
+					validate : function() {
+						var canSubmit = true;
+						if(!jQuery("#name").val()){
+							alert("Please Enter Name");
+							canSubmit = false;
+						}
+						if (!jQuery("#code").val()) {
+							alert("Please Enter Code");
+							canSubmit = false;
+
+						}
+						if(!jQuery("#content").val()){
+							alert("Please Enter Content");
+							canSubmit = false;
+						}
+						if(canSubmit == true){
+							alert("Submitted");
+							this.callAjax();
+						}
+						return false;
+					},
+					callAjax : function() {
+							alert("Ajax Called");
+							$.ajax({
+								type: "POST",
+								url: "index.php?a=save&c=page",
+								data: jQuery('#page-form').serializeArray(),
+								sucess: function(data) {
+										alert(data.firstName);
+								},
+								dataType : "json"
+								
+							})
+					}
+
+				};
+			</script>
+	<script type="text/javascript">
+		page.setForm("page-form");
+	</script>
+			</script>
 <!DOCTYPE html>
 
 	<form action="<?php echo $this->getUrl('save','page',[],true) ?>" method="post">

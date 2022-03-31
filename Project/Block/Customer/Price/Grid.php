@@ -11,10 +11,6 @@ class Block_Customer_Price_Grid extends Block_Core_Template
     public function getProducts()
     {
         $request = Ccc::getModel('Core_Request');
-        $page = (int)$request->getRequest('p', 1);
-        $ppr = (int)$request->getRequest('ppr',20);
-
-        $pagerModel = Ccc::getModel('Core_Pager');
         $customerId = $request->getRequest('id');
         $productModel = Ccc::getModel('product');
         $customerModel = Ccc::getModel('customer');
@@ -24,13 +20,23 @@ class Block_Customer_Price_Grid extends Block_Core_Template
         {
             return $productModel->getData();
         }
-        $totalCount = $pagerModel->getAdapter()->fetchOne("SELECT count(productId) FROM `product` WHERE `status` = '1'");
         
-        $pagerModel->execute($totalCount,$page,$ppr);
-        $this->setPager($pagerModel);
 
-        $products = $productModel->fetchAll("SELECT * FROM `product` WHERE `status` = '1' LIMIT {$pagerModel->getStartLimit()} , {$pagerModel->getEndLimit()}");
+        $products = $productModel->fetchAll("SELECT * FROM `product` WHERE `status` = '1'");
         return $products;
+    }
+
+    public function getCustomerPrice($productId)
+    {
+        $request = Ccc::getFront()->getRequest();
+        $customerId = $request->getRequest('id');
+        $customerPriceModel = Ccc::getModel('Customer_Price');
+        $discount = $customerPriceModel->fetchAll("SELECT * FROM `customer_price` WHERE `productId` = '$productId' AND `customerId` = '$customerId' ");
+        if(!$discount)
+        {
+            return null;
+        }
+        return $discount[0]->price;
     }
 
     public function getSalesmanPrice($productId)
@@ -51,21 +57,6 @@ class Block_Customer_Price_Grid extends Block_Core_Template
             }
         }
     }
-
-    public function getCustomerPrice($productId)
-    {
-        $request = Ccc::getFront()->getRequest();
-        $customerId = $request->getRequest('id');
-        $customerPriceModel = Ccc::getModel('Customer_Price');
-        $discount = $customerPriceModel->fetchAll("SELECT * FROM `customer_price` WHERE `productId` = '$productId' AND `customerId` = '$customerId' ");
-        if(!$discount)
-        {
-            return null;
-        }
-        return $discount[0]->price;
-    }
-
-    
 
 }
 

@@ -34,7 +34,7 @@ ul{
 <li><a href="index.php?c=page&a=grid">PAGE</a></li>
 <li><a href="index.php?c=admin&a=grid">ADMIN</a></li>
 <li><a href="index.php?c=category&a=grid">CATEGORY</a></li>
-<li><a href="index.php?c=customer&a=grid">CUSTOMER</a></li>
+<li><a href="index.php?c=customer&a=index">CUSTOMER</a></li>
 <li><a href="index.php?c=product&a=grid">PRODUCT</a></li>
 <li><a href="index.php?c=config&a=grid">CONFIG</a></li>
 <li><a href="index.php?c=salesman&a=grid">SALESMAN</a></li>
