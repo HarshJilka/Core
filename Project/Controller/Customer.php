@@ -78,26 +78,22 @@ class Controller_Customer extends Controller_Admin_Action
 			$addressModel = Ccc::getModel("Customer_Address");
 			$request = $this->getRequest();
 			$customerId = $request->getRequest('id');
-
 			if(!$customerId)
 			{
-				$this->getMessage()->addMessage('Data cannot be fatch', Model_Core_Message::MESSAGE_ERROR);
+				$this->getMessage()->addMessage('Your data con not be fetch', Model_Core_Message::MESSAGE_ERROR);
 				throw new Exception("Error Processing Request", 1);			
 			}
-
 			if(!(int)$customerId)
 			{
-				$this->getMessage()->addMessage('Data cannot be fatch', Model_Core_Message::MESSAGE_ERROR);
+				$this->getMessage()->addMessage('Your data con not be fetch', Model_Core_Message::MESSAGE_ERROR);
 				throw new Exception("Error Processing Request", 1);			
 			}
-
 			$customer = $customerModel->load($customerId);
 			$billingAddress = $customer->getBillingAddress();
 			$shippingAddress = $customer->getShippingAddress();
-
 			if(!$customer)
 			{
-				$this->getMessage()->addMessage('Data cannot be fatch', Model_Core_Message::MESSAGE_ERROR);
+				$this->getMessage()->addMessage('Your data con not be fetch', Model_Core_Message::MESSAGE_ERROR);
 				throw new Exception("Error Processing Request", 1);			
 			}
 	
@@ -176,14 +172,12 @@ class Controller_Customer extends Controller_Admin_Action
 			throw new Exception("Invalid Request", 1);
 		}	
 		$postData = $request->getPost('customer');
-		
 		if(!$postData)
 		{
 			throw new Exception("Invalid data posted.", 1);	
 		}
 		$customer = $customerModel;
 		$customer->setData($postData);
-		
 		if(!$customer->customerId)
 		{
 			unset($customer->customerId);
@@ -194,16 +188,16 @@ class Controller_Customer extends Controller_Admin_Action
 			$customer->updatedAt = date('y-m-d h:i:s');
 		}
 		$save = $customer->save();
-		
 		if(!$save->customerId)
 		{
-			$this->getMessage()->addMessage('Unable to insert customer details.',3);
+			$this->getMessage()->addMessage('unable to insert Customer.',3);
 			throw new Exception("System is unable to Insert.", 1);
 		}
-		$this->getMessage()->addMessage('Customer Inserted Succesfully.',1);
+			$this->getMessage()->addMessage('Customer Inserted succesfully.',1);
 		return $save;
 		 
 	}
+
 	protected function saveAddress($customer = null)
 	{
 		if(!$customer)
@@ -211,24 +205,21 @@ class Controller_Customer extends Controller_Admin_Action
 			$customerId = $this->getRequest()->getRequest('id');
 			if(!$customerId)
 			{
-				$this->getMessage()->addMessage('Unable to insert.',3);
+				$this->getMessage()->addMessage('Not valid.',3);
 				throw new Exception("System is unable to Save Address without Customer.", 1);
 			}
 			$customer = Ccc::getModel('customer')->load($customerId);
 		}
-
 		$request = $this->getRequest();
 		if(!$request->getPost())
 		{
 			throw new Exception("Invalid Request", 1);
 		}	
-
 		$postBilling = $request->getPost('billingAddress');
 		$postShipping = $request->getPost('shippingAddress');
 		
 		$billing = $customer->getBillingAddress();
 		$shipping = $customer->getShippingAddress();
-
 		if(!$billing->addressId)
 		{
 			unset($billing->addressId);
@@ -243,10 +234,10 @@ class Controller_Customer extends Controller_Admin_Action
 		}
 		else
 		{	
+			//$billing = Ccc::getModel('customer_address');
 			$billing->billing = 1;
 			$billing->shipping = 2;
 		}
-
 		$billing->customerId = $customer->customerId;
 		if($postShipping)
 		{
@@ -254,10 +245,12 @@ class Controller_Customer extends Controller_Admin_Action
 		}
 		else
 		{
+			//$shipping = setData(Ccc::getModel('customer_address'));
 			$shipping->shipping = 1;
 			$shipping->billing = 2;
 		}	
 		$shipping->customerId = $customer->customerId;
+		
 		
 		$save = $billing->save();
 		if(!$save)
@@ -265,7 +258,6 @@ class Controller_Customer extends Controller_Admin_Action
 			$this->getMessage()->addMessage('Customer Details Not Saved.',3);
 			throw new Exception("System is unable to Save.", 1);
 		}
-
 		$save = $shipping->save();
 		if(!$save)
 		{
@@ -286,25 +278,24 @@ class Controller_Customer extends Controller_Admin_Action
 					$this->getMessage()->addMessage('Customer Details Not Saved.',3);
 					throw new Exception("System is unable to Save.", 1);
 				}
-				$this->saveAddress($customer);
-			}
 
+				$this->saveAddress($customer);
+
+			}
 			if ($this->getRequest()->getPost('billingAddress') || $this->getRequest()->getPost('shippingAddress'))
 			{
 				$this->saveAddress();			
 			}
+
 			$this->gridBlockAction();
-			//$this->redirect('grid','customer',[],true);
 		}
 		catch (Exception $e) 
 		{
-			/*echo "11";
-			exit;*/
+			
 			$message = $this->getMessage()->addMessage($e->getMessage(),Model_Core_Message::MESSAGE_ERROR);
 			$this->gridBlockAction();
 		}
 	}
-
 }
-
+	
 ?>

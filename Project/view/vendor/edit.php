@@ -1,8 +1,7 @@
 <?php 
-	 $vendor = $this->getVendor();
-	 $address = $vendor->getAddress();
+	$vendor = $this->getVendor();
+	$address = $vendor->getAddress();
 ?>
-
 
 
 <form action="<?php echo $this->getUrl('save','vendor',['id'=>$vendor->vendorId],true) ?>" method="POST">
@@ -40,8 +39,6 @@
 			<td colspan="2"><b>Address Information</b></td>
 		</tr>
 		
-		<input type="text" name="address[vendorId] " value="<?php echo $address->vendorId ?>" hidden>
-		<input type="text" name="address[addressId] " value="<?php echo $address->addressId ?>" hidden>
 
 
 		<tr>

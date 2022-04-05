@@ -62,7 +62,7 @@ class Model_Core_Request
 
 	public function getActionName()
 	{
-		return $this->getRequest('a','grid').'Action';
+		return $this->getRequest('a','index').'Action';
 
 	}
 

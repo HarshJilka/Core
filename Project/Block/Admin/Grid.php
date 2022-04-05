@@ -74,13 +74,12 @@ class Block_Admin_Grid extends Block_Core_Grid {
             array_push($adminColumn,$admin);
         }        
         return $adminColumn;
-    }
+    }	
     public function getAdapter()
     {
     	global $adapter;
     	return $adapter;
     }
-	
 }
 
 

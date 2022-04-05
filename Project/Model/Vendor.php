@@ -30,22 +30,18 @@ class Model_Vendor extends Model_Core_Row
 		}
 		return self::STATUS_DEFAULT;
 	}
-
 	public function getAddress($reload = false)
 	{
-		$addressModel = Ccc::getModel('Vendor_Address');
-
+		$addressModel = Ccc::getModel('Vendor_Address'); 
 		if(!$this->vendorId)
 		{
 			return $addressModel;
 		}
-
 		if($this->address && !$reload)
 		{
-			return $addressModel;
+			return $this->address;
 		}
 		$address = $addressModel->fetchRow("SELECT * FROM `vendor_address` WHERE `vendorId` = {$this->vendorId}");
-
 		if(!$address)
 		{
 			return $addressModel;
@@ -55,9 +51,19 @@ class Model_Vendor extends Model_Core_Row
 		return $this->address;
 	}
 
-	public function setAddress($address)
+	public function setAddress(Model_Vendor_Address $address)
 	{
-		$this->address = $address;
+		$this->address =$address;
 		return $this;
+	}
+	
+	public function getEditUrl()
+	{
+		return Ccc::getModel('Core_View')->getUrl('edit','vendor',['id'=>$this->vendorId]);
+	}
+
+	public function getDeleteUrl()
+	{
+		return Ccc::getModel('Core_View')->getUrl('delete','vendor',['id'=>$this->vendorId]);
 	}
 }

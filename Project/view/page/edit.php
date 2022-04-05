@@ -1,60 +1,7 @@
 <?php $page = $this->getPage() ?>
-	<script>
-		<script type="text/javascript" src="skin/Admin/js/jQuery_3-6-0.js" ></script>
-		<script type="text/javascript">
-		page = {
-					form : null,
-					setForm : function(form){
-						this.form = jQuery("#"+form);
-						return this;
-					},
-					getForm : function(){
-						return this.form;
-					},
-					validate : function() {
-						var canSubmit = true;
-						if(!jQuery("#name").val()){
-							alert("Please Enter Name");
-							canSubmit = false;
-						}
-						if (!jQuery("#code").val()) {
-							alert("Please Enter Code");
-							canSubmit = false;
-
-						}
-						if(!jQuery("#content").val()){
-							alert("Please Enter Content");
-							canSubmit = false;
-						}
-						if(canSubmit == true){
-							alert("Submitted");
-							this.callAjax();
-						}
-						return false;
-					},
-					callAjax : function() {
-							alert("Ajax Called");
-							$.ajax({
-								type: "POST",
-								url: "index.php?a=save&c=page",
-								data: jQuery('#page-form').serializeArray(),
-								sucess: function(data) {
-										alert(data.firstName);
-								},
-								dataType : "json"
-								
-							})
-					}
-
-				};
-			</script>
-	<script type="text/javascript">
-		page.setForm("page-form");
-	</script>
-			</script>
 <!DOCTYPE html>
 
-	<form action="<?php echo $this->getUrl('save','page',[],true) ?>" method="post">
+	<form action="<?php echo $this->getUrl('save','page',[],true) ?>" id="form" method="post">
 		<table cellpadding="4" border="3" width="100%">
 			<tr colspan="2">
 				<th>Page Edit<th>
@@ -83,10 +30,35 @@
 			</tr>	
 				<td width="10%">&nbsp;</td>
 				<td>
-					<input type="submit" value="Save" >
-					<button><a href="<?php echo $this->getUrl('grid','page',[],true) ?>">Cancel</a></button>
+					<input type="button" id="submit" value="Save" >
+					<button id = "cancel">Cancel</button>
 				</td>
 				
 			</tr>
 		</table>
 	</form>
+<script type="text/javascript">
+	$(document).on('click','#cancel',function () {
+	  event.preventDefault();
+	  $.ajax({
+	        type: 'GET',
+	        url: "<?php echo $this->getUrl('gridContent')?>",
+	        success: function(data) {
+	          $('#content').html(data);
+	      },
+	      dataType : 'html'
+	      });
+
+	});
+	$(document).ready(function()
+    {
+        $("#submit").click(function()
+        {
+            var data = $("#form").serializeArray();
+            admin.setData(data);
+            admin.validate();
+            admin.setUrl("<?php echo $this->getUrl('gridContent') ?>")
+            admin.load();
+        });
+    });
+</script>

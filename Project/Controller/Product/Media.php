@@ -1,17 +1,27 @@
 <?php Ccc::loadClass('Controller_Core_Action') ?>
 <?php
 
-class Controller_Product_Media extends Controller_Core_Action{
+class Controller_Product_Media extends Controller_Core_Action
+{
+	public function __construct()
+	{
+		if(!$this->authentication()){
+			$this->redirect('login','admin_login');
+		}
+	}
 
 	public function gridAction()
 	{
+		$this->setTitle('Product Media Grid');
 		$content = $this->getLayout()->getContent();
 		$mediaGrid = Ccc::getBlock('Product_Media_Grid');;
 		$content->addChild($mediaGrid,'grid');	
 		$this->renderLayout();
 	}
+
 	public function galleryAction()
 	{
+		$this->setTitle('Product Media Gallery');
 		$content = $this->getLayout()->getContent();
 		$mediaGallery = Ccc::getBlock('product_Media_Gallery');;
 		$content->addChild($mediaGallery,'gallery');	

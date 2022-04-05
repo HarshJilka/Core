@@ -2,10 +2,10 @@
 class Block_Core_Grid extends Block_Core_Template  
 {
 
-
     protected $actions = [];
     protected $collection = [];
     protected $columns = []; 
+    
     public function __construct()
     {
         parent::__construct();
@@ -63,11 +63,13 @@ class Block_Core_Grid extends Block_Core_Template
         $this->actions = $actions;
         return $this;
     }
+    
     public function addAction(array $action,$key)
     {
         $this->actions[$key] = $action ;
         return $this;
     }
+
     public function getAction($key)
     {
         if(!array_key_exists($key,$this->actions))
@@ -83,13 +85,41 @@ class Block_Core_Grid extends Block_Core_Template
         return $this;
     }
 
-    public function getColumnData($column,$collection)
+     public function getColumnData($column, $collection)
     {
         $key = $column['key'];
         if($key == 'status')
         {
             return $collection->getStatus($collection->status);
         }
+        if($key == 'base')
+        {
+            if($collection->getBase())
+            {
+                $image = $collection->getBase()->getImgPath();
+                return "<img src='{$image}' alt='' width='50' height='50'>";
+            }
+            return "No Image Found";
+        }
+        if($key == 'thumb')
+        {
+            if($collection->getThumb())
+            {
+                $image = $collection->getThumb()->getImgPath();
+                return "<img src='{$image}' alt='' width='50' height='50'>";
+            }
+            return "No Image Found";
+        }
+        if($key == 'small')
+        {
+            if($collection->getThumb())
+            {
+                $image = $collection->getSmall()->getImgPath();
+                return "<img src='{$image}' alt='' width='50' height='50'>";
+            }
+            return "No Image Found";
+        }
+
         return $collection->$key;
     }
 

@@ -65,7 +65,6 @@ class Block_Cart_Edit extends Block_Core_Template
         }
         return null;
     }
-
     public function getTax($cartId)
     {
         if($cartId)
@@ -75,14 +74,12 @@ class Block_Cart_Edit extends Block_Core_Template
         }
         return null;
     }
-
     public function getPaymentMethods()
     {
         $payModel = Ccc::getModel('Cart');
         $paymentMethods = $payModel->fetchAll("SELECT * FROM `payment_method`");
         return $paymentMethods;
     }
-    
     public function getShippingMethods()
     {
         $shippModel = Ccc::getModel('Cart');

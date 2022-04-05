@@ -25,6 +25,21 @@ class Block_Cart_Grid extends Block_Core_Template
         return $carts;
     }
 
+    public function setPager($pager)
+    {
+        $this->pager = $pager;
+        return $this;
+    }
+
+    public function getPager()
+    {
+        if(!$this->pager)
+        {
+            $this->setPager(Ccc::getModel('Core_Pager'));
+        }
+        return $this->pager;
+    }
+
     public function getOrders()
     {
         $request = Ccc::getModel('Core_Request');
@@ -39,20 +54,5 @@ class Block_Cart_Grid extends Block_Core_Template
         
         $orders = $orderModel->fetchAll("SELECT * FROM `order_record` LIMIT {$pagerModel->getStartLimit()} , {$pagerModel->getEndLimit()}");
         return $orders;
-    }
-
-    public function setPager($pager)
-    {
-        $this->pager = $pager;
-        return $this;
-    }
-
-    public function getPager()
-    {
-        if(!$this->pager)
-        {
-            $this->setPager(Ccc::getModel('Core_Pager'));
-        }
-        return $this->pager;
     }
 }

@@ -79,7 +79,7 @@
 		<tr>
 			<td width="10%">&nbsp;</td>
 			<td>
-				<input type="submit" name="submit" value="update">
+				<input type="submit" name="submit" value="Update">
 				<button type="button"><a href="<?php echo $this->getUrl('grid') ?>">Cancel</a></button>
 			</td>
 		</tr>

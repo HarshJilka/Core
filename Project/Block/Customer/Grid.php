@@ -61,9 +61,9 @@ class Block_Customer_Grid extends Block_Core_Grid {
 		'type' => 'datetime',
 		'key' =>'updatedAt'
 		],'Updated Date');
-		$this->addAction(['title' => 'Delete','method' => 'getDeleteUrl','class' => 'customer' ],'Delete');
-		$this->addAction(['title' => 'Edit','method' => 'getEditUrl','class' => 'customer' ],'Edit');
-		$this->addAction(['title' => 'Price','method' => 'getPriceUrl','class' => 'customer_price' ],'Price');
+		$this->addAction(['title' => 'delete','method' => 'getDeleteUrl','class' => 'customer' ],'Delete');
+		$this->addAction(['title' => 'edit','method' => 'getEditUrl','class' => 'customer' ],'Edit');
+		$this->addAction(['title' => 'price','method' => 'getPriceUrl','class' => 'customer_price' ],'Price');
         $this->prepareCollectionContent();       
     }
 

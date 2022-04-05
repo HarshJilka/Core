@@ -1,119 +1,127 @@
 <?php $billingAddress = $this->getBillingAddress();?>
 <?php $shippingAddress = $this->getShippingAddress();?>
 
-<table>
 
-	<tr>
-		<td colspan="2"><b>BILLING DETAILS</b></td>
-	</tr>
 
-	<tr>
-		<td width="10%">ADDRESS: </td>
-		<td><input type="text" id="billingaddress" name="billingAddress[address] " value="<?php echo $billingAddress->address ?>"></td>
-	</tr>
-	
-	<tr>
-		<td width="10%">POSTAL CODE: </td>
-		<td><input type="number" id="billingpostalcode" name="billingAddress[postalCode]" value="<?php echo $billingAddress->postalCode ?>"></td>
-	</tr>
-	
-	<tr>
-		<td width="10%">CITY: </td>
-		<td><input type="text" id="billingcity" name="billingAddress[city]" value="<?php echo $billingAddress->city ?>"></td>
-	</tr>
-
-	<tr>
-		<td width="10%">STATE</td>
-		<td><input type="text" id="billingstate" name="billingAddress[state]" value="<?php echo $billingAddress->state ?>"></td>
-	</tr>
-	
-	<tr>
-		<td width="10%">COUNTRY</td>
-		<td><input type="text" id="billingcountry" name="billingAddress[country]" value="<?php echo $billingAddress->country ?>"></td>
-	</tr>
-	
-
-	<tr>
-		<td colspan="2"><b>SHIPPING DETAILS</b></td>
-	</tr>
-
-	<tr>
-		<td colspan="2"><input type = "checkbox"  name = "sameBill" id="sameBill" onclick="same()">
-			<b>SAME AS BILLING</b>
-		</td>
-	</tr>
-
-	<tr>
-		<td width="10%">ADDRESS: </td>
-		<td><input type="text" name="shippingAddress[address] " id="shippingaddress" value="<?php echo $shippingAddress->address ?>"></td>
-	</tr>
-	
-	<tr>
-		<td width="10%">POSTALCODE: </td>
-		<td><input type="number" name="shippingAddress[postalCode]" id="shippingpostalcode" value="<?php echo $shippingAddress->postalCode ?>"></td>
-	</tr>
-	
-	<tr>
-		<td width="10%">CITY: </td>
-		<td><input type="text" name="shippingAddress[city]" id="shippingcity" value="<?php echo $shippingAddress->city ?>"></td>
-	</tr>
-	
-	<tr>
-		<td width="10%">STATE: </td>
-		<td><input type="text" name="shippingAddress[state]" id="shippingstate" value="<?php echo $shippingAddress->state ?>"></td>
-	</tr>
-	
-	<tr>
-		<td width="10%">COUNTRY: </td>
-		<td><input type="text" name="shippingAddress[country]" id="shippingcountry" value="<?php echo $shippingAddress->country ?>"></td>
-	</tr>
-
-	<tr>
-		<td width="10%">&nbsp;</td>
-		<td>
-			<input type="button" name="submit" id="customerSubmitBtn" value="SAVE">
-			<button type="button" id="cancel">CANCEL</button>
-		</td>
-	</tr>
-</table>
-
-<input type="hidden" name="billingAddress[billing]" value="1">
-<input type="hidden" name="billingAddress[shipping]" value="2">
-<input type="hidden" name="shippingAddress[shipping]" value="1">
-<input type="hidden" name="shippingAddress[billing]" value="2">
+<div class="card card-info">
+    <div class="card-header">
+        <h3 class="card-title">Billing Address</h3>
+    </div>
+    <div class="card-body">
+        <div class="form-group row">
+            <label for="Address" class="col-sm-2 col-form-label">Address</label>
+            <div class="col-sm-10">
+                <textarea class="form-control" name="billingAddress[address]" id="billingAddress[address]" rows="3" placeholder="Address"><?php echo $billingAddress->address; ?></textarea>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="Zip code" class="col-sm-2 col-form-label">Zip code</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="billingAddress[postalCode]" id="billingAddress[postalCode]" value="<?php echo $billingAddress->postalCode; ?>" placeholder="Zip code">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="email" class="col-sm-2 col-form-label">City</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="billingAddress[city]" id="billingAddress[city]" value="<?php echo $billingAddress->city; ?>" placeholder="City">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="state" class="col-sm-2 col-form-label">State</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="billingAddress[state]" id="billingAddress[state]" value="<?php echo $billingAddress->state; ?>" placeholder="State">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="country" class="col-sm-2 col-form-label">Country</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="billingAddress[country]" id="billingAddress[country]" value="<?php echo $billingAddress->country; ?>" placeholder="Country">
+            </div>
+        </div>
+    </div>
+    <div class="card-header">
+        <h3 class="card-title">Shiping Address</h3>
+    </div>
+    <div class="card-body">
+        <div class="form-group row">
+            <label for="Address" class="col-sm-2 col-form-label">&nbsp;</label>
+            <div class="col-sm-10">
+                 <div class="form-check">
+                    <input type="checkbox" class="form-check-input" name="copyAddress" id="copyAddress" value="option1" onchange="sameAddress()">
+                    <label for="copyAddress" class="form-check-label">Same as Billing Address</label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="Address" class="col-sm-2 col-form-label">Address</label>
+            <div class="col-sm-10">
+                <textarea class="form-control" name="shippingAddress[address]" id="shippingAddress[address]" rows="3" placeholder="Address"><?php echo $shippingAddress->address; ?></textarea>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="Zip code" class="col-sm-2 col-form-label">Zip code</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="shippingAddress[postalCode]" id="shippingAddress[postalCode]" value="<?php echo $shippingAddress->postalCode; ?>" placeholder="Zip code">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="email" class="col-sm-2 col-form-label">City</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="shippingAddress[city]" id="shippingAddress[city]" value="<?php echo $shippingAddress->city; ?>" placeholder="City">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="state" class="col-sm-2 col-form-label">State</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="shippingAddress[state]" id="shippingAddress[state]" value="<?php echo $shippingAddress->state; ?>" placeholder="State">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="country" class="col-sm-2 col-form-label">Country</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="shippingAddress[country]" id="shippingAddress[country]" value="<?php echo $shippingAddress->country; ?>" placeholder="Country">
+            </div>
+        </div>
+        
+        <!-- /.card-body -->
+        <div class="card-footer">
+            <button type="button" class="btn btn-info" id="customerSubmitBtn">Save</button>
+            <button type="button" class="btn btn-default" id="customerCancelBtn">Cancel</button>
+        </div>
+        <!-- /.card-footer -->
+    </div>
+</div>
 
 <script type="text/javascript">
-    function same() 
+    function sameAddress()
     {
-        var checkedBox = document.getElementById("sameBill");
-        if(checkedBox.checked == true)
-        {
-            document.getElementById("shippingaddress").value = document.getElementById("billingaddress").value; 
-			document.getElementById("shippingpostalcode").value = document.getElementById("billingpostalcode").value; 
-			document.getElementById("shippingcity").value = document.getElementById("billingcity").value; 
-			document.getElementById("shippingstate").value = document.getElementById("billingstate").value; 
-			document.getElementById("shippingcountry").value = document.getElementById("billingcountry").value; 
+        var checkedBox = document.getElementById("copyAddress");
+        
+        if(checkedBox.checked == true){
+            document.getElementById("shippingAddress[address]").value = document.getElementById("billingAddress[address]").value; 
+            document.getElementById("shippingAddress[postalCode]").value = document.getElementById("billingAddress[postalCode]").value; 
+            document.getElementById("shippingAddress[city]").value = document.getElementById("billingAddress[city]").value; 
+            document.getElementById("shippingAddress[state]").value = document.getElementById("billingAddress[state]").value; 
+            document.getElementById("shippingAddress[country]").value = document.getElementById("billingAddress[country]").value; 
         }
         else
         {
-                document.getElementById("shippingaddress").value = null; 
-                document.getElementById("shippingpostalcode").value = null; 
-                document.getElementById("shippingcity").value = null; 
-                document.getElementById("shippingstate").value = null; 
-                document.getElementById("shippingcountry").value = null; 
+                document.getElementById("shippingAddress[address]").value = null; 
+                document.getElementById("shippingAddress[postalCode]").value = null; 
+                document.getElementById("shippingAddress[city]").value = null; 
+                document.getElementById("shippingAddress[state]").value = null; 
+                document.getElementById("shippingAddress[country]").value = null; 
         }
     }
 </script>
-
 <script>
-    $("#customerSubmitBtn").click(function()
-    {
+    $("#customerSubmitBtn").click(function(){
         admin.setForm($("#indexForm"));
         admin.setUrl("<?php echo $this->getEdit()->getSaveUrl(); ?>");
         admin.load();
     });
 
-    $("#cancel").click(function(){
+    $("#customerCancelBtn").click(function(){
         admin.setUrl("<?php echo $this->getUrl('gridBlock','customer'); ?>");
         admin.load();
     });
