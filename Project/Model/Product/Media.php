@@ -35,9 +35,9 @@ class Model_Product_Media extends Model_Core_Row
 		return $this->product;
 	}
 
-	public function setProduct($product)
+	public function setProduct(Model_Product $product)
 	{
-		$this->product = $product;
+		$this->product =$product;
 		return $this;
 	}
 

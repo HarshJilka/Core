@@ -131,6 +131,5 @@ class Model_Core_Row
 		}	
 		return (new $this())->setData($result);
 	}
-
 	
 }

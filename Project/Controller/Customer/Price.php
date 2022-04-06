@@ -1,8 +1,7 @@
 <?php Ccc::loadClass('Controller_Admin_Action') ?>
 <?php
 
-class Controller_Customer_Price extends Controller_Admin_Action
-{
+class Controller_Customer_Price extends Controller_Admin_Action{
 
 	public function __construct()
 	{
@@ -10,14 +9,34 @@ class Controller_Customer_Price extends Controller_Admin_Action
 			$this->redirect('login','admin_login');
 		}
 	}
-
-
+	public function gridBlockAction()
+	{
+		
+		$customerPriceGrid = Ccc::getBlock('Customer_Price_Grid')->toHtml();
+		$messageBlock = Ccc::getBlock('Core_Layout_Message')->toHtml();
+		$response = [
+			'status' => 'success',
+			'elements' => [
+				[
+					'element' => '#indexContent',
+					'content' => $customerPriceGrid
+				],
+				[
+					'element' => '#adminMessage',
+					'content' => $messageBlock
+				]
+			]
+		];
+		$this->renderJson($response);
+	}
 	public function gridAction()
 	{
-		$this->setTitle('Customer-Price');
+		
+		$this->setTitle('Customer Price Grid');
 		$content = $this->getLayout()->getContent();
 		$customerPriceGrid = Ccc::getBlock('Customer_Price_Grid');
 		$content->addChild($customerPriceGrid,'grid');
+
 		$this->renderLayout();
 	}
 
@@ -59,11 +78,12 @@ class Controller_Customer_Price extends Controller_Admin_Action
 				}
 			}
 			$this->getMessage()->addMessage('Discount set successfully');
-			$this->redirect('grid','customer_price',['id' => $customerId],true);
+			$this->gridBlockAction();
 		} 
 		catch (Exception $e) 
 		{
-			$this->redirect('grid','customer_price',['id' => $customerId],true);
+			$this->gridBlockAction();
+			
 		}
 	}
 }

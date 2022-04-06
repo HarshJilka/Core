@@ -6,6 +6,7 @@ class Controller_Core_Front
 {
 	protected $request = null;
 	protected $response = null;
+
 	public function getRequest()
 	{
 		if(!$this->request)
@@ -56,5 +57,4 @@ class Controller_Core_Front
 		return $name;
 	}
 }
-
 ?>

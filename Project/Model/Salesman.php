@@ -25,13 +25,11 @@ class Model_Salesman extends Model_Core_Row
 		{
 			return $statuses;
 		}
-
 		if(array_key_exists($key, $statuses)) {
 			return $statuses[$key];
 		}
 		return self::STATUS_DEFAULT;
-	}	
-
+	}
 	public function getCustomer($reload = false)
 	{
 
@@ -40,20 +38,17 @@ class Model_Salesman extends Model_Core_Row
 		{
 			return $customerModel;
 		}
-
 		if($this->customer && !$reload)
 		{
 			return $this->customer;
 		}
-		
 		$customer=$customerModel->fetchRow("SELECT * FROM `customer` WHERE `customerId` = {$this->customerId}");
-		
-
 		if(!$customer)
 		{
 			return $customerModel;
 		}
 		$this->setCustomer($customer);
+
 		return $customer;
 	}
 
@@ -62,4 +57,19 @@ class Model_Salesman extends Model_Core_Row
 		$this->customer = $customer;
 		return $this;
 	}	
+
+	public function getEditUrl()
+	{
+		return Ccc::getModel('Core_View')->getUrl('edit','customer',['id'=>$this->customerId]);
+	}
+
+	public function getDeleteUrl()
+	{
+		return Ccc::getModel('Core_View')->getUrl('delete','customer',['id'=>$this->customerId]);
+	}
+
+	public function getCustomerUrl()
+	{
+		return Ccc::getModel('Core_View')->getUrl('grid','salesman_salesmanCustomer',['id'=>$this->customerId]);
+	}
 }

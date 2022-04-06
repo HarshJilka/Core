@@ -7,7 +7,6 @@ class Model_Cart extends Model_Core_Row
     protected $billingAddress;
     protected $shippingAddress;
     protected $customer;
-
     const STATUS_ENABLED = 1;
     const STATUS_DISABLED = 2;
     const STATUS_DEFAULT = 1;

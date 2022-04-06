@@ -1,8 +1,5 @@
-<form action="<?php echo $this->getEditUrl() ?>" method="POST">
+
 <?php
-
-    $this->getTab()->toHtml();
-    $this->getTabContent()->toHtml();
+    echo $this->getTab()->toHtml();
+    echo $this->getTabContent()->toHtml();
 ?>
-
-</form>

@@ -1,6 +1,4 @@
-    
-<?php 
-date_default_timezone_set('Asia/Kolkata');
+    <?php date_default_timezone_set('Asia/Kolkata');
 
 class Model_Core_Adapter
 {
@@ -100,7 +98,8 @@ class Model_Core_Adapter
         }
         return false;
     }
-     public function fetchPair($query)
+
+    public function fetchPair($query)
     {
         
         $result = $this->fetchAll($query,MYSQLI_NUM);
@@ -116,7 +115,6 @@ class Model_Core_Adapter
         return $result;
     }
 
-
     public function fetchOne($query)
     {
         $result = $this->fetchAll($query,MYSQLI_NUM);
@@ -126,9 +124,9 @@ class Model_Core_Adapter
         }
         $key = $result['0']['0'];
         return $key;
-    }
-    
-   
+    } 
 }
+
 $adapter=new Model_Core_Adapter();
+
 ?>
