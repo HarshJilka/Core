@@ -8,7 +8,7 @@ class Model_Order_Item extends Model_Core_Row
         parent::__construct();
     }
 
-     public function setProduct(Model_Product $product)
+    public function setProduct(Model_Product $product)
     {
         $this->product = $product;
         return $this;

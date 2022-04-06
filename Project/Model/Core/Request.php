@@ -18,6 +18,7 @@ class Model_Core_Request
 		}
 		return $_POST[$key];
 	}
+
 	public function getFile($key = null,$value = null)
 	{
 		if(!$this->isPost())
@@ -50,7 +51,6 @@ class Model_Core_Request
 		return $_REQUEST[$key];
 	}
 		
-
 	public function ispost()
 	{
 		if($_SERVER['REQUEST_METHOD'] == 'POST')
@@ -62,7 +62,7 @@ class Model_Core_Request
 
 	public function getActionName()
 	{
-		return $this->getRequest('a','grid').'Action';
+		return $this->getRequest('a','index').'Action';
 
 	}
 
@@ -71,5 +71,4 @@ class Model_Core_Request
 		return $this->getRequest('c','customer');
 	}
 }
-
 ?>

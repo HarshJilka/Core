@@ -1,4 +1,4 @@
-<?php $salesman = $this->getSalesman(); ?>
+<?php $salesman = $this->getSalesman();?>
 
 <form action="<?php echo $this->getUrl('save','salesman',['id'=>$salesman->salesmanId],true) ?>" method="POST">
 	<table border="1" width="100%" cellspacing="4">

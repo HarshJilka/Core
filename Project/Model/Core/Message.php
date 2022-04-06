@@ -3,6 +3,7 @@
 class Model_Core_Message
 {
 
+	protected $session = null;
 	const MESSAGE_SUCCESS = 1;
 	const MESSAGE_WARNING = 2;
 	const MESSAGE_ERROR = 3;
@@ -11,12 +12,12 @@ class Model_Core_Message
 	const MESSAGE_WARNING_LBL = 'Warning';
 	const MESSAGE_ERROR_LBL = 'Error';
 
-	protected $session = null;
 
 	public function __construct()
 	{
 
 	}
+	
 	public function getSession()
 	{
 		if(!$this->session)
@@ -88,9 +89,4 @@ class Model_Core_Message
 	}
 
 }
-
-
-
-
-
- ?>
+?>

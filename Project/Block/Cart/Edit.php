@@ -7,13 +7,6 @@ class Block_Cart_Edit extends Block_Core_Template
         $this->setTemplate('view/cart/edit.php');
     }  
 
-    public function getCustomers()
-    {
-        $customerModel = Ccc::getModel('Customer');
-        $customer = $customerModel->fetchAll("SELECT * FROM `customer`");
-        return $customer;
-    }
-
     public function getCart()
     {
         if(!Ccc::getModel('Admin_Cart')->getCart())
@@ -23,6 +16,13 @@ class Block_Cart_Edit extends Block_Core_Template
         $cartId = Ccc::getModel('Admin_Cart')->getCart();
         $cartModel = Ccc::getModel('Cart')->load($cartId);
         return $cartModel;
+    }
+
+    public function getCustomers()
+    {
+        $customerModel = Ccc::getModel('Customer');
+        $customer = $customerModel->fetchAll("SELECT * FROM `customer`");
+        return $customer;
     }
 
     public function getProducts()

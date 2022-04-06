@@ -1,16 +1,16 @@
-<?php 
+<?php Ccc::loadClass('Model_Core_View');
 
-Ccc::loadClass('Model_Core_View');
-
-class Controller_Core_Action {
+class Controller_Core_Action 
+{
 
 	protected $layout = null;
 	protected $view = null;
-	protected $cart = null;
 	protected $message = null;
+	protected $cart = null;
 	
 	protected function setTitle($title)
     {
+    	
         $this->getLayout()->getHead()->setTitle($title);
     }
 
@@ -50,18 +50,26 @@ class Controller_Core_Action {
 		return $this;
 	}
 
-	public function renderLayout()
-    {
-        $this->getResponse()
-            ->setHeader('Content-type', 'text/html')
-            ->render($this->getLayout()->toHtml());
-    }
 
 	public function getAdapter()
 	{
 		global $adapter;
 		return $adapter;
 	}
+
+	public function getCart()
+    {
+        if(!$this->cart){
+            $this->cart = Ccc::getModel('Admin_Cart');
+        }
+        return $this->cart;
+    }
+
+    public function setCart($cart)
+    {
+        $this->cart = $cart;
+        return $this;
+    }
 
 	public function getRequest()
 	{
@@ -72,20 +80,24 @@ class Controller_Core_Action {
     {
         return Ccc::getFront()->getResponse();
     }
-
-    public function getCart()
-    {
-    	if(!$this->cart)
-    	{
-    		$this->cart = Ccc::getModel('Admin_Cart');
-    	}
-    	return $this->cart;
-    }
-
-    public function setCart($cart)
-    {
-    	$this->cart = $cart;
-    	return $this;
-    }
 		
+	public function renderLayout()
+    {
+        $this->getResponse()
+            ->setHeader('Content-type', 'text/html')
+            ->render($this->getLayout()->toHtml());
+    }
+    public function renderContent()
+    {
+        $this->getResponse()
+            ->setHeader('Content-type', 'text/html')
+            ->render($this->getLayout()->getContent()->toHtml());
+    }
+
+    public function renderJson($content)
+    {
+        $this->getResponse()
+            ->setHeader('Content-type', 'application/json')
+            ->render(json_encode($content));
+    }
 }
