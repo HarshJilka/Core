@@ -6,6 +6,7 @@
             "password" => "",
             "dbName" => "project_harshj"
         ],
-        'baseUrl' => "http://localhost/php/Jquery-Modal/Core/Project/",
+        'baseUrl' => "http://localhost/php/Jquery-Bootstrap/Core/Project/",
+
 
     ];

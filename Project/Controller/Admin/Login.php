@@ -33,9 +33,10 @@ class Controller_Admin_Login extends Controller_Admin_Action
 
 
             $loginData = $request->getPost('admin');
-            $password = $loginData['password'];
+            $password = md5($loginData['password']);
             $result = $adminModel->fetchAll("SELECT * FROM `admin` WHERE `email` = '{$loginData['email']}' AND `password` = '{$password}'");
-            
+            /*var_dump($result);
+            exit();*/
             if(!$result)
             {
                 $this->getMessage()->addMessage("DETAILS ARE INCORRECT.",3);
